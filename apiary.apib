@@ -172,95 +172,63 @@ An individual UserAccount resource to update the password
             }
 
 
-# Group Events
+## Revoke a refresh token [DELETE /identity/refresh_token/{refresh_token_id}]
+
+**Possible Response Codes**
+- 204
+- 400
+- 401
+- 404 - The refresh token could not be found for the authenticated user.
+
++ Parameters
+    + refresh_token_id: `F72ECD394B69405E95DCEA175D49A35D` (required, string) - Refresh token to revoke
+
++ Response 204
+
+
+## Recover password [POST /identity/user/accounts/password/recover]
+
+**Possible Response Codes**
+- 204
+- 400
+
++ Request (application/json)
+    + Attributes
+        + username: `+16046155905` (required, string) - Username to recover password for.
+        + language: `en-US` (required, enum[string]) - Language in which password recovery message should be sent.
+            + Members
+                + `en-US`
+                + `en-GB`
+                + `fr-FR`
+                + `fr-CA`
+    + Body
+    
+            {
+                "username":"+16046155905",
+                "language":"en-US"
+            }
+
++ Response 202
+
+
+# Group Events Placeholder
 
 Placeholder for Events endpoint documentation
 
-# Group Parking
+# Group Parking Placeholder
 
 Placeholder for Parking endpoint documentation
 
-# Group Payment Methods
+# Group Payment Methods Placeholder
 
 Placeholder for Payment Methods endpoint documentation
 
-# Group Notifications
+# Group Notifications Placeholder
 
 Placeholder for Notifications endpoint documentation
 
 
-
-# Group Token
-Authorization OAuth resources
-
-## Token [/public/identity/token]
-The Token resource is used to retrieve access tokens for authorizations purposes.
-
-+ Model (application/json)
-
-    JSON representation of an Authorization Token.
-
-    + Body
-
-            {
-                "access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJpZCI6ImQzYjFmZGQ1LWI4MTMtNDUxMS05Zjc1LWJjNGFjZjJmNjFjZiIsImFjdGl2ZXVzZXJhY2NvdW50IjoiNGNlMjU4Y2MtM2IxZC00MzFkLTg5NmItYTNjYzAxNTM3OGViIiwiaXNzIjoiUGF5QnlQaG9uZSBJZGVudGl0eSBBbmQgQWNjZXNzIiwiYXVkIjoiaHR0cHM6Ly9hcGkucGF5YnlwaG9uZS5jb20iLCJ1c2VyYWNjb3VudHMiOiI0Y2UyNThjYy0zYjFkLTQzMWQtODk2Yi1hM2NjMDE1Mzc4ZWIiLCJwYXltZW50YWNjb3VudHMiOiI3NGRlZmNlZi04NWEwLTQzNmUtOGEyOC1iY2E0OGI0OTk1NDIsNmQwNDg2MGItY2ZjZi00ZjI4LThhMmEtMTQyNmZkMDlhMTI3IiwicGFya2luZ2FjY291bnRzIjoiOWVhMDMwZWItOTFkMC00MTczLWE4ZDQtNDJlNjBkMGE3ZDMxIiwiZXhwIjoxNDE1Mzg1Njg0LCJuYmYiOjE0MTQxNzYwODR9.wVzJnAH4C50LT3Ghf67-Ha3V7sFZ6CIHr7K8yJXs2TI",
-                "token_type":"bearer",
-                "expires_in":1209599,
-            }
-
-### Retrieve an Authorization Token [POST]
-
-**Request Contract**
-    
-    Content-Type: x-www-form-urlencoded
-    grant_type=password&password=&username=
-    
-**Mandatory Fields**
-
-- grant_type (possible values - password)
-- username
-- password
-
-**Response Contract**
-
-    Content-Type: application/json
-    {
-        "access_token":"",
-        "token_type":"",
-        "expires_in":
-    }
-    
-**Possible Response Codes**
-
-- 200
-- 400
-
-+ Request valid username and password (application/x-www-form-urlencoded)
-
-        grant_type=password&password=1111&username=%2B16047100546
-+ Response 200
-[Token][]
-
-+ Request invalid username or password (application/x-www-form-urlencoded)
-
-        grant_type=mygranttype&password=1111&username=%2B16047100546
-+ Response 400
-
-        {
-            "error":"invalid_grant",
-            "error_description":"The user name or password is incorrect."
-        }
-
-+ Request invalid grant type (application/x-www-form-urlencoded)
-
-        grant_type=mygranttype&password=1111&username=%2B16047100546
-+ Response 400
-        
-        {
-            "error":"unsupported_grant_type"
-        }
-
-# Group Parking1
+# Group Parking
 
 ## About
 Parking API provides parking related resources
