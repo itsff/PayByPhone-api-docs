@@ -1,12 +1,21 @@
 FORMAT: 1A
-HOST: http://api.paybyphone.com
+HOST: https://api.paybyphone.com
 
 # PayByPhone Api
 This is a list of PayByPhone Apis
 
 ## Response Codes
-The common [HTTP Response Status Codes](https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md) are used.
+The common [HTTP Response Status Codes](http://tools.ietf.org/html/rfc7231#section-6) are used.
 
+## Error Handling
+
+Any code you write to call PayByPhone's APIs should expect to receive and handle errors from the service. A given error may be returned for multiple reasons, so it's a good idea to look at (and handle in code), the error messages returned with the error number.
+
+400-series errors indicate that you cannot perform the requested action, the most common reasons being that you don't have permission or that a referred-to entity doesn't exist.
+
+500-series errors indicate that a request didn't succeed, but may be retried. Though infrequent, these errors are to be expected as part of normal interaction with the service and should be explicitly handled with an exponential backoff algorithm. One such algorithm can be found at http://en.wikipedia.org/wiki/Truncated_binary_exponential_backoff.
+
+Failed connection attempts should also be handled with exponential backoff.
 
 # Group Identity And Access
 
