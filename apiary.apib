@@ -71,14 +71,14 @@ Create a new User Account
 
 
 ## Change user account password [PUT /identity/user/accounts/{userAccountId}/password]
-An individual UserAccount resource to update the password
+Change the password used to authenticate a user account
 
 **Possible Response Codes**
 
 - 202 - Request is being processed
 - 400 - The request is invalid.
-- 403 - Access Denied
-- 500 - Shit hit the fan exception
+- 403 - Access Denied.
+- 500 - Shit hit the fan exception.
 
 **Possible events**
 
@@ -98,7 +98,7 @@ An individual UserAccount resource to update the password
         }
 
 + Parameters
-    + userAccountId: `5fb93529-b3a1-486e-b23d-a14944bbe3f5` (required, string) - User account to be cancelled.
+    + userAccountId: `5fb93529-b3a1-486e-b23d-a14944bbe3f5` (required, string) - User account to be changed.
 
 + Request (application/json)
     + Attributes
@@ -220,9 +220,34 @@ An individual UserAccount resource to update the password
 + Response 202
 
 
-# Group Events Placeholder
+# Group Events
 
-Placeholder for Events endpoint documentation
+## Get events by workflow [GET /events/workflow/{id}]
+
+**Possible Response Codes**
+
+- 200 - OK
+- 400 - Bad Request
+- 401 - Unauthorized
+
++ Parameters
+    + id: `b942cd39-60c5-4fdd-9b4f-2c6fe8a4ea26` (required, string) - Unique identifier of the workflow.
+
++ Response 200 (application/json)
+    [
+        {
+            "$type": "PaymentAccountCreated",
+            "paymentAccountId": "7c3367cd-883b-47c2-bcf9-5043d6b8dea8",
+            "memberId": "c61a93b7-e506-4cd4-ab74-6340e6149736",
+            "maskedCardNumber": "411111------1111",
+            "expiryMonth": 12,
+            "expiryYear": 2015,
+            "nameOnCard": "John Smith",
+            "issueNumber": null,
+            "startMonth": null,
+            "startYear": null
+        }
+    ]
 
 # Group Parking Placeholder
 
