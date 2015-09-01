@@ -249,9 +249,258 @@ Change the password used to authenticate a user account
         }
     ]
 
-# Group Parking Placeholder
+# Group Parking
 
-Placeholder for Parking endpoint documentation
+## Get a user's active/current parking sessions [GET /parking/accounts/{accountId}/sessions/?periodType=Current]
+
+**Possible Response Codes**
+
+- 200 - OK
+- 400 - Bad Request
+- 401 - Unauthorized
+- 403 - Forbidden
+
++ Parameters
+    + accountId: `1b98d239-8de8-4111-9d7d-562fc31c193a` (required, string) - Parking account id.
+
++ Response 200 
+    + Attributes (application/json)
+        + `id`:`de9bd239-44f3-483e-9fd4-7c98567da200` (string) - The parking session ID, this is needed if you want to extend an existing parking session (NOTE: this property will soon be renamed to parkingSessionId)
+        + `locationNumber`:`5594` (string) - The Lot ID where the user is parked (NOTE: Stall ID will be added soon)
+        + `licensePlate`:`TEST111` (string) - The license plate of the vehicle that is parked
+        + `durationInMinutes`:`464` (string) - The total duration of the parking session from the start-time
+        + `startTime`:`2015-09-01T16:16:00.000Z` (string) - The total duration of the parking session from the start-time
+        + `stallId`:`82445` (string) - Stall where the vehicle is parked if the parking session took place in a stall, null otherwise.
+    + Body 
+        [
+            {
+                "parkingSessionId":"de9bd239-44f3-483e-9fd4-7c98567da200",
+                "locationNumber":"5594",
+                "vehicleId":"5415645",
+                "licensePlate":"TEST111",
+                "durationInMinutes":464,
+                "startTime":"2015-09-01T16:16:00.000Z",
+                "stallId":"82445"
+            }
+        ]
+
+## Start a new parking session [POST /parking/accounts/{accountId}/sessions]
+
+**Possible Response Codes**
+
+- 202 - Accepted
+- 400 - Bad Request
+- 401 - Unauthorized
+- 403 - Forbidden
+
+**Possible Error Codes**
+
+- ParkingAccountIdInvalidFormat
+- LocationNotFound
+- CvvMustNotBeEmpty
+- CvvInvalidFormat
+- LicensePlateMustNotBeEmpty
+- LicensePlateInvalidFormat
+- DurationInvalidFormat
+- JsonReaderException
+
+**Possible events**
+
+- ParkingSessionCreated
+    
+        {
+             "ParkingSessionId": "23fccd39-70c2-446f-915c-6d2362b64e58",
+             "VehicleId": "12793707",
+             "LocationId": "64123",
+             "VehiclePlate": "GGG328",
+             "Stall": "",
+             "vehicleType": "car",
+             "StartTime": "2015-01-28T20:54:00-0000",
+             "ExpireTime": "2015-01-28T21:54:00-0000",
+             "$type": "ParkingSessionCreated"
+        }
+
+- StartParkingFailed
+
+        {
+            "Data": [ ],
+            "FailureReason":"VehicleAlreadyParked",
+            "$type":"StartParkingFailed"
+        }
+
++ Parameters
+    + accountId: `1b98d239-8de8-4111-9d7d-562fc31c193a` (required, string) - Parking account id.
+
++ Request 
+    + Attributes (application/json)
+        + `lotId`:`70000` (required, string) - The lot ID of the location where the user wants to park
+        + `stallId`:`1` (required, string) - The stall number of the location where the user wants to park
+        + `licensePlate`:`ABC123` (required, string) - The license plate of the vehicle that is parked
+        + `durationTimeUnits`:`Hour` (required, string) - "Hours", "Minutes", "CalendarDays", "MidnightCurrentDay", "Months" (more options to be added soon)
+        + `durationValue`:`1` (required, string) - How many minutes or hours the user wants to park
+        + `cvv`:`111` (required, string) - The CV2 code from the user's payment card
+        + `startTime`:`2015-07-28T20:40:00-0000` (required, string) - The start time of the transaction to be started. Must be within 3 minutes of the current time.
+    + Body 
+        [
+            {
+                "lotId":"70000",
+                "stallId":"1",
+                "licensePlate":"ABC123",
+                "durationTimeUnits":"Hour",
+                "durationValue":"1",
+                "cvv":"111",
+                "startTime": "2015-07-28T20:40:00-0000"
+            }
+        ]
+
++ Response 202
+    + Headers
+    
+        Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
+
+
+## Extend an existing parking session [PUT /parking/accounts/{accountId}/sessions]
+
+**Possible Response Codes**
+
+- 202 - Accepted
+- 400 - Bad Request
+- 401 - Unauthorized
+
+**Possible Error Codes**
+
+- ParkingAccountIdInvalidFormat
+- ActiveParkingSessionIsInvalid
+- LocationNotFound
+- CvvMustNotBeEmpty
+- CvvInvalidFormat
+- DurationInvalidFormat
+- JsonReaderException
+
+**Possible events**
+
+- ParkingSessionExtended
+    
+        {
+             "ParkingSessionId": "23fccd39-70c2-446f-915c-6d2362b64e58",
+             "VehicleId": "12793707",
+             "LocationId": "64123",
+             "VehiclePlate": "GGG328",
+             "Stall": "",
+             "vehicleType": "car",
+             "OldExpiryTime": "2015-01-28T20:54:00-0000",
+             "NewExpiryTime": "2015-01-28T21:54:00-0000",
+             "$type": "ParkingSessionExtended"
+        }
+
+- ExtendParkingFailed
+
+        {
+            "Data": [ ],
+            "FailureReason":"PaymentDeclinedByGateway",
+            "$type":"ExtendParkingFailed"
+        }
+
++ Parameters
+    + accountId: `1b98d239-8de8-4111-9d7d-562fc31c193a` (required, string) - Parking account id.
+
++ Request 
+    + Attributes (application/json)
+        + `parkingSessionId`:`2bf49b64-28cd-4fc7-96e4-a44b010bf6ea` (required, string) - The ID of the parking session to be extended, this must be an active session
+        + `durationTimeUnits`:`Hour` (required, string) - "Hours" or "Minutes" or "CalendarDays" (more options to be added soon)
+        + `durationValue`:`1` (required, string) - How many minutes or hours the user wants to park
+        + `cvv`:`111` (required, string) - The CV2 code from the user's payment card
+    + Body 
+        [
+            {
+                "parkingSessionId":"2bf49b64-28cd-4fc7-96e4-a44b010bf6ea",
+                "durationTimeUnits":"Hour",
+                "durationValue":"1",
+                "cvv":"111"
+            }
+        ]
+
++ Response 202
+    + Headers
+    
+        Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
+
+## Get parking preferences for the parking account [GET /parking/accounts/{accountId}/preferences]
+
+**Possible Response Codes**
+
+- 200 - OK
+- 400 - Bad Request
+- 401 - Unauthorized
+- 403 - Forbidden
+
+**Possible Error Codes**
+
+- EmailInvalidFormat
+- JsonReaderException
+
++ Parameters
+    + accountId: `00000000-0000-0000-0000-000000000000` (required, string) - Parking account id.
+
++ Response 200 
+    + Attributes (application/json)
+        + `parkingAccountId`:`00000000-0000-0000-0000-000000000000` (string) - The parking account ID
+        + `sendEmailReceipts`:`false` (string) - Does account holder wishes to get receipts from email
+        + `sendTextReminders`:`false` (string) - Does account holder wishes to receive text reminder
+        + `sendTextReceipts`:`false` (string) - Does account holder wishes to get receipts from text
+        + `email`:`null` (string) - Email account for account holder
+    + Body 
+        {
+            "parkingAccountId":"00000000-0000-0000-0000-000000000000",
+            "sendEmailReceipts":false,
+            "sendTextReminders":false,
+            "sendTextReceipts":false,
+            "email":null
+        }
+
+## Set parking preferences for the parking account [PUT /parking/accounts/{accountId}/preferences or POST /parking/accounts/{accountId}/preferences]
+
+**Response Codes**
+
+- 202 - OK
+- 400 - Bad Request
+- 401 - Unauthorized
+- 403 - Forbidden
+
+**Possible events**
+
+- PreferencesCreated/PreferencesUpdated
+    
+        {
+             "parkingAccountId": "23fccd39-70c2-446f-915c-6d2362b64e28",
+             "Email": "test@server.com",
+             "SendTextReceipts": "true",
+             "SendTextReminders": "true",
+             "SendEmailReceipts": "true",
+             "$type": "PreferencesCreated"
+        }
+
+- AddMemberPreferencesFailed or UpdateMemberPreferencesFailed
+
+        {
+            "FailureReason":"UserNotRegistered",
+            "$type":"AddMemberPreferencesFailed"
+        }
+
++ Request (application/json)
+    + Body
+    
+            {
+                "email":"email@-domain.com",
+                "sendEmailReceipts":true,
+                "sendTextReceipts":true,
+                "sendTextReminders":true
+            }
+
++ Response 202 (application/json)
+    + Headers
+    
+        Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
 
 # Group Payment Methods Placeholder
 
@@ -261,11 +510,6 @@ Placeholder for Payment Methods endpoint documentation
 
 Placeholder for Notifications endpoint documentation
 
-
-# Group Parking
-
-## About
-Parking API provides parking related resources
 
 # Group Vehicles
 Parking Vehicle resources
