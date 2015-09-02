@@ -502,6 +502,124 @@ Change the password used to authenticate a user account
     
         Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
 
+## Create a parking account for the member [POST /parking/accounts]
+
+**Response Codes**
+
+- 202 - OK
+- 401 - Unauthorized
+
+**Possible events**
+
+- ParkingAccountCreated
+    
+        {
+            "ParkingAccountId":"23fccd39-70c2-446f-915c-6d2362b64e28",
+            "MemberId":"23fccd39-70c2-446f-915c-6d2362b64e58",
+            "$type":"ParkingAccountCreated"
+        }
+
+- CreateParkingAccountFailed
+
+        {
+            "Data": [ ],
+            "FailureReason":"UserNotRegistered",
+            "$type":"CreateParkingAccountFailed"
+        }
+
++ Response 202 (application/json)
+    + Headers
+    
+        Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
+
+## Get all parking accounts for the member [GET /parking/accounts]
+
+**Response Codes**
+
+- 200 - OK
+- 401 - Unauthorized
+
++ Response 200 (application/json)
+    [
+        {
+            "id": "d6d1817e-98ee-4600-b82b-f1aace2abea5"
+        }
+    ]
+
+## get a parking quote [/parking/accounts/{parkingAccountGuid}/quote?locationNumber={locationNumber}&startTime={StartTime}&timeUnit={TimeUnit}&quantity={Quantity}&licensePlate={LicensePlate}&stall={stall}&isExtend={isExtend}&ratePolicyId={ratePolicyId}]
+
+### Retrieve a parking quote detail [GET]
+
+Retrieve a parking quote detail
+
+**Response Codes**
+
+- 200 - Ok.
+- 400 - Bad Bad request.
+
++ Parameters
+    + parkingAccountGuid: `b12e8e08-ee59-4774-8062-a40401272436` (required, guid) - GUID of the user parking account.
+    + locationNumber: `40002` (required, int) - Lot ID. Note that this can not be a reverse lookup stall, such as in the location details endpoint
+    + startTime: `2015-08-28T20:56:00-0000` (required, dateTime) - StartTime of the rate calculation, in UTC
+    + timeUnit: `1` (required, string) - Time unit enumeration, as described in Time Units table below.
+    + quantity: `60` (required, int) - Number of time units.
+    + licensePlate: `273cvn` (optional, string) - License plate being parked. Used to calculate promotion discounts.
+    + stall: `52444` (optional, string) - Stall number of the current parking session. Used for extensions to ensure the app is extending the right session.
+    + isExtend: `1` (optional, int) - 1 or 0, resembling a boolean to indicate whether requesting the quote for an extension of a current parking session.
+    + ratePolicyId: `75001` (optional, int) - The ID of the rate policy you want to use
+
++ Response 200 (application/json)
+    + Attributes
+        + locationNumber: string
+        + stallId: string
+        + quoteDate: DateTime
+        + totalCost: Money
+        + parkingAccountId: Guid
+        + parkingStartTime: DateTime
+        + parkingExpiryTime: DateTime
+        + parkingDurationAdjustmentL: ParkingSessionDurationAdjustmentTypes
+        + licensePlate: string
+        + quoteItems: List of QuoteItem
+
+    + Body
+    
+            {
+                "locationNumber": "40002",
+                "stallId": "123",
+                "quoteDate":"2015-06-25T18:00:00-0000",
+                "totalCost": {
+                       "amount": 5.00,
+                       "currencyCodeISO4217": "CAD"
+                },
+                "parkingAccountId": "56514ff5-44fc-463b-820f-1d47393e1703",
+                "parkingStartTime": "2014-12-29T22:00:00-0000",
+                "parkingExpiryTime": "2014-12-29T23:00:00-0000",
+                "patrkingDurationAdjustment": "NotAdjusted",
+                "licensePlate": "ABC123",
+                "quoteItems":[{
+                    "quoteItemType":"parking",
+                    "name": "Parking",
+                    "costAmout":{
+                        "amount":9.00,
+                        "currencyCodeISO4217":"CAD"
+                    }
+                    },{
+                    "quoteItemType":"convenienceFee",
+                    "name": "Convenience Fee",
+                    "costAmount": {
+                        "amount": 1.00,
+                        "currencyCodeISO4217": "CAD"
+                    }
+                    },{
+                    "quoteItemType":"promotion",
+                    "name": "COV electric vehicle discount.",
+                    "costAmount": {
+                        "amount": -5.00,
+                        "currencyCodeISO4217": "CAD"
+                    }
+                }]
+            }
+
 # Group Payment Methods Placeholder
 
 Placeholder for Payment Methods endpoint documentation
