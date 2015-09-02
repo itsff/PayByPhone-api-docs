@@ -83,7 +83,7 @@ Change the password used to authenticate a user account
 **Possible events**
 
 - UserAccountPasswordChanged
-    
+
         {
             "UserAccountId":"5fb93529-b3a1-486e-b23d-a14944bbe3f5",
             "$type":"UserAccountPasswordChanged"
@@ -505,6 +505,62 @@ Change the password used to authenticate a user account
 # Group Payment Methods Placeholder
 
 Placeholder for Payment Methods endpoint documentation
+
+## Payment account [/payment/accounts]
+
++ Model (application/json)
+
+    {
+        "id": "d6d1817e-98ee-4600-b82b-f1aace2abea5",
+        "maskedCardNumber": "411111------1111",
+        "paymentCardType": "DebitCard",
+        "nameOnCard": "JOHN L SMITH",
+        "expiryMonth": 2,
+        "expiryYear": 2018,
+        "startMonth": 2,
+        "startYear": 2012,
+        "issueNumber": 2
+    }
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+### Get payment accounts [GET]
+
+**Response Codes**
+
+- 202 - OK
+- 401 - Unauthorized
+
++ Response 200 (application/json)
+    + Attributes
+        + id: `+16046155905` (string) - E.164 phone number used to create user account.
+        + maskedCardNumber: `5fb93529-b3a1-486e-b23d-a14944bbe3f5` (string) - Assigned by the API at the moment of creation.
+        + paymentCardType: `5fb93529-b3a1-486e-b23d-a14944bbe3f5` (string) - Assigned by the API at the moment of creation.
+        + nameOnCard: `5fb93529-b3a1-486e-b23d-a14944bbe3f5` (string) - Assigned by the API at the moment of creation.
+        + expiryMonth: `5fb93529-b3a1-486e-b23d-a14944bbe3f5` (string) - Assigned by the API at the moment of creation.
+        + expiryYear: `5fb93529-b3a1-486e-b23d-a14944bbe3f5` (string) - Assigned by the API at the moment of creation.
+        + startMonth: `5fb93529-b3a1-486e-b23d-a14944bbe3f5` (string) - Assigned by the API at the moment of creation.
+        + startYear: `5fb93529-b3a1-486e-b23d-a14944bbe3f5` (string) - Assigned by the API at the moment of creation.
+        + issueNumber: `5fb93529-b3a1-486e-b23d-a14944bbe3f5` (string) - Assigned by the API at the moment of creation.
+    + Body
+        [Payment accounts][]
+
+
+### Create a new payment account [POST]
+
+## Get details about a payment account [GET /payment/accounts/{paymentAccountId}]
+
+## Delete a payment account [DELETE /payment/accounts/{paymentAccountId}]
+
+
+
+
+
+
 
 # Group Notifications Placeholder
 
