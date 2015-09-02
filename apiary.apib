@@ -17,6 +17,70 @@ Any code you write to call PayByPhone's APIs should expect to receive and handle
 
 Failed connection attempts should also be handled with exponential backoff.
 
+# Data Structures
+
+## Money (object)
++ amount: `5.00` (number)
++ currencyCodeISO4217: `CAD` (string)
+
+
+## QuoteItem (object)
++ quoteItemType: `parking` (string) - XXXXXXXX
++ name: `Parking` (string) - XXXXXXXX
++ costAmout (Money)
+
+
+## GetParkingQuoteResponse (object)
++ locationNumber: `40002` (string) - XXXXXXXX
++ stallId: `123` (string) - XXXXXXXX
++ quoteDate: `2015-06-25T18:00:00-0000` (string) - XXXXXXXX
++ totalCost: (Money) - XXXXXXXX
++ parkingAccountId: `56514ff5-44fc-463b-820f-1d47393e1703` (string) - XXXXXXXX
++ parkingStartTime: `2014-12-29T22:00:00-0000` (string) - XXXXXXXX
++ parkingExpiryTime: `2014-12-29T23:00:00-0000` (string) - XXXXXXXX
++ parkingDurationAdjustment: (enum) - XXXXXXXX
+    + NotAdjusted (string) - XXXXXXXX
+    + DurationIncreased (string) - XXXXXXXX
+    + DurationDecreased (string) - XXXXXXXX
+    + DurationIncreasedPromptUserToConfirm (string) - XXXXXXXX
++ licensePlate: `ABC123` (string) - XXXXXXXX
++ quoteItems: (array) - XXXXXXXX
+    + (QuoteItem)
+
+
+## PaymentAccount (object)
++ id: `+16046155905` (string) - E.164 phone number used to create user account.
++ maskedCardNumber: `411111------1111` (string) - Assigned by the API at the moment of creation.
++ paymentCardType: `DebitCard` (string) - Assigned by the API at the moment of creation.
++ nameOnCard: `JOHN L SMITH` (string) - Assigned by the API at the moment of creation.
++ expiryMonth: `2` (number) - Assigned by the API at the moment of creation.
++ expiryYear: `2018` (number) - Assigned by the API at the moment of creation.
++ startMonth: `2` (number) - Assigned by the API at the moment of creation.
++ startYear: `2012` (number) - Assigned by the API at the moment of creation.
++ issueNumber: `2` (number) - Assigned by the API at the moment of creation.
+
+
+## PaymentAccounts (array)
++ (PaymentAccount) - An array of PaymentAccount objects
+
+
+## CreatePaymentAccount (object)
++ country (enum, required) - Country the card is registered in.
+    + CA (string)
+    + US (string)
+    + AU (string)
+    + FR (string)
+    + CH (string)
+    + GB (string)
++ cardNumber: `4111111111111111` (string, required) - The credit or debit card number.
++ expiryMonth: `2` (number, required) - Expiration month of the card.
++ expiryYear: `2018` (number, required) - Expiration year of the card.
++ nameOnCard: `JOHN L SMITH` (string) - The card holders name as it appears on the card.
++ cvv : `123` (string) - The Card Verification Value
++ issueNumber: `2` (number) - The issue number for the debit card.
++ startMonth: `2` (number) - Assigned by the API at the moment of creation.
++ startYear: `2012` (number) - Assigned by the API at the moment of creation.
+
 # Group Identity And Access
 
 ## About
@@ -83,7 +147,7 @@ Change the password used to authenticate a user account
 **Possible events**
 
 - UserAccountPasswordChanged
-
+    
         {
             "UserAccountId":"5fb93529-b3a1-486e-b23d-a14944bbe3f5",
             "$type":"UserAccountPasswordChanged"
@@ -502,42 +566,74 @@ Change the password used to authenticate a user account
     
         Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
 
-# Data Structures
+## Create a parking account for the member [POST /parking/accounts]
 
-## PaymentAccount (object)
+**Response Codes**
 
-+ id: `+16046155905` (string) - E.164 phone number used to create user account.
-+ maskedCardNumber: `411111------1111` (string) - Assigned by the API at the moment of creation.
-+ paymentCardType: `DebitCard` (string) - Assigned by the API at the moment of creation.
-+ nameOnCard: `JOHN L SMITH` (string) - Assigned by the API at the moment of creation.
-+ expiryMonth: `2` (number) - Assigned by the API at the moment of creation.
-+ expiryYear: `2018` (number) - Assigned by the API at the moment of creation.
-+ startMonth: `2` (number) - Assigned by the API at the moment of creation.
-+ startYear: `2012` (number) - Assigned by the API at the moment of creation.
-+ issueNumber: `2` (number) - Assigned by the API at the moment of creation.
+- 202 - OK
+- 401 - Unauthorized
 
-## PaymentAccounts (object)
+**Possible events**
 
-+ (array) - An array of PaymentAccount objects
-    + (PaymentAccount)
+- ParkingAccountCreated
+    
+        {
+            "ParkingAccountId":"23fccd39-70c2-446f-915c-6d2362b64e28",
+            "MemberId":"23fccd39-70c2-446f-915c-6d2362b64e58",
+            "$type":"ParkingAccountCreated"
+        }
 
-## CreatePaymentAccount (object)
+- CreateParkingAccountFailed
 
-+ country (enum, required) - Country the card is registered in.
-    + CA (string)
-    + US (string)
-    + AU (string)
-    + FR (string)
-    + CH (string)
-    + GB (string)
-+ cardNumber: `4111111111111111` (string, required) - The credit or debit card number.
-+ expiryMonth: `2` (number, required) - Expiration month of the card.
-+ expiryYear: `2018` (number, required) - Expiration year of the card.
-+ nameOnCard: `JOHN L SMITH` (string) - The card holders name as it appears on the card.
-+ cvv : `123` (string) - The Card Verification Value
-+ issueNumber: `2` (number) - The issue number for the debit card.
-+ startMonth: `2` (number) - Assigned by the API at the moment of creation.
-+ startYear: `2012` (number) - Assigned by the API at the moment of creation.
+        {
+            "Data": [ ],
+            "FailureReason":"UserNotRegistered",
+            "$type":"CreateParkingAccountFailed"
+        }
+
++ Response 202 (application/json)
+    + Headers
+    
+        Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
+
+## Get all parking accounts for the member [GET /parking/accounts]
+
+**Response Codes**
+
+- 200 - OK
+- 401 - Unauthorized
+
++ Response 200 (application/json)
+    [
+        {
+            "id": "d6d1817e-98ee-4600-b82b-f1aace2abea5"
+        }
+    ]
+
+## get a parking quote [/parking/accounts/{parkingAccountGuid}/quote?locationNumber={locationNumber}&startTime={StartTime}&timeUnit={TimeUnit}&quantity={Quantity}&licensePlate={LicensePlate}&stall={stall}&isExtend={isExtend}&ratePolicyId={ratePolicyId}]
+
+### Retrieve a parking quote detail [GET]
+
+Retrieve a parking quote detail
+
+**Response Codes**
+
+- 200 - Ok.
+- 400 - Bad Bad request.
+
++ Parameters
+    + parkingAccountGuid: `b12e8e08-ee59-4774-8062-a40401272436` (required, guid) - GUID of the user parking account.
+    + locationNumber: `40002` (required, int) - Lot ID. Note that this can not be a reverse lookup stall, such as in the location details endpoint
+    + startTime: `2015-08-28T20:56:00-0000` (required, dateTime) - StartTime of the rate calculation, in UTC
+    + timeUnit: `1` (required, string) - Time unit enumeration, as described in Time Units table below.
+    + quantity: `60` (required, int) - Number of time units.
+    + licensePlate: `273cvn` (optional, string) - License plate being parked. Used to calculate promotion discounts.
+    + stall: `52444` (optional, string) - Stall number of the current parking session. Used for extensions to ensure the app is extending the right session.
+    + isExtend: `1` (optional, int) - 1 or 0, resembling a boolean to indicate whether requesting the quote for an extension of a current parking session.
+    + ratePolicyId: `75001` (optional, int) - The ID of the rate policy you want to use
+
++ Response 200 (application/json)
+    + Attributes (GetParkingQuoteResponse)
 
 
 # Group Payment Methods
@@ -561,21 +657,7 @@ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 + Response 200 (application/json)
     + Attributes (PaymentAccounts)
-    + Body
 
-        [
-            {
-                "id": "d6d1817e-98ee-4600-b82b-f1aace2abea5",
-                "maskedCardNumber": "411111------1111",
-                "paymentCardType": "DebitCard",
-                "nameOnCard": "JOHN L SMITH",
-                "expiryMonth": 2,
-                "expiryYear": 2018,
-                "startMonth": 2,
-                "startYear": 2012,
-                "issueNumber": 2
-            }
-        ]
 
 ## Get details about a payment account [GET /payment/accounts/{paymentAccountId}]
 
