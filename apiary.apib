@@ -315,7 +315,9 @@ Change the password used to authenticate a user account
 
 # Group Parking
 
-## Get a user's active/current parking sessions [GET /parking/accounts/{accountId}/sessions/?periodType=Current]
+## Get current or historic parking sessions [/parking/accounts/{accountId}/sessions/?periodType=Current]
+
+## Get a user's active/current parking sessions [GET]
 
 **Possible Response Codes**
 
@@ -323,6 +325,12 @@ Change the password used to authenticate a user account
 - 400 - Bad Request
 - 401 - Unauthorized
 - 403 - Forbidden
+
++ Request
+
+    + Header
+        Authorization: Bearer <token>
+
 
 + Parameters
     + accountId: `1b98d239-8de8-4111-9d7d-562fc31c193a` (required, string) - Parking account id.
@@ -621,12 +629,22 @@ Retrieve a parking quote detail
 - 200 - Ok.
 - 400 - Bad Bad request.
 
+**Responsee Failure Reasons**
+
+- LocationInvalidFormat - LocationNumber could not be converted to an integer format.
+- StartTimeInvalidFormat - StartTime could not be converted to a date format
+- TimeUnitInvalidFormat - Time unit is not in the accepted time units enumeration.
+- Value is not valid for Quantity - Error thrown when the quantity parameter could not be converted to an integer format.
+- QuantityInvalidFormat - Quantity can not be zero.
+- LicensePlateMustNotBeEmpty - When getting a quote in a location that has a wait-time-after-max-stay restriction, you need to provide the license plate. This is to enforce the wait-time-after-max-stay restriction.
+- CannotExtendBecauseOfNoReturnRule - When getting a quote in a location that has a wait-time-after-max-stay restriction, if you parked for the maximum stay you will need to wait until you can start parking again in that location.
+
 + Parameters
     + parkingAccountGuid: `b12e8e08-ee59-4774-8062-a40401272436` (required, guid) - GUID of the user parking account.
     + locationNumber: `40002` (required, int) - Lot ID. Note that this can not be a reverse lookup stall, such as in the location details endpoint
     + startTime: `2015-08-28T20:56:00-0000` (required, dateTime) - StartTime of the rate calculation, in UTC
     + timeUnit: `1` (required, enum) - Time unit enumeration, as described in Time Units table below.
-        + 1 (string) - Minutes
+        + 1 (string) - Minute
         + 2 (string) - Hours
         + 3 (string) - Days
         + 4 (string) - Weeks
@@ -640,6 +658,7 @@ Retrieve a parking quote detail
         + 12 (string) - CalendarWeeks
         + 0 (string) - NotSpecified
         + 0 (string) - Unknown
+
     + quantity: `60` (required, int) - Number of time units.
     + licensePlate: `273cvn` (optional, string) - License plate being parked. Used to calculate promotion discounts.
     + stall: `52444` (optional, string) - Stall number of the current parking session. Used for extensions to ensure the app is extending the right session.
@@ -648,6 +667,48 @@ Retrieve a parking quote detail
 
 + Response 200 (application/json)
     + Attributes (GetParkingQuoteResponse)
+
+    {
+        "locationNumber": "40002",
+        "stallId": "123",
+        "quoteDate":"2015-06-25T18:00:00-0000",
+        "totalCost": {
+               "amount": 5.00,
+               "currencyCodeISO4217": "CAD"
+        },
+        "parkingAccountId": "56514ff5-44fc-463b-820f-1d47393e1703",
+        "parkingStartTime": "2014-12-29T22:00:00-0000",
+        "parkingExpiryTime": "2014-12-29T23:00:00-0000",
+        "patrkingDurationAdjustment": "NotAdjusted",
+        "licensePlate": "ABC123",
+        "quoteItems":[{
+            "quoteItemType":"parking",
+            "name": "Parking",
+            "costAmout":{
+                "amount":9.00,
+                "currencyCodeISO4217":"CAD"
+            }
+            },{
+            "quoteItemType":"convenienceFee",
+            "name": "Convenience Fee",
+            "costAmount": {
+                "amount": 1.00,
+                "currencyCodeISO4217": "CAD"
+            }
+            },{
+            "quoteItemType":"promotion",
+            "name": "COV electric vehicle discount.",
+            "costAmount": {
+                "amount": -5.00,
+                "currencyCodeISO4217": "CAD"
+            }
+        }]
+    }
+
++ Response 400 (application/json)
+    {
+       "message": "The location Number is not a valid identifier"
+    }
 
 
 # Group Payment Methods
