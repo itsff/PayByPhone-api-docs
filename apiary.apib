@@ -959,7 +959,7 @@ Retrieve a parking quote detail
       }
     ]
 
-## Parking location details [/parking/locations/{locationNumber}?country={country}&stall={stall}]
+## Parking location details [/parking/locations/{advertisedLocationNumber}?countryCode={countryCode}&stall={stall}]
 
 ### Get an individual location detail [GET]
 
@@ -974,9 +974,9 @@ Retrieve a parking quote detail
     Header: Authorization: Bearer <token>
 
 + Parameters
-    + locationNumber: `10` (required, string) - Can either be a Lot ID or a Stall, if the location supports reverse lookup.
-    + country: `CAD` (optional, string) - Country ISO 3166 code of the location.
-    + stall: `1` (optional, string) - If the location is stallbased you can pass the stall number, to either verify its existence or to get the location in case the stall belongs to another lot in the same group. 
+    + advertisedLocationNumber: `10` (required, string) - Can either be a Lot ID or a Stall, if the location supports reverse lookup.
+    + countryCode: `CA` (optional, string) - Country ISO 3166 code of the location.
+    + stall: `1` (optional, string) - If the location is stallbased then you can pass the stall number either to verify its existence or to get the location in case the stall belongs to another lot in the same group. 
 
 + Response
 
