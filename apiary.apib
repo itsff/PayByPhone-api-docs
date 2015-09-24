@@ -65,7 +65,7 @@ Failed connection attempts should also be handled with exponential backoff.
 
 
 ## CreatePaymentAccount (object)
-+ country (enum, required) - Country the card is registered in.
++ countryCode (enum, required) - Country the card is registered in.
     + CA (string)
     + US (string)
     + AU (string)
@@ -2020,20 +2020,20 @@ The Member is identified by the **memberid** claim in the authorization bearer t
     Header: Authorization: Bearer <token>
     Content-Type: application/json
     {
-        "country": "CA",
-        "number": "4111111111111111",
-        "expiryYear": 2019,
+        "cardNumber": "4111111111111111",
         "expiryMonth": 1,
-        "name": "JOHN L SMITH",
+        "expiryYear": 2019,
+        "countryCode": "CA",
+        "nameOnCard": "JOHN L SMITH",
         "cvv": 123,
+        "issueNumber": 12,
         "startYear": 2010,
-        "startMonth": 1,
-        "issueNumber": 12
+        "startMonth": 1
     }
 
 **Mandatory Fields**
 
-- country (string : [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2))
+- countryCode (string : [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2))
 - number (string : [Bank card number](http://en.wikipedia.org/wiki/Bank_card_number))
 - expiryYear (integer : >= current year - current year + 10)
 - expiryMonth (integer : 1-12, > current month if current year)
@@ -2061,11 +2061,11 @@ The Member is identified by the **memberid** claim in the authorization bearer t
 + Request NA with name (application/json)
 
         {
-            "country": "CA",
-            "number": "4111111111111111",
+            "cardNumber": "4111111111111111",
+            "countryCode": "CA",            
             "expiryMonth": 6,
             "expiryYear": 2016,
-            "name": "JOHN L SMITH"
+            "nameOnCard": "JOHN L SMITH"
         }
 + Response 202 (application/json)
     + Header
@@ -2075,8 +2075,8 @@ The Member is identified by the **memberid** claim in the authorization bearer t
 + Request NA no name (application/json)
 
         {
-            "country": "CA",
-            "number": "4111111111111111",
+            "cardNumber": "4111111111111111",
+            "countryCode": "CA",            
             "expiryMonth": 6,
             "expiryYear": 2016
         }
@@ -2088,8 +2088,8 @@ The Member is identified by the **memberid** claim in the authorization bearer t
 + Request UK start mm/yy (application/json)
 
         {
-            "country": "UK",
-            "number": "4111111111111111",
+            "cardNumber": "4111111111111111",
+            "countryCode": "UK",
             "expiryMonth": 6,
             "expiryYear": 2016,
             "startMonth": 1,
@@ -2103,8 +2103,8 @@ The Member is identified by the **memberid** claim in the authorization bearer t
 + Request UK issuenumber (application/json)
 
         {
-            "country": "UK",
-            "number": "4111111111111111",
+            "cardNumber": "4111111111111111",
+            "countryCode": "UK",            
             "expiryMonth": 6,
             "expiryYear": 2016,
             "issueNumber": 12
@@ -2117,8 +2117,8 @@ The Member is identified by the **memberid** claim in the authorization bearer t
 + Request FR (application/json)
 
         {
-            "country": "FR",
-            "number": "4111111111111111",
+            "cardNumber": "4111111111111111",
+            "countryCode": "FR",            
             "expiryMonth": 6,
             "expiryYear": 2016,
             "cvv": 111
@@ -2281,10 +2281,11 @@ Payment Account is identified by the `paymentAccountId`.
     Header: Authorization: Bearer <token>
     Content-Type: application/json
     {
-        "country": "CA",
-        "expiryYear": 2019,
+        
         "expiryMonth": 1,
-        "name": "JOHN L SMITH",
+        "expiryYear": 2019,
+        "countryCode": "CA",        
+        "nameOnCard": "JOHN L SMITH",
         "cvv": 123,
         "startYear": 2010,
         "startMonth": 1,
@@ -2320,10 +2321,10 @@ Payment Account is identified by the `paymentAccountId`.
 + Request NA with name (application/json)
 
         {
-            "country": "CA",
+            "countryCode": "CA",
             "expiryMonth": 6,
             "expiryYear": 2016,
-            "name": "JOHN L SMITH"
+            "nameOnCard": "JOHN L SMITH"
         }
 + Response 202 (application/json)
     + Header
@@ -2333,7 +2334,7 @@ Payment Account is identified by the `paymentAccountId`.
 + Request NA no name (application/json)
 
         {
-            "country": "CA",
+            "countryCode": "CA",
             "expiryMonth": 6,
             "expiryYear": 2016
         }
@@ -2345,7 +2346,7 @@ Payment Account is identified by the `paymentAccountId`.
 + Request UK start mm/yy (application/json)
 
         {
-            "country": "UK",
+            "countryCode": "UK",
             "expiryMonth": 6,
             "expiryYear": 2016,
             "startMonth": 1,
@@ -2359,7 +2360,7 @@ Payment Account is identified by the `paymentAccountId`.
 + Request UK issuenumber (application/json)
 
         {
-            "country": "UK",
+            "countryCode": "UK",
             "expiryMonth": 6,
             "expiryYear": 2016,
             "issueNumber": 12
@@ -2372,7 +2373,7 @@ Payment Account is identified by the `paymentAccountId`.
 + Request FR (application/json)
 
         {
-            "country": "FR",
+            "countryCode": "FR",
             "expiryMonth": 6,
             "expiryYear": 2016,
             "cvv": 111
