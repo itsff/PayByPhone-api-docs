@@ -317,7 +317,7 @@ Change the password used to authenticate a user account
 
 ## Get current or historic parking sessions [/parking/accounts/{accountId}/sessions/?periodType=Current]
 
-## Get a user's active/current parking sessions [GET]
+## Get a user's current/histotic parking sessions [GET]
 
 **Possible Response Codes**
 
@@ -333,6 +333,13 @@ Change the password used to authenticate a user account
 
 + Parameters
     + accountId: `1b98d239-8de8-4111-9d7d-562fc31c193a` (required, string) - Parking account id.
+    + periodType: 'Current' (required, enum[string]) - 
+        + Members
+            + `Current`
+            + `Historic`
+    + since: `2015-09-01T16:16:00.000Z` (optional, string) - Date and time when to retrieve the praking sesstions from.
+    + offset: '0' (optional, int) - Offset should be more than 0.
+    + limit: '10' (optional, int) - Limit should be more than 0 and less than 50. 
 
 + Response 200 
     + Attributes (application/json)
