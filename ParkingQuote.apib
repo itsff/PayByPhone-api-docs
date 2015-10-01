@@ -1,0 +1,51 @@
+# Group Parking Quote
+Parking  resources
+
+## Quote [/public/parking/quote?location={location}&startTime={startTime}&timeUnit={timeUnit}&quantity={quantity}]
+A quote based on submitted input parameters
+
++ Parameters
+    + location (required, number) ... Numeric `location` to park
+    + startTime (required, date) ... datetime to start parking
+    + timeUnit (required, string) ... timeunit for parking
+    + quantity (required, number) ... timeunit quantity for parking
+
++ Model (application/json)
+
+    JSON representation of A Quote.
+
+    + Body
+
+            {
+                "id":"5",
+                "locationNumber":"10202990",
+                "amount":"2.50",
+                "startTime":"2014-07-22T10:14:40-0700",
+                "expiryTime":"2014-07-22T11:14:40-0700"
+            }
+
+### Retrieve quote [GET]
+**Request Contract**
+
+    Header: Authorization: Bearer <token>
+
+**Response Contract**
+    
+    Content-Type: application/json
+    {
+        "id":"5",
+        "locationNumber":"10202990",
+        "amount":"2.50",
+        "startTime":"2014-07-22T10:14:40-0700",
+        "expiryTime":"2014-07-22T11:14:40-0700"
+    }
+
++ Response 200
+    [Quote][]
+
++ Response 400
+
+        {
+            "error": 
+            "The request is invalid"
+        }

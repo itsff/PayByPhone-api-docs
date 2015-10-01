@@ -1,0 +1,731 @@
+# Group Parking
+
+## Get current or historic parking sessions [/parking/accounts/{accountId}/sessions/?periodType=Current]
+
+## Get a user's current/histotic parking sessions [GET]
+
+**Possible Response Codes**
+
+- 200 - OK
+- 400 - Bad Request
+- 401 - Unauthorized
+- 403 - Forbidden
+
++ Request
+    + Header
+        Authorization: Bearer <token>
+
+
++ Parameters
+    + accountId: `1b98d239-8de8-4111-9d7d-562fc31c193a` (required, string) - Parking account id.
+    + periodType: 'Current' (required, enum[string]) - 
+        + Members
+            + `Current`
+            + `Historic`
+    + since: `2015-09-01T16:16:00.000Z` (optional, string) - Date and time when to retrieve the parking sessions from.
+    + offset: '0' (optional, int) - Offset should be more than 0.
+    + limit: '10' (optional, int) - Limit should be more than 0 and less than 50. 
+
++ Response 200 
+    + Attributes (application/json)
+        + `parkingSessionId`:`de9bd239-44f3-483e-9fd4-7c98567da200` (string) - The parking session ID, this is needed if you want to extend an existing parking session (NOTE: this property will soon be renamed to parkingSessionId)
+        + `locationNumber`:`5594` (string) - The Lot ID where the user is parked (NOTE: Stall ID will be added soon)
+        + `licensePlate`:`TEST111` (string) - The license plate of the vehicle that is parked
+        + `durationInMinutes`:`464` (string) - The total duration of the parking session from the start-time
+        + `startTime`:`2015-09-01T16:16:00.000Z` (string) - The total duration of the parking session from the start-time
+        + `stallId`:`82445` (string) - Stall where the vehicle is parked if the parking session took place in a stall, null otherwise.
+    + Body 
+        [
+            {
+                "parkingSessionId":"de9bd239-44f3-483e-9fd4-7c98567da200",
+                "locationNumber":"5594",
+                "vehicleId":"5415645",
+                "licensePlate":"TEST111",
+                "durationInMinutes":464,
+                "startTime":"2015-09-01T16:16:00.000Z",
+                "stallId":"82445"
+            }
+        ]
+
+## Start parking [/parking/accounts/{accountId}/sessions]
+
+### Start a new parking session[POST]
+
+**Possible Response Codes**
+
+- 202 - Accepted
+- 400 - Bad Request
+- 401 - Unauthorized
+- 403 - Forbidden
+
+**Possible Validation Errors**
+
+- ParkingAccountIdInvalidFormat
+- LocationNotFound
+- CvvMustNotBeEmpty
+- CvvInvalidFormat
+- LicensePlateMustNotBeEmpty
+- LicensePlateInvalidFormat
+- DurationInvalidFormat
+- JsonReaderException
+
+**Possible events**
+
+- ParkingSessionCreated
+    
+        {
+             "ParkingSessionId": "23fccd39-70c2-446f-915c-6d2362b64e58",
+             "VehicleId": "12793707",
+             "LocationId": "64123",
+             "VehiclePlate": "GGG328",
+             "Stall": "",
+             "vehicleType": "car",
+             "StartTime": "2015-01-28T20:54:00-0000",
+             "ExpireTime": "2015-01-28T21:54:00-0000",
+             "$type": "ParkingSessionCreated"
+        }
+
+- StartParkingFailed
+
+        {
+            "Data": [ ],
+            "FailureReason":"VehicleAlreadyParked",
+            "$type":"StartParkingFailed"
+        }
+
++ Parameters
+    + accountId: `1b98d239-8de8-4111-9d7d-562fc31c193a` (required, string) - Parking account id.
+
++ Request 
+    + Attributes (application/json)
+        + `lotId`:`70000` (required, string) - The lot ID of the location where the user wants to park
+        + `stallId`:`1` (required, string) - The stall number of the location where the user wants to park
+        + `licensePlate`:`ABC123` (required, string) - The license plate of the vehicle that is parked
+        + `durationTimeUnits`:`Hour` (required, string) - "Hours", "Minutes", "CalendarDays", "MidnightCurrentDay", "Months" (more options to be added soon)
+        + `durationValue`:`1` (required, string) - How many minutes or hours the user wants to park
+        + `cvv`:`111` (required, string) - The CV2 code from the user's payment card
+        + `startTime`:`2015-07-28T20:40:00-0000` (required, string) - The start time of the transaction to be started. Must be within 3 minutes of the current time.
+    + Body 
+        [
+            {
+                "locationId":"70000",
+                "stall":"1",
+                "licensePlate":"ABC123",
+                "durationTimeUnits":"Hour",
+                "durationValue":"1",
+                "cvv":"111",
+                "startTime": "2015-07-28T20:40:00-0000"
+            }
+        ]
+
++ Response 202
+    + Headers
+    
+        Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
+
+
+### Extend an existing parking session [PUT]
+
+**Possible Response Codes**
+
+- 202 - Accepted
+- 400 - Bad Request
+- 401 - Unauthorized
+
+**Possible Validation Errors**
+
+- ParkingAccountIdInvalidFormat
+- ActiveParkingSessionIsInvalid
+- LocationNotFound
+- CvvMustNotBeEmpty
+- CvvInvalidFormat
+- DurationInvalidFormat
+- JsonReaderException
+
+**Possible events**
+
+- ParkingSessionExtended
+    
+        {
+             "ParkingSessionId": "23fccd39-70c2-446f-915c-6d2362b64e58",
+             "VehicleId": "12793707",
+             "LocationId": "64123",
+             "VehiclePlate": "GGG328",
+             "Stall": "",
+             "vehicleType": "car",
+             "OldExpiryTime": "2015-01-28T20:54:00-0000",
+             "NewExpiryTime": "2015-01-28T21:54:00-0000",
+             "$type": "ParkingSessionExtended"
+        }
+
+- ExtendParkingFailed
+
+        {
+            "Data": [ ],
+            "FailureReason":"PaymentDeclinedByGateway",
+            "$type":"ExtendParkingFailed"
+        }
+
++ Parameters
+    + accountId: `1b98d239-8de8-4111-9d7d-562fc31c193a` (required, string) - Parking account id.
+
++ Request 
+    + Attributes (application/json)
+        + `parkingSessionId`:`2bf49b64-28cd-4fc7-96e4-a44b010bf6ea` (required, string) - The ID of the parking session to be extended, this must be an active session
+        + `durationTimeUnits`:`Hour` (required, string) - "Hours" or "Minutes" or "CalendarDays" (more options to be added soon)
+        + `durationValue`:`1` (required, string) - How many minutes or hours the user wants to park
+        + `cvv`:`111` (required, string) - The CV2 code from the user's payment card
+    + Headers
+        Authorization: Bearer <token> 
+    + Body 
+        [
+            {
+                "parkingSessionId":"2bf49b64-28cd-4fc7-96e4-a44b010bf6ea",
+                "durationTimeUnits":"Hour",
+                "durationValue":"1",
+                "cvv":"111"
+            }
+        ]
+
++ Response 202
+    + Headers
+    
+        Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
+
+## Manage vehicles [/parking/accounts/{accountId}/vehicles]
+
+### Get all vehicles belonging to a parking account [GET]
+
+Get all vehicles from a User's Account.
+
+**Possible Response Codes**
+
+- 200 - Ok
+- 401 - Unauthorized
+- 403 - Forbidden
+
++ Request Contract
+
+    Header: Authorization: Bearer <token>
+
++ Response 200
+    [
+        {
+            "id":"14890",
+            "licensePlate":"TEST9233",
+            "province":"BC",
+            "countryId":"CA",
+            "vehicleType":"car"
+        },
+        {
+            "id":"14891",
+            "licensePlate":"TEST9233",
+            "province":"BC",
+            "countryId":"CA",
+            "vehicleType":"motorcycle"
+        }
+    ]
+
+### Add a vehicle to a parking account [POST]
+
+**Possible Response Codes**
+
+- 202 - Accepted
+- 400 - Bad Request
+- 401 - Unauthorized
+- 403 - Forbidden
+
+**Possible events**
+
+- VehicleAdded
+    
+        {
+             "parkingAccountId": "23fccd39-70c2-446f-915c-6d2362b64e28",
+             "vehicleId": "12793707",
+             "countryId": "CA",
+             "licensePlate": "GGG328",
+             "province": "MB",
+             "vehicleType": "car",
+             "$type": "VehicleAdded"
+        }
+
+- AddVehicleFailed
+
+        {
+            "Data": [ {"Province": "BC"}, {"CountryId": "AU"} ],
+            "FailureReason":"ProvinceDoesNotMatchCountry",
+            "$type":"AddVehicleFailed"
+        }
+
+**Possible Validation Errors**
+
+- LicensePlateInvalidFormat - License Plate is not a valid format. Minimum 2 characters, maximum 10 characters. A-Z and 0-9 characters only.
+- LicensePlateMustNotBeEmpty - License Plate must not be empty.
+- ProvinceDoesNotExist - Province does not exist. Valid provinces are Countries and Regions supported by API#Provinces
+- CountryIdMustNotBeEmpty - Country Id must not be empty.
+- CountryIdDoesNotExist - Country Id does not exist. Valid country ids are: CA, US, GB, AU, FR, CH. See Countries and Regions supported by API#Countries
+- VehicleTypeMustNotBeEmpty - VehicleType Vehicle Type must not be empty.
+- VehicleTypeDoesNotExist - Vehicle Type does not exist. Valid types are: car, motorcycle, electricMotorcycle, heavyGoodsVehicle
+- JsonReaderException - Provided json is in an invalid format
+- ProvinceDoesNotMatchCountry - Provided country does not contain provided province.
+
++ Request
+
+    {
+        "licensePlate":"TEST9233",
+        "province":"BC",
+        "countryId":"CA",
+        "vehicleType":"car"
+    }
+
++ Response 202 (application/json)
+    + Headers
+    
+        Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
+
+
+
+
+## Manage a vehicle belonging to a parking account [/parking/accounts/{accountId}/vehicles/{vehicleId}]
+
+### Get a specific vehicle belonging to a parking account [GET]
+
+**Possible Response Codes**
+
+- 200 - Ok
+- 401 - Unauthorized
+- 403 - Forbidden
+- 404 - Not Found
+
++ Request Contract
+
+    Header: Authorization: Bearer <token>
+
++ Response 200
+    [
+        {
+            "id":"14890",
+            "licensePlate":"TEST9233",
+            "province":"BC",
+            "countryId":"CA",
+            "vehicleType":"car"
+        }
+    ]
+
+### Update a vehicle on a parking account [PUT]
+
+**Possible Response Codes**
+
+- 202 - Accepted
+- 400 - Bad Request
+- 401 - Unauthorized
+- 403 - Forbidden
+
+**Possible events**
+
+- VehicleUpdated    
+        {
+             "parkingAccountId": "23fccd39-70c2-446f-915c-6d2362b64e28",
+             "vehicleId": "12793707",
+             "countryId": "CA",
+             "licensePlate": "GGG328",
+             "province": "MB",
+             "vehicleType": "motorcycle",
+             "$type": "VehicleUpdated"
+        }
+
+- UpdateVehicleFailed
+        {
+            "Data": [ {"Province": "BC"}, {"CountryId": "AU"} ],
+            "FailureReason":"ProvinceDoesNotMatchCountry",
+            "$type":"AddVehicleFailed"
+        }
+
+**Validation Errors**
+
+- VehicleNotFound - Vehicle with vehicle Id not found.
+- LicensePlateInvalidFormat - License Plate is not a valid format. Minimum 2 characters, maximum 10 characters. A-Z and 0-9 characters only.
+- LicensePlateMustNotBeEmpty - License Plate must not be empty.
+- ProvinceDoesNotExist - Province does not exist. Valid provinces are Countries and Regions supported by API#Provinces
+- CountryIdMustNotBeEmpty - Country Id must not be empty.
+- CountryIdDoesNotExist - Country Id does not exist. Valid country ids are: CA, US, GB, AU, FR, CH. See Countries and Regions supported by API#Countries
+- VehicleTypeMustNotBeEmpty - Vehicle Type must not be empty.
+- VehicleTypeDoesNotExist - Vehicle Type does not exist. Valid types are: car, motorcycle, electricMotorcycle, heavyGoodsVehicle
+- VehicleIdInvalidFormat - Vehicle Id must be an integer.
+- UserNotRegistered - Member not registered.
+- JsonReaderException - Provided json is in an invalid format.
+
++ Request 
+
+    Body:
+        {
+            "licensePlate":"TEST9233",
+            "province":"BC",
+            "countryId":"CA",
+            "vehicleType":"car"
+        }
+
++ Response 202 (application/json)
+    + Headers
+    
+        Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
+
+### Delete a vehicle [DELETE]
+Delete a vehicle from a parking account
+
+**Possible Response Codes**
+
+- 202 - Accepted
+- 401 - Unauthorized
+- 403 - Forbidden
+
+**Possible events**
+
+- VehicleDeleted    
+        {
+             "parkingAccountId": "23fccd39-70c2-446f-915c-6d2362b64e28",
+             "vehicleId": "12793707",
+             "LegacyMemberUid": "18789426",
+             "$type": "VehicleDeleted"
+        }
+
+- DeleteVehicleFailed
+        {
+            "Data": [ ],
+            "FailureReason":"UserNotRegistered",
+            "$type":"DeleteVehicleFailed"
+        }
+
+**Validation Errors**        
+- VehicleNotFound - Vehicle with vehicle Id not found.
+- JsonReaderException - Provided json is in an invalid format.
+- UserNotRegistered - Member not registered.
+- VehicleIdInvalidFormat - Vehicle Id must be an integer.
+
++ Response 202 (application/json)
+    + Headers
+    
+        Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
+
+## Get parking preferences for the parking account [GET /parking/accounts/{accountId}/preferences]
+
+**Possible Response Codes**
+
+- 200 - OK
+- 400 - Bad Request
+- 401 - Unauthorized
+- 403 - Forbidden
+
+**Possible Error Codes**
+
+- EmailInvalidFormat
+- JsonReaderException
+
++ Parameters
+    + accountId: `00000000-0000-0000-0000-000000000000` (required, string) - Parking account id.
+
++ Response 200 
+    + Attributes (application/json)
+        + `parkingAccountId`:`00000000-0000-0000-0000-000000000000` (string) - The parking account ID
+        + `sendEmailReceipts`:`false` (string) - Does account holder wishes to get receipts from email
+        + `sendTextReminders`:`false` (string) - Does account holder wishes to receive text reminder
+        + `sendTextReceipts`:`false` (string) - Does account holder wishes to get receipts from text
+        + `email`:`null` (string) - Email account for account holder
+    + Body 
+        {
+            "parkingAccountId":"00000000-0000-0000-0000-000000000000",
+            "sendEmailReceipts":false,
+            "sendTextReminders":false,
+            "sendTextReceipts":false,
+            "email":null
+        }
+
+## Set parking preferences for the parking account [PUT /parking/accounts/{accountId}/preferences or POST /parking/accounts/{accountId}/preferences]
+
+**Response Codes**
+
+- 202 - OK
+- 400 - Bad Request
+- 401 - Unauthorized
+- 403 - Forbidden
+
+**Possible events**
+
+- PreferencesCreated/PreferencesUpdated
+    
+        {
+             "parkingAccountId": "23fccd39-70c2-446f-915c-6d2362b64e28",
+             "Email": "test@server.com",
+             "SendTextReceipts": "true",
+             "SendTextReminders": "true",
+             "SendEmailReceipts": "true",
+             "$type": "PreferencesCreated"
+        }
+
+- AddMemberPreferencesFailed or UpdateMemberPreferencesFailed
+
+        {
+            "FailureReason":"UserNotRegistered",
+            "$type":"AddMemberPreferencesFailed"
+        }
+
++ Request (application/json)
+    + Body
+    
+            {
+                "email":"email@-domain.com",
+                "sendEmailReceipts":true,
+                "sendTextReceipts":true,
+                "sendTextReminders":true
+            }
+
++ Response 202 (application/json)
+    + Headers
+    
+        Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
+
+## Get or Create a parking account [/parking/accounts]
+
+### Create a parking account for the member [POST]
+
+**Response Codes**
+
+- 202 - OK
+- 401 - Unauthorized
+
+**Possible events**
+
+- ParkingAccountCreated
+    
+        {
+            "ParkingAccountId":"23fccd39-70c2-446f-915c-6d2362b64e28",
+            "MemberId":"23fccd39-70c2-446f-915c-6d2362b64e58",
+            "$type":"ParkingAccountCreated"
+        }
+
+- CreateParkingAccountFailed
+
+        {
+            "Data": [ ],
+            "FailureReason":"UserNotRegistered",
+            "$type":"CreateParkingAccountFailed"
+        }
+
++ Response 202 (application/json)
+    + Headers
+    
+        Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
+
+### Get all parking accounts for the member [GET]
+
+**Response Codes**
+
+- 200 - OK
+- 401 - Unauthorized
+
++ Response 200 (application/json)
+    [
+        {
+            "id": "d6d1817e-98ee-4600-b82b-f1aace2abea5"
+        }
+    ]
+
+## get a parking quote [/parking/accounts/{parkingAccountGuid}/quote?locationNumber={locationNumber}&startTime={StartTime}&timeUnit={TimeUnit}&quantity={Quantity}&licensePlate={LicensePlate}&stall={stall}&isExtend={isExtend}&ratePolicyId={ratePolicyId}]
+
+### Retrieve a parking quote detail [GET]
+
+Retrieve a parking quote detail
+
+**Response Codes**
+
+- 200 - Ok.
+- 400 - Bad Bad request.
+
+**Responsee Failure Reasons**
+
+- LocationInvalidFormat - LocationNumber could not be converted to an integer format.
+- StartTimeInvalidFormat - StartTime could not be converted to a date format
+- TimeUnitInvalidFormat - Time unit is not in the accepted time units enumeration.
+- Value is not valid for Quantity - Error thrown when the quantity parameter could not be converted to an integer format.
+- QuantityInvalidFormat - Quantity can not be zero.
+- LicensePlateMustNotBeEmpty - When getting a quote in a location that has a wait-time-after-max-stay restriction, you need to provide the license plate. This is to enforce the wait-time-after-max-stay restriction.
+- CannotExtendBecauseOfNoReturnRule - When getting a quote in a location that has a wait-time-after-max-stay restriction, if you parked for the maximum stay you will need to wait until you can start parking again in that location.
+
++ Parameters
+    + parkingAccountGuid: `b12e8e08-ee59-4774-8062-a40401272436` (required, guid) - GUID of the user parking account.
+    + locationNumber: `40002` (required, int) - Lot ID. Note that this can not be a reverse lookup stall, such as in the location details endpoint
+    + startTime: `2015-08-28T20:56:00-0000` (required, dateTime) - StartTime of the rate calculation, in UTC
+    + timeUnit: `1` (required, enum) - Time unit enumeration, as described in Time Units table below.
+        + 1 (string) - Minute
+        + 2 (string) - Hours
+        + 3 (string) - Days
+        + 4 (string) - Weeks
+        + 5 (string) - Months
+        + 6 (string) - HalfHour
+        + 7 (string) - MidnightCurrentDay
+        + 8 (string) - CalendarDays
+        + 9 (string) - TimeBucket
+        + 10 (string) - SingleHour
+        + 11 (string) - WeekdaysStartMonday
+        + 12 (string) - CalendarWeeks
+        + 0 (string) - NotSpecified
+        + 0 (string) - Unknown
+
+    + quantity: `60` (required, int) - Number of time units.
+    + licensePlate: `273cvn` (optional, string) - License plate being parked. Used to calculate promotion discounts.
+    + stall: `52444` (optional, string) - Stall number of the current parking session. Used for extensions to ensure the app is extending the right session.
+    + isExtend: `1` (optional, int) - 1 or 0, resembling a boolean to indicate whether requesting the quote for an extension of a current parking session.
+    + ratePolicyId: `75001` (optional, int) - The ID of the rate policy you want to use
+
++ Response 200 (application/json)
+    + Attributes (GetParkingQuoteResponse)
+
+    {
+        "locationNumber": "40002",
+        "stallId": "123",
+        "quoteDate":"2015-06-25T18:00:00-0000",
+        "totalCost": {
+               "amount": 5.00,
+               "currencyCodeISO4217": "CAD"
+        },
+        "parkingAccountId": "56514ff5-44fc-463b-820f-1d47393e1703",
+        "parkingStartTime": "2014-12-29T22:00:00-0000",
+        "parkingExpiryTime": "2014-12-29T23:00:00-0000",
+        "patrkingDurationAdjustment": "NotAdjusted",
+        "licensePlate": "ABC123",
+        "quoteItems":[{
+            "quoteItemType":"parking",
+            "name": "Parking",
+            "costAmout":{
+                "amount":9.00,
+                "currencyCodeISO4217":"CAD"
+            }
+            },{
+            "quoteItemType":"convenienceFee",
+            "name": "Convenience Fee",
+            "costAmount": {
+                "amount": 1.00,
+                "currencyCodeISO4217": "CAD"
+            }
+            },{
+            "quoteItemType":"promotion",
+            "name": "COV electric vehicle discount.",
+            "costAmount": {
+                "amount": -5.00,
+                "currencyCodeISO4217": "CAD"
+            }
+        }]
+    }
+
+## Get details parking rates [/parking/locations/{locationId}/ratePolicies?plates={list of license plates}]
+
+### Get details about what rate policies can be applied at a location to the user's vehicles [GET]
+
+**Response Failure Reasons**
+
+-LocationInvalidFormat - LocationNumber could not be converted to an integer format.
+
++ Request
+
+    Header: Authorization: Bearer <token>
+
++ Parameters
+    + plates: `ABC123` (required, string) - License plates to get the rate policies for (different vehicles may be eligible for different parking rates).
+
++ Response 200 (application/json)
+    Content-Type: application/json
+    [
+      {
+        "ratePolicyId": 75001,
+        "name": "Visiteur",
+        "eligibilityType": "VIS",
+        "isDefault": true,
+        "eligiblePlates": [
+          {
+            "plate": "ABC123",
+            "eligibleSectors": [
+              "1E"
+            ]
+          }
+        ]
+      }
+    ]
+
+## Parking location details [/parking/locations/{advertisedLocationNumber}?countryCode={countryCode}&stall={stall}]
+
+### Get an individual location detail [GET]
+
+**Max Stays Remarks and Examples**
+- MaxStayCouldNotBeVerified - The maximum stay could not be accurately determined. The app should not show any message regarding max stay at the parking step, before the user enters duration.
+- NoMaxStay - The location does not have a max stay. User can park for any duration. The app should not show any message regarding max stay at the parking step, before the user enters duration.
+- ParkingAllowed currentMaxStayInSeconds: 7200 - User can only park for 7200 seconds. The app is safe to show a message regarding this limit. 
+- ParkingAllowed currentMaxStayInSeconds: 0 - Even though parking is allowed, we could not accurately determine the exact maximum allowed duration. The app should not show any message regarding max stay at the parking step, before the user enters duration.
+- ParkingNotAllowed - Parking is not allowed at the time of calling this endpoint. The app is safe to show a "no parking at this time" message. 
+
++ Request
+    Header: Authorization: Bearer <token>
+
++ Parameters
+    + advertisedLocationNumber: `10` (required, string) - Can either be a Lot ID or a Stall, if the location supports reverse lookup.
+    + countryCode: `CA` (optional, string) - Country ISO 3166 code of the location.
+    + stall: `1` (optional, string) - If the location is stallbased then you can pass the stall number either to verify its existence or to get the location in case the stall belongs to another lot in the same group. 
+
++ Response
+
+    + Attributes
+        + paymentTypes: `Visa` (array[string]) - List of valid payment types for given location.
+            + Visa (string)
+            + Mastercard (string)
+            + Amex (string)
+            + Discover (string)
+            + DebitCard (string)
+            + PaypointCash (string)
+        + currentMaxStayInSeconds: `86400` (string) - Number of seconds that a user is allowed to park at the moment of calling this endpoint. 
+        + maxStayStatus: `ParkingAllowed` (enum) - Enumeration. Valid items are
+            + MaxStayCouldNotBeVerified (string)
+            + ParkingAllowed (string)
+            + ParkingNotAllowed (string)
+            + NoMaxStay (string)
+        + status: `lotOpen` (enum) - Enumeration. Valid items are
+            + lotOpen
+            + lotClosed
+            + lotYetToBeActiviated
+        + defaultTimeUnit: `Hours` (string) - The units most commonly used to park at this location. Valid items are.
+            + Minutes
+            + Hours
+            + Days
+            + Weeks
+            + Months
+            + HalfHour
+            + MidnightCurrentDay
+            + CalendarDays
+            + TimeBucket
+            + SingleHour
+            + WeekdaysStartMonday
+            + CalendarWeeks
+        + lotMessages: (string) - A collection if key/value pairs that contain messages and the culture they belong to.
+    
++ Response 200
+    Content-Type: application/json
+        [{
+            "locationNumber": 10,
+            "name": "1160 Burrard Street",
+            "vendor": "Impark Vancouver",
+            "status": "lotOpen",
+            "extendNotAllowed": false,
+            "isStallBased": false,
+            "isPlateBased": true,
+            "currency": "CAD",
+            "country": "CA",
+            "defaultTimeUnit": "Hours",
+            "promptForCvv": false,
+            "currentMaxStayInSeconds": 86400,
+            "maxStayStatus": "ParkingAllowed",
+            "latitude": 49.2794818,
+            "longitude": -123.1285743,
+            "validIn": ["CA"],
+            "lotMessages": [],
+            "stall": "",
+            "isReverseStallLookup": false,
+            "paymentTypes": [Visa, Mastercard, Amex]
+        }]

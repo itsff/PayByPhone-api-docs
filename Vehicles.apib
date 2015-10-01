@@ -1,0 +1,85 @@
+# Group Vehicles
+Parking Vehicle resources
+
+## Vehicles [/public/parking/accounts/{userAccountId}/vehicles]
+The vehicles root resource
+
++ Parameters
+    + userAccountId (required, string, `8d21a912-561a-48ff-b31b-00d600a2544e`) ... `userAccountId` of the UserAccount in the form of a GUID.
+
++ Model (application/json)
+
+    JSON representation of Vehicles.
+
+    + Body
+
+            [{ 
+                "id": "abc-234", 
+                "userAccountId" : "8d21a912-561a-48ff-b31b-00d600a2544e",
+                "licensePlate": "ZZZ 666", 
+                "province" : "BC", 
+                "vehicleType" : 3 
+            }]
+
+
+
+## Vehicle [/public/parking/accounts/{userAccountId}/vehicles/{vehicleId}]
+An individual vehicle resource
+
++ Parameters
+    + userAccountId (required, string, `8d21a912-561a-48ff-b31b-00d600a2544e`) ... `userAccountId` of the UserAccount in the form of a GUID.
+    + vehicleId (required, string, `fff-gr34-fff`) ... `vehicleId` of the Vehicle Resource to perform action with. Has example value.
+
++ Model (application/json)
+
+    JSON representation of A Vehicle.
+
+    + Body
+
+            { 
+                "id": "abc-234", 
+                "userAccountId" : "8d21a912-561a-48ff-b31b-00d600a2544e",
+                "licensePlate": "ZZZ 666", 
+                "province" : "BC", 
+                "vehicleType" : 3 
+            }
+            
+### Retrieve an individual vehicle for user [GET]
+Get an individual vehicle from a User's Account.
+
+User is identified by the `userAccountId`.
+
+Vehicle is identified by the `vehicleId`.
+
+**Request Contract**
+
+    Header: Authorization: Bearer <token>
+
+**Response Contract**
+    
+    Content-Type: application/json
+    { 
+        "id": "", 
+        "userAccountId" : "",
+        "licensePlate": "", 
+        "province" : "", 
+        "vehicleType" :  
+    }
+
+The *id* is assigned by the API at the moment of creation. 
+    
+**Possible Response Codes**
+
+- 200
+- 404
+
++ Request vehicleId Exists
+
+        /public/parking/accounts/{userAccountId}/vehicles/{vehicleId}
++ Response 200
+    [Vehicle][]
+
++ Request vehicleId Does Not Exists 
+
+        /public/parking/accounts/{userAccountId}/vehicles/{vehicleId}
++ Response 404

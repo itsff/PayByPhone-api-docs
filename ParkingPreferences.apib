@@ -1,0 +1,250 @@
+# Group Parking Preferences
+Parking Preferences resources
+
+## Preferences [/public/parking/accounts/{userAccountId}/preferences]
+The parking preferences root resource
+
++ Parameters
+    + userAccountId (required, string, `8d21a912-561a-48ff-b31b-00d600a2544e`) ... `userAccountId` of the UserAccount in the form of a GUID.
+
++ Model (application/json)
+
+    JSON representation of Parking Preferences
+
+    + Body
+
+            { 
+                "email": "sjones@test.com", 
+                "sendEmailReceipts": true, 
+                "sendTextReminders": false, 
+                "sendTextReceipts": false
+            }
+
+### Create new parking preference [POST]
+
+Add new preferences to a Users Account
+User is identified by the `userAccountId`.
+
+**Request Contract**
+
+    Header: Authorization: Bearer <token>
+    Content-Type: application/json
+    {
+        "email" : "", 
+        "sendEmailReceipts": "", 
+        "sendTextReminders": "", 
+        "sendTextReceipts": ""
+    }
+
+**Mandatory Fields**
+
+- email
+- sendEmailReceipts
+- sendTextReminders
+- sendTextReceipts
+
+**Possible Response Codes**
+
+- 202
+- 400
+- 404
+- 409
+
++ Request with mandatory fields 
+    [Preferences][]
+
++ Response 202 (application/json)
+    + Header
+
+            Location: http://api.dev.paybyphone.com/public/parking/accounts/f2b66f0b-1a48-4d6a-86b6-5ec41d63d84a/preferences
+
++ Request no email (application/json)            
+
+        {
+            "email" : null, 
+            "SendEmailReceipts": true,
+            "sendTextReminders": true, 
+            "sendTextReceipts": true
+        }
++ Response 400
+
+        {
+            "error": "The request is invalid"
+        }
+
++ Request no sendEmailReceipts (application/json)            
+
+        {
+            "email" : "sjones@test.com", 
+            "sendEmailReceipts": null, 
+            "sendTextReminders": true, 
+            "sendTextReceipts": true
+        }
++ Response 400
+
+        {
+            "error": "The request is invalid"
+        }
+
++ Request no sendTextReminders (application/json)            
+
+        {
+            "email" : "sjones@test.com", 
+            "sendEmailReceipts": true, 
+            "sendTextReminders": null, 
+            "sendTextReceipts": true
+        }
++ Response 400
+
+        {
+            "error": "The request is invalid"
+        }
+
++ Request no sendTextReceipts (application/json)            
+
+        {
+            "email" : "sjones@test.com", 
+            "sendEmailReceipts": true, 
+            "sendTextReminders": true, 
+            "sendTextReceipts": null
+        }
++ Response 400
+
+        {
+            "error": "The request is invalid"
+        }
+
++ Request userAccountId Does not exist        
+        
+        /public/parking/accounts/{userAccountId}/preferences
++ Response 404
+
+### Retrieve parking preferences for user account [GET]
+Get a parking preferences for a UserAccount,
+
+User is identified by the `userAccountId`.
+
+**Request Contract**
+
+    Header: Authorization: Bearer <token>
+
+**Response Contract**
+    
+    Content-Type: application/json
+    { 
+        "email": "sjones@test.com", 
+        "sendEmailReceipts": true, 
+        "sendTextReminders": false, 
+        "sendTextReceipts": false
+    }
+
+**Possible Response Codes**
+
+- 200
+- 404
+
++ Request userAccountId Exists
+
+        /public/parking/accounts/{userAccountId}/preferences
++ Response 200
+    [Preferences][]
+
++ Request userAccountId Does Not Exists 
+
+        /public/parking/accounts/{userAccountId}/preferences
++ Response 404
+
+### Edit parking preferences [PUT]
+
+Update parking preferences record for a User
+
+User is identified by the `userAccountId`.
+
+    Header: Authorization: Bearer <token>
+    Content-Type: application/json
+    {
+        "email" : "", 
+        "sendEmailReceipts": "", 
+        "sendTextReminders": "", 
+        "sendTextReceipts": ""
+    }
+
+**Mandatory Fields**
+
+- email
+- sendEmailReceipts
+- sendTextReminders
+- sendTextReceipts
+
+**Possible Response Codes**
+
+- 204
+- 400
+- 404
+- 409 
+
++ Request all fields supplied
+    [Preferences][]
+
++ Response 204 (application/json)
+
++ Request no email (application/json)            
+
+        {
+            "email" : null, 
+            "SendEmailReceipts": true,
+            "sendTextReminders": true, 
+            "sendTextReceipts": true
+        }
++ Response 400
+
+        {
+            "error": "The request is invalid"
+        }
+
++ Request no sendEmailReceipts (application/json)            
+
+        {
+            "email" : "sjones@test.com", 
+            "sendEmailReceipts": null, 
+            "sendTextReminders": true, 
+            "sendTextReceipts": true
+        }
++ Response 400
+
+        {
+            "error": "The request is invalid"
+        }
+
++ Request no sendTextReminders (application/json)            
+
+        {
+            "email" : "sjones@test.com", 
+            "sendEmailReceipts": true, 
+            "sendTextReminders": null, 
+            "sendTextReceipts": true
+        }
++ Response 400
+
+        {
+            "error": "The request is invalid"
+        }
+
++ Request no sendTextReceipts (application/json)            
+
+        {
+            "email" : "sjones@test.com", 
+            "sendEmailReceipts": true, 
+            "sendTextReminders": true, 
+            "sendTextReceipts": null
+        }
++ Response 400
+
+        {
+            "error": "The request is invalid"
+        }
+
++ Request userAccountId Does Not Exists 
+
+        /public/parking/accounts/{userAccountId}/preferences
++ Response 404

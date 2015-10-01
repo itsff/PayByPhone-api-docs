@@ -1,0 +1,201 @@
+# Group Identity And Access
+
+## About
+Identity And Access API provides Identity Management and Authorization resources
+
+## Create user account [POST /identity/user/accounts]
+
+Create a new User Account
+
+**Response Codes**
+
+- 201 - User account successfully created.
+- 400 - Username or password does not meet validation requirements.
+- 409 - Username is already in use.
+
++ Request (application/json)
+    + Attributes
+        + username: `+16046155905` (required, string) - E.164 formatted phone number
+        + password: `1234` (required, string) - 6-20 character alphanumeric password
+    + Body
+    
+            {
+                "username": "+16046155905",
+                "password": "1234"
+            }
+
++ Response 201 (application/json)
+    + Attributes
+        + username: `+16046155905` (string) - E.164 phone number used to create user account.
+        + userAccountId: `5fb93529-b3a1-486e-b23d-a14944bbe3f5` (string) - Assigned by the API at the moment of creation.
+    + Body
+    
+            { 
+                "username": "+16046155905",
+                "userAccountId" : "5fb93529-b3a1-486e-b23d-a14944bbe3f5"
+            }
+
+
+## Cancel the active user account [DELETE /identity/user/accounts/{userAccountId}]
+
+**Possible Response Codes**
+
+- 200 - User account successfully cancelled.
+- 401 - The access token has expired or is invalid.
+- 403 - The user account it not active and cannot be cancelled.
+- 403 - The member it not authorized to modify the specified user account.
+
++ Parameters
+    + userAccountId: `5fb93529-b3a1-486e-b23d-a14944bbe3f5` (required, string) - User account to be cancelled.
+
++ Response 200
+
+
+## Change user account password [PUT /identity/user/accounts/{userAccountId}/password]
+Change the password used to authenticate a user account
+
+**Possible Response Codes**
+
+- 202 - Request is being processed
+- 400 - The request is invalid.
+- 403 - Access Denied.
+- 500 - Shit hit the fan exception.
+
+**Possible events**
+
+- UserAccountPasswordChanged
+    
+        {
+            "UserAccountId":"5fb93529-b3a1-486e-b23d-a14944bbe3f5",
+            "$type":"UserAccountPasswordChanged"
+        }
+
+- UserAccountPasswordChangedFailed
+
+        {
+            "UserAccountId":"5fb93529-b3a1-486e-b23d-a14944bbe3f5",
+            "FailureReason":"[CurrentPasswordIncorrectDoesNotMeetComplexityRequirements|UserNotFound|InternalServerError]",
+            "$type":"UserAccountPasswordChangedFailed
+        }
+
++ Parameters
+    + userAccountId: `5fb93529-b3a1-486e-b23d-a14944bbe3f5` (required, string) - User account to be changed.
+
++ Request (application/json)
+    + Attributes
+        + userAccountId: `5fb93529-b3a1486eb23da14944bbe3f5` (required, string) - User account to be cancelled.
+        + currentPassword: `1234` (required, string) - Current password of the user account.
+        + newPassword: `5678` (required, string) - New password for the user account.
+    + Body
+    
+            {
+                "userAccountId": "8d21a912-561a-48ff-b31b-00d600a2544e",
+                "currentPassword": "1234",
+                "newPassword": "5678"
+            }
+
++ Response 202
+    + Headers
+    
+            Location: https://api.paybyphone.com/events/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
+
+
+## Get an access token and refresh token [POST /identity/token]
+
+**Possible Response Codes**
+
+- 200 - OK
+- 400 - See Possible error codes
+
+**Possible Error Codes**
+
+- IncorrectUsername
+- IncorrectPassword
+- AccountLocked
+- AccountSuspended
+- `invalid_client`
+
+
++ Request Get token from Credentials
+    + Attributes
+        + `grant_type`: `password` (required, string) - The grant type
+        + username: `+16046155905` (required, string) - The username corresponding to an existing user account
+        + password: `iphone_app` (required, string) - The password that match the user account
+        + `client_id`: `iphone_app` (required, string) - The client identifier
+    + Headers
+
+            Content-Type: application/x-www-form-urlencoded
+    + Body
+
+            grant_type=password
+            &username=%2B16046155905
+            &password=1234
+            &client_id={your_app_client_id}
+            
++ Request Get token from refresh token
+    + Attributes
+        + `grant_type`: `refresh_token` (required, string) - The grant type
+        + `refresh_token`: `+16046155905` (required, string) - The refresh token
+        + `client_id`: `iphone_app` (required, string) - The client identifier
+    + Headers
+    
+            Content-Type: application/x-www-form-urlencoded
+    + Body
+    
+            grant_type=refresh_token
+            &refresh_token=F72ECD394B69405E95DCEA175D49A35D
+            &client_id={your_app_client_id}
+
++ Response 200 (application/json)
+    + Attributes
+        + `access_token`:`eyJ0eXAiOiJ....` (string) - Encoded access token
+        + `token_type`:`bearer` (string) - Type of the token
+        + `expires_in`:`1209599` (string) - Lifetime of the access token in seconds
+        + `refresh_token`:`F72ECD394B69405E95DCEA175D49A35D` (string) - A refresh token - will be the same as the refresh token used in the request.
+    + Body
+    
+            {
+                "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJpZCI6IjViNWNjNmQ1LWNjZmEtNDc1OS04OGI0LTM1NTRmMTg0ZjZiYiIsImFjdGl2ZXVzZXJhY2NvdW50IjoiMWI3ZTdmYTAtZTI1Yi00OTM3LWI0MjEtYTNkMTAwZDQ5ZDdkIiwiaXNzIjoiUGF5QnlQaG9uZSBJZGVudGl0eSBBbmQgQWNjZXNzIiwiYXVkIjoiaHR0cDovL2FwaS5wYXlieXBob25lLmNvbSIsImV4cCI6MTQxOTAzMjI3NywibmJmIjoxNDE3ODIyNjc3fQ.dYc4bPdwA9OB4FJCaaSpAWplyxZozOlNTdZkhX7qgQE",
+                "token_type": "bearer",
+                "expires_in": 1209599,
+                "refresh_token": "F72ECD394B69405E95DCEA175D49A35D"
+            }
+
+
+## Revoke a refresh token [DELETE /identity/refresh_token/{refresh_token_id}]
+
+**Possible Response Codes**
+- 204
+- 400
+- 401
+- 404 - The refresh token could not be found for the authenticated user.
+
++ Parameters
+    + refresh_token_id: `F72ECD394B69405E95DCEA175D49A35D` (required, string) - Refresh token to revoke
+
++ Response 204
+
+
+## Recover password [POST /identity/user/accounts/password/recover]
+
+**Possible Response Codes**
+- 204
+- 400
+
++ Request (application/json)
+    + Attributes
+        + username: `+16046155905` (required, string) - Username to recover password for.
+        + language: `en-US` (required, enum[string]) - Language in which password recovery message should be sent.
+            + Members
+                + `en-US`
+                + `en-GB`
+                + `fr-FR`
+                + `fr-CA`
+    + Body
+    
+            {
+                "username":"+16046155905",
+                "language":"en-US"
+            }
+
++ Response 202

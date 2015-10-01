@@ -1,0 +1,444 @@
+# Group Payment Accounts
+
+## Payment Accounts [/public/payment/accounts]
+
+The Payment Accounts root resource
+
++ Model (application/json)
+
+    JSON representation of Payment Account
+
+    + Body
+
+            { 
+                "id": "72de36abf64447d3944bacae39ea1f7d",
+                "paymentCardType": "Visa",
+                "nameOnCard": "JOHN L SMITH",
+                "expiryMonth": 1,
+                "expiryYear": 2019,
+                "startMonth": null,
+                "startYear": null,
+                "issueNumber": null
+            }
+
+### Create a new payment account for a member [POST]
+
+The Member is identified by the **memberid** claim in the authorization bearer token
+
+**Request Contract**
+
+    Header: Authorization: Bearer <token>
+    Content-Type: application/json
+    {
+        "cardNumber": "4111111111111111",
+        "expiryMonth": 1,
+        "expiryYear": 2019,
+        "countryCode": "CA",
+        "nameOnCard": "JOHN L SMITH",
+        "cvv": 123,
+        "issueNumber": 12,
+        "startYear": 2010,
+        "startMonth": 1
+    }
+
+**Mandatory Fields**
+
+- countryCode (string : [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2))
+- number (string : [Bank card number](http://en.wikipedia.org/wiki/Bank_card_number))
+- expiryYear (integer : >= current year - current year + 10)
+- expiryMonth (integer : 1-12, > current month if current year)
+
+**Mandatory Fields for North America**
+
+- name (string)
+
+**Mandatory Fields for France**
+
+- cvv (integer : 3-4 digits)
+
+**Optional Fields for United Kingdom**
+
+- startMonth (integer : 1-12, <= current month if current year)
+- startYear (integer : <= current year)
+- issueNumber (integer : 2 digits)
+        
+**Possible Response Codes**
+
+- 202
+- 401
+- 500
+
++ Request NA with name (application/json)
+
+        {
+            "cardNumber": "4111111111111111",
+            "countryCode": "CA",            
+            "expiryMonth": 6,
+            "expiryYear": 2016,
+            "nameOnCard": "JOHN L SMITH"
+        }
++ Response 202 (application/json)
+    + Header
+
+            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e/
+
++ Request NA no name (application/json)
+
+        {
+            "cardNumber": "4111111111111111",
+            "countryCode": "CA",            
+            "expiryMonth": 6,
+            "expiryYear": 2016
+        }
++ Response 202 (application/json)
+    + Header
+
+            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e/
+
++ Request UK start mm/yy (application/json)
+
+        {
+            "cardNumber": "4111111111111111",
+            "countryCode": "UK",
+            "expiryMonth": 6,
+            "expiryYear": 2016,
+            "startMonth": 1,
+            "startYear": 2012
+        }
++ Response 202 (application/json)
+    + Header
+
+            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e/
+
++ Request UK issuenumber (application/json)
+
+        {
+            "cardNumber": "4111111111111111",
+            "countryCode": "UK",            
+            "expiryMonth": 6,
+            "expiryYear": 2016,
+            "issueNumber": 12
+        }
++ Response 202 (application/json)
+    + Header
+
+            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e/
+        
++ Request FR (application/json)
+
+        {
+            "cardNumber": "4111111111111111",
+            "countryCode": "FR",            
+            "expiryMonth": 6,
+            "expiryYear": 2016,
+            "cvv": 111
+        }
++ Response 202 (application/json)
+    + Header
+
+            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e/
+
++ Response 401 (application/json)
+
+        {"error": "Unauthorized"}
+
++ Response 500 (application/json)
+
+        {"error": "Unhandled error"}
+        
+### Retrieve all payment accounts for member [GET]
+
+Retrieve all Payment Accounts for a Member.
+
+The Member is identified by the **memberid** claim in the authorization bearer token
+
+**Request Contract**
+
+    Header: Authorization: Bearer <token>
+
+**Response Contract**
+    
+    Content-Type: application/json
+    [
+        {
+            "id": "72de36abf64447d3944bacae39ea1f7d",
+            "paymentCardType": "Visa",
+            "nameOnCard": "Test",
+            "expiryMonth": 1,
+            "expiryYear": 2019,
+            "startMonth": null,
+            "startYear": null,
+            "issueNumber": null
+        }
+    ]
+    
+**Possible Response Codes**
+
+- 200
+- 401
+- 500
+
++ Request
+    
+        /public/payment/accounts
++ Response 200
+        [Payment Accounts][]
+
++ Response 401 (application/json)
+
+        {"error": "Unauthorized"}
+
++ Response 500 (application/json)
+
+        {"error": "Unhandled error"}
+
+## Payment Account [/public/payment/accounts/{paymentAccountId}]
+
+An individual Payment Account resource
+
++ Parameters
+    + paymentAccountId (required, guid) ... Guid `paymentAccountId` of the User Resource to perform action with. Has example value.
+
++ Model (application/json)
+
+    JSON representation of Payment Account
+
+    + Body
+
+            { 
+                "id": "72de36abf64447d3944bacae39ea1f7d",
+                "paymentCardType": "Visa",
+                "nameOnCard": "Test",
+                "expiryMonth": 1,
+                "expiryYear": 2019,
+                "startMonth": null,
+                "startYear": null,
+                "issueNumber": null
+            }
+            
+### Retrieve a payment account for member [GET]
+
+Retrieve a Payment Account for a Member.
+
+The Member is identified by the **memberid** claim in the authorization bearer token
+
+Payment Account is identified by the `paymentAccountId`
+
+**Request Contract**
+
+    Header: Authorization: Bearer <token>
+
+**Response Contract**
+    
+    Content-Type: application/json
+    {
+        "id": "72de36abf64447d3944bacae39ea1f7d",
+        "paymentCardType": "Visa",
+        "nameOnCard": "Test",
+        "expiryMonth": 1,
+        "expiryYear": 2019,
+        "startMonth": null,
+        "startYear": null,
+        "issueNumber": null
+    }
+    
+**Possible Response Codes**
+
+- 200
+- 400
+- 401
+- 404
+- 500
+
++ Request paymentAccountId exists
+    
+        /public/payment/accounts/{paymentAccountId}
++ Response 200
+        [Payment Account][]
+
++ Request paymentAccountId Does Not exists
+        
+        /public/payment/accounts/{paymentAccountId}
++ Response 404 (application/json)
+
+        {"error": "Not found"}
+
++ Request paymentAccountId is not a Guid
+        
+        /public/payment/accounts/{paymentAccountId}
++ Response 400 (application/json)
+
+        {"error": "PaymentAccountIdInvalidFormat"}
+
++ Response 401 (application/json)
+
+        {"error": "Unauthorized"}
+
++ Response 500 (application/json)
+
+        {"error": "Unhandled error"}
+
+### Update a payment account for a member [PUT]
+
+Update a Payment Account for a Member.
+
+The Member is identified by the **memberid** claim in the authorization bearer token
+
+Payment Account is identified by the `paymentAccountId`.
+
+**Request Contract**
+
+    Header: Authorization: Bearer <token>
+    Content-Type: application/json
+    {
+        
+        "expiryMonth": 1,
+        "expiryYear": 2019,
+        "countryCode": "CA",        
+        "nameOnCard": "JOHN L SMITH",
+        "cvv": 123,
+        "startYear": 2010,
+        "startMonth": 1,
+        "issueNumber": 12
+    }
+
+**Mandatory Fields**
+
+- country (string : [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2))
+- expiryYear (integer : >= current year - current year + 10)
+- expiryMonth (integer : 1-12, > current month if current year)
+
+**Mandatory Fields for North America**
+
+- name (string)
+
+**Mandatory Fields for France**
+
+- cvv (integer : 3-4 digits)
+
+**Optional Fields for United Kingdom**
+
+- startMonth (integer : 1-12, <= current month if current year)
+- startYear (integer : <= current year)
+- issueNumber (integer : 2 digits)
+
+**Possible Response Codes**
+
+- 202
+- 401
+- 500 
+
++ Request NA with name (application/json)
+
+        {
+            "countryCode": "CA",
+            "expiryMonth": 6,
+            "expiryYear": 2016,
+            "nameOnCard": "JOHN L SMITH"
+        }
++ Response 202 (application/json)
+    + Header
+
+            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e/
+
++ Request NA no name (application/json)
+
+        {
+            "countryCode": "CA",
+            "expiryMonth": 6,
+            "expiryYear": 2016
+        }
++ Response 202 (application/json)
+    + Header
+
+            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e/
+
++ Request UK start mm/yy (application/json)
+
+        {
+            "countryCode": "UK",
+            "expiryMonth": 6,
+            "expiryYear": 2016,
+            "startMonth": 1,
+            "startYear": 2012
+        }
++ Response 202 (application/json)
+    + Header
+
+            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e
+
++ Request UK issuenumber (application/json)
+
+        {
+            "countryCode": "UK",
+            "expiryMonth": 6,
+            "expiryYear": 2016,
+            "issueNumber": 12
+        }
++ Response 202 (application/json)
+    + Header
+
+            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e
+
++ Request FR (application/json)
+
+        {
+            "countryCode": "FR",
+            "expiryMonth": 6,
+            "expiryYear": 2016,
+            "cvv": 111
+        }
++ Response 202 (application/json)
+    + Header
+
+            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e
+
++ Response 401 (application/json)
+
+        {"error": "Unauthorized"}
+
++ Response 500 (application/json)
+
+        {"error": "Unhandled error"}
+
+### Delete a payment account for a member [DELETE]
+
+Delete a Payment Account for a Member.
+
+The Member is identified by the **memberid** claim in the authorization bearer token
+
+Payment Account is identified by the `paymentAccountId`.
+
+**Request Contract**
+
+    Header: Authorization: Bearer <token>
+
+**Possible Response Codes**
+
+- 202
+- 401
+- 500
+
++ Request paymentAccountId Exists
+
+        /public/payment/accounts/{paymentAccountId}
++ Response 202 (application/json)
+    + Header
+
+            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e/
+
++ Request paymentAccountId Does Not Exists
+
+        /public/payment/accounts/{paymentAccountId}
++ Response 202 (application/json)
+    + Header
+
+            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e/
+
++ Response 401 (application/json)
+
+        {"error": "Unauthorized"}
+
++ Response 500 (application/json)
+
+        {"error": "Unhandled error"}

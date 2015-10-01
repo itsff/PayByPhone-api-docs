@@ -1,0 +1,28 @@
+# Group Events
+
+## Get events by workflow [GET /events/workflow/{id}]
+
+**Possible Response Codes**
+
+- 200 - OK
+- 400 - Bad Request
+- 401 - Unauthorized
+
++ Parameters
+    + id: `b942cd39-60c5-4fdd-9b4f-2c6fe8a4ea26` (required, string) - Unique identifier of the workflow.
+
++ Response 200 (application/json)
+    [
+        {
+            "$type": "PaymentAccountCreated",
+            "paymentAccountId": "7c3367cd-883b-47c2-bcf9-5043d6b8dea8",
+            "memberId": "c61a93b7-e506-4cd4-ab74-6340e6149736",
+            "maskedCardNumber": "411111------1111",
+            "expiryMonth": 12,
+            "expiryYear": 2015,
+            "nameOnCard": "John Smith",
+            "issueNumber": null,
+            "startMonth": null,
+            "startYear": null
+        }
+    ]

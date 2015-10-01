@@ -1,0 +1,67 @@
+# Group Payment Methods
+
+Placeholder for Payment Methods endpoint documentation
+
+## Payment account [/payment/accounts]
+
+### Get payment accounts [GET]
+
+**Response Codes**
+
+- 200 - OK
+- 401 - Unauthorized
+
++ Response 200 (application/json)
+    + Attributes (PaymentAccounts)
+
+
+## Get details about a payment account [GET /payment/accounts/{paymentAccountId}]
+
+- 202 - Accepted
+- 400 - Bad Request - The PaymentAccountId is in an invalid format.
+- 401 - Unauthorized - You are not authorized to access the account.
+- 404 - Not found - No payment account is found with this id.
+
++ Request (application/json)
+    + Attributes
+        + paymentAccountId: `d6d1817e-98ee-4600-b82b-f1aace2abea5` (string) - Payment account Id
+
++ Response 200 (application/json)
+    + Attributes (PaymentAccount)
+
+
+### Create a new payment account [POST]
+
+- nameOnCard required for 2
+- cvv required for 3
+- for countries 4, issueNumber, startMonth and startYear is optional
+
+
+**Possible Response Codes**
+
+- 202 - Accepted
+- 400 - Bad Request
+- 401 - Unauthorized
+- 409 - Conflict
+
++ Request (application/json)
+    + Attributes (CreatePaymentAccount)
+
++ Response 202 (application/json)
+    + Headers
+
+        Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
+
+
+## Delete a payment account [DELETE /payment/accounts/{paymentAccountId}]
+
+- 202 - Accepted
+- 400 - Bad Request
+- 401 - Unauthorized
+- 404 - Not found
+
++ Request (application/json)
+    + Attributes
+        + paymentAccountId: `d6d1817e-98ee-4600-b82b-f1aace2abea5` (string) - Payment account Id
+
++ Response 202 (application/json)
