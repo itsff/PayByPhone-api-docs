@@ -1,0 +1,249 @@
+# Group Devices
+Device resources
+
+## Devices [/public/notifications/devices]
+The devices root resource
+
+### Add a device for member [POST]
+
+Register a device for a member.
+
+Member is identified by the userAccountId extracted from the access token.
+
+Device language is identified by the Accept-Language header, using first value and defaulting to 'en'.
+
+**Request Contract**
+
+    Header: Authorization: Bearer <token>
+    Header: Accept-Language: en-ca,en-us;q=0.8,fr-ca;q=0.5,fr-fr;q=0.3
+    Content-Type: application/x-www-form-urlencoded
+    deviceToken=&type=&isOptedInForAdvertising=
+
+**Mandatory Fields**
+
+- deviceToken
+- type  (possible values are: iPhone, iPad, AndroidPhone, AndroidTablet, BackBerryPhone, BlackBerryTablet, CarInDashDevice)
+
+**Optional Fields**
+
+- isOptedInForAdvertising   (optional, boolean, defaults to false)
+
+**Possible Response Codes**
+
+- 202
+- 400
+- 401
+- 500
+
++ Request with mandatory fields (application/x-www-form-urlencoded)
+    + Body
+    
+            deviceToken=1111-2222&type=iPhone&isOptedInForAdvertising=true
++ Response 202 (application/json)
+    + Header
+
+            Location: http://api.paybyphone.com/public/notifications/devices/1111-2222
+    
++ Response 500
+    
+        Unhandled error
+
++ Request with no deviceToken (application/x-www-form-urlencoded)
+    + Body
+    
+            deviceToken=type=iPhone&isOptedInForAdvertising=true
++ Response 500
+
+        {"message": "An error has occurred."}
+
++ Request with no type (application/x-www-form-urlencoded)
+    + Body
+    
+            deviceToken=1111-2222&type=&isOptedInForAdvertising=true
++ Response 400
+
++ Request with no isOptedInForAdvertising
+    + Body
+        
+            deviceToken=1111-2222&type=iPhone&isOptedInForAdvertising=
++ Response 202
+    + Header
+
+            Location: http://api.paybyphone.com/public/notifications/devices/1111-2222
+
++ Request with missing or invalid authorization
+
+        Authorization header field is missing or bearer token is not valid
++ Response 401
+
+        {"message":"Authorization has been denied for this request."}
+
+
+## Device [/public/notifications/devices/{deviceToken}]
+An individual device resource
+
++ Parameters
+    + deviceToken (required, string, `abcd-1234-abcd-124`) ... the `deviceToken` Unique identifier for the device
+
++ Model (application/json)
+
+    JSON representation of A Device.
+
+    + Body
+
+            {
+                "memberDeviceId": "315125",
+                "wavePayMemberId": 7785523,
+                "isLoggedIn": true,
+                "deviceToken": "1234-5678",
+                "isOptedInForAdvertising": true,
+                "deviceName": "iPhone",
+                "deviceLanguage": "en-CA"
+            }
+            
+### Retrieve an individual device for a member [GET]
+Member is identified by the userAccountId extracted from the access token.
+
+Device is identified by the `deviceToken`
+
+**Request Contract**
+
+    Header: Authorization: Bearer <token>
+    
+**Mandatory Fields**
+
+- deviceToken
+
+**Response Contract**
+
+        Content-Type: application/json
+        {
+            "memberDeviceId": ""
+            "wavePayMemberId": ""
+            "isLoggedIn": ""
+            "deviceToken": ""
+            "isOptedInForAdvertising": ""
+            "deviceName": ""
+            "deviceLanguage": ""
+        }
+
+**Possible Response Codes**
+
+- 200
+- 400
+- 401
+- 404
+- 405
+- 500
+
++ Request all fields supplied
+    
+        All mandatory fields supplied
++ Response 200
+    [Device][]
+
++ Response 500
+    
+        Unhandled error
+
++ Response 404
+
++ Request missing deviceToken field
+
+        /public/notifications/devices/
++ Response 405
+
+        {"message":"The requested resource does not support http method 'GET'."}
+
++ Request device not found for userAccountId (extracted from token)
+
+        /public/notifications/devices/{deviceToken}
+    
++ Response 404
+
++ Request with missing or invalid authorization
+
+        Authorization header field is missing or bearer token is not valid
++ Response 401
+
+        {"message":"Authorization has been denied for this request."}
+
+
+### Edit a device [PUT]
+Update a member device status.
+
+Member is identified by the userAccountId extracted from the access token.
+
+Device is identified by the `deviceToken`.
+
+Device language is determined by the Accept-Language header, using first value or defaults to 'en'.
+
+**Request Contract**
+
+    Header: Authorization: Bearer <token>
+    Header: Accept-Language: en-ca,en-us;q=0.8,fr-ca;q=0.5,fr-fr;q=0.3
+    Content-Type: application/x-www-form-urlencoded
+    type=&isLoggedIn=&isOptedInForAdvertising=
+
+**Mandatory Fields**
+
+- deviceToken
+- type  (possible values are: iPhone, iPad, AndroidPhone, AndroidTablet, BackBerryPhone, BlackBerryTablet, CarInDashDevice)
+
+**Optional Paramters**
+
+- isLoggedIn    (optional, boolean, defaults to false)
+- isOptedInForAdvertising   (optional, boolean, defaults to false)
+
+**Possible Response Codes**
+
+- 204
+- 400
+- 401
+- 405
+- 500
+
++ Request with mandatory fields (application/x-www-form-urlencoded)
+    + Body
+    
+            type=iPhone&isLoggedIn=true&isOptedInForAdvertising=true
++ Response 204 
+    
++ Response 500
+    
+        Unhandled error
+
++ Response 404
+
++ Request no device token (application/x-www-form-urlencoded)
+    + Body
+    
+            /public/notifications/devices/
++ Response 405
+
+        {"message":"The requested resource does not support http method 'PUT'."}
+
++ Request no type (application/x-www-form-urlencoded)
+    + Body
+    
+            type=&isLoggedIn=true&isOptedInForAdvertising=true
++ Response 400
+
++ Request with no isLoggedIn (application/x-www-form-urlencoded)
+    + Body
+    
+            type=iPhone&isLoggedIn=&isOptedInForAdvertising=true
++ Response 204 
+
++ Request with no isOptedInForAdvertising (application/x-www-form-urlencoded)
+    + Body
+    
+            type=iPhone&isLoggedIn=true&isOptedInForAdvertising=
++ Response 204 
+
++ Request with missing or invalid authorization
+
+        Authorization header field is missing or bearer token is not valid
++ Response 401
+
+        {"message":"Authorization has been denied for this request."}

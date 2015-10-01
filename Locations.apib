@@ -1,0 +1,171 @@
+# Group Locations
+Parking Location resources
+
+## Locations [/public/parking/locations]
+The locations root resource
+
++ Model (application/json)
+
+    JSON representation of Locations.
+
+    + Body
+
+            [{ 
+                "locationNumber" : 10202990,
+                "name" : "12TH STREET NORTH",
+                "vendor" : "SFMTA",
+                "vendorRegion" : "PORT",
+                "status" : "LotStatus_LotIsOpen",
+                "extendNotAllowed" : false,
+                "isStallBased" : true,
+                "isPlateBased" : true,
+                "currency" : "USD",
+                "country" : "us",
+                "defaultTimeUnit" : "TimeUnit_Hours",
+                "promptForCvv" : false,
+                "currentMaxStay" : 120,
+                "latitude" : 19.235135,
+                "longitude" : 23.445135,
+                "validIn" : ["ca","us"],
+                "lotMessage" : "Some custom message for this lot 10202990."
+            }]
+
+### Retrieve location for location number [GET]
+
+Get location from a location number.
+
+Location is identified by the `locationNumber`.
+
+
+**Request Contract**
+
+    Header: Authorization: Bearer <token>
+
+**Response Contract**
+    
+    Content-Type: application/json
+    [{ 
+        "locationNumber" : "",
+        "name" : "",
+        "vendor" : "",
+        "vendorRegion" : "",
+        "status" : "",
+        "extendNotAllowed" : "",
+        "isStallBased" : "",
+        "isPlateBased" : "",
+        "currency" : "",
+        "country" : "",
+        "defaultTimeUnit" : "",
+        "altTimeUnit" : "",
+        "promptForCvv" : "",
+        "currentMaxStay" : "",
+        "latitude" : "",
+        "longitude" : "",
+        "validIn" : [],
+        "lotMessage" : ""
+    }]
+
+The *id* is assigned by the API at the moment of creation. 
+    
+**Possible Response Codes**
+
+- 200
+- 404
+
++ Request userAccountId Exists
+
+        /public/parking/locations/
++ Response 200
+    [Locations][]
+
++ Request userAccountId Does Not Exists 
+
+        /public/parking/locations/
++ Response 404
+
+
+## Location [/public/parking/locations/{locationNumber}?country={country}]
+An individual location resource
+
++ Parameters
+    + locationNumber (required, string, `fff-gr34-fff`) ... `locationNumber` of the Location Resource to perform action with. Has example value.
+    + country (required, string, `us`) ... `country` of the Location in the form of a 2-letter abbreviation.
+
++ Model (application/json)
+
+    JSON representation of A Location.
+
+    + Body
+
+            { 
+                "locationNumber" : 10202990,
+                "name" : "12TH STREET NORTH",
+                "vendor" : "SFMTA",
+                "vendorRegion" : "PORT",
+                "status" : "LotStatus_LotIsOpen",
+                "extendNotAllowed" : false,
+                "isStallBased" : true,
+                "isPlateBased" : true,
+                "currency" : "USD",
+                "country" : "us",
+                "defaultTimeUnit" : "TimeUnit_Hours",
+                "promptForCvv" : false,
+                "currentMaxStay" : 120,
+                "latitude" : 19.235135,
+                "longitude" : 23.445135,
+                "validIn" : ["ca","us"],
+                "lotMessage" : "Some custom message for this lot 10202990."
+            }
+            
+### Retrieve an individual location for user [GET]
+Get an individual location from a User's Account.
+
+User is identified by the `userAccountId`.
+
+Location is identified by the `locationNumber`.
+
+**Request Contract**
+
+    Header: Authorization: Bearer <token>
+
+**Response Contract**
+    
+    Content-Type: application/json
+    [{
+        "locationNumber" : "",
+        "name" : "",
+        "vendor" : "",
+        "vendorRegion" : "",
+        "status" : "",
+        "extendNotAllowed" : "",
+        "isStallBased" : "",
+        "isPlateBased" : "",
+        "currency" : "",
+        "country" : "",
+        "defaultTimeUnit" : "",
+        "altTimeUnit" : "",
+        "promptForCvv" : "",
+        "currentMaxStay" : "",
+        "latitude" : "",
+        "longitude" : "",
+        "validIn" : [],
+        "lotMessage" : ""
+    }]
+
+The *locationNumber* is assigned by the API at the moment of creation. 
+    
+**Possible Response Codes**
+
+- 200
+- 404
+
++ Request locationId Exists
+
+        /public/parking/locations/{locationNumber}
++ Response 200
+    [Location][]
+
++ Request locationId Does Not Exists 
+
+        /public/parking/locations/{locationNumber}
++ Response 404

@@ -1,0 +1,305 @@
+# Group Sessions
+Parking Session resources
+
+## Sessions [/public/parking/sessions]
+The parking sessions root resource
+
+**Request Contract**
+
+    Header: Authorization: Bearer <token>
+    Content-Type: application/json
+    {
+        "locationNumber": "",
+        "vehicleId": "",
+        "durationInMinutes": "",
+        "userAccountId": "",
+        "startTime": ""
+    }
+
+**Mandatory Fields**
+
+- locationNumber
+- vehicleId
+- durationInMinutes
+- userAccountId
+- startTime
+
+**Possible Response Codes**
+
+- 202
+- 400
+
+### Create a parking session [POST]
++ Request lot no plate (application/json)
+
+        {
+            "durationInMinutes":30,
+            "locationNumber":"10202990",
+            "stall":null,
+            "userAccountId":"8d21a912-561a-48ff-b31b-00d600a2544e",
+            "startTime":"2014-07-28T09:23:28.0000-0700",
+            "vehicleId":null
+        }
++ Response 202
+    + Header
+
+            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e/
+
++ Request lot with plate (application/json)
+
+        {
+            "durationInMinutes":30,
+            "locationNumber":"7399",
+            "stall":null,
+            "userAccountId":"8d21a912-561a-48ff-b31b-00d600a2544e",
+            "startTime":"2014-07-28T09:23:28.0000-0700",
+            "vehicleId":"abc-234"
+        }
++ Response 202
+    + Header
+
+            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e/
+
+* Request lot+stall no plate (application/json)
+
+        {
+            "durationInMinutes":30,
+            "locationNumber":"20200031",
+            "stall":"1234",
+            "userAccountId":"8d21a912-561a-48ff-b31b-00d600a2544e",
+            "startTime":"2014-07-28T09:23:28.0000-0700",
+            "vehicleId":null
+        }
++ Response 202
+    + Header
+
+            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e/
+
+* Request lot+stall with plate (application/json)
+
+        {
+            "durationInMinutes":30,
+            "locationNumber":"4229",
+            "stall":"1",
+            "userAccountId":"8d21a912-561a-48ff-b31b-00d600a2544e",
+            "startTime":"2014-07-28T09:23:28.0000-0700",
+            "vehicleId":"abc-234"
+        }
++ Response 202
+    + Header
+
+            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e/
+
++ Request stall reverse lookup no plate (application/json)
+
+        {
+            "durationInMinutes":30,
+            "locationNumber":null,
+            "stall":"26106",
+            "userAccountId":"8d21a912-561a-48ff-b31b-00d600a2544e",
+            "startTime":"2014-07-28T09:23:28.0000-0700",
+            "vehicleId":null
+        }
++ Response 202
+    + Header
+
+            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e/
+
++ Request stall reverse lookup with plate (application/json)
+
+        {
+            "durationInMinutes":30,
+            "locationNumber":null,
+            "stall":"53326",
+            "userAccountId":"8d21a912-561a-48ff-b31b-00d600a2544e",
+            "startTime":"2014-07-28T09:23:28.0000-0700",
+            "vehicleId":"abc-234"
+        }
++ Response 202
+    + Header
+
+            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e/
+
++ Response 400
+
+        {
+            "error": "The request is invalid"
+        }
+
+
+## Session [/public/parking/sessions/{parkingSessionId}]
+
+An individual parking session resource
+
++ Parameters
+    + parkingSessionId (required, string, `abc-23-4443-ff`) ... string `parkingSessionId` of the Parking Session Resource to perform action with. Has example value.
+
++ Model (application/json)
+
+    JSON representation of A Parking Session.
+
+    + Body
+
+            {
+                "id": "cf3da0c0-6313-46a8-871f-bb5b577d5ecc",
+                "locationNumber": "10202990",
+                "vehicleId": "abc-234",
+                "licensePlate": "ABC 123",
+                "durationInMinutes": "30",
+                "userAccountId": "8d21a912-561a-48ff-b31b-00d600a2544e",
+                "startTime": "2014-07-22T10:14:40.0000-0700"
+            }
+
+### Retrieve an individual parking session [GET]
+Get an individual parking session
+
+Parking Session is identified by the `parkingSessionId`.
+
+**Request Contract**
+
+    Header: Authorization: Bearer <token>
+
+**Response Contract**
+    
+    Content-Type: application/json
+    {
+        "id": "",
+        "locationNumber": "",
+        "vehicleId": "",
+        "licensePlate": "",
+        "durationInMinutes": "",
+        "userAccountId": "",
+        "startTime": ""
+    }
+    
+The *id* is assigned by the API at the moment of creation. 
+    
+**Possible Response Codes**
+
+- 200
+- 404
+
++ Request parkingSessionId exists
+
+        /public/parking/sessions/{parkingSessionId}
++ Response 200
+    [Session][]
+
++ Request parkingSessionId Does Not Exists
+
+        /public/parking/sessions/{parkingSessionId}
++ Response 400
+
+        {
+            "error": "The request is invalid"
+        }
+        
+## SessionsSince [/public/parking/sessions?sinceTimeStampRfc3339={sinceTime}&howMany={howMany}]
+
+Parking sessions since given timestamp
+
++ Parameters
+    + sinceTime (required, date, `2014-07-22T10:14:40.0000-0700`) ... date `sinceTime` sessions since sinceTime. Has example value.
+    + howMany (required, number) ... number `howMany` records to return.
+
++ Model (application/json)
+
+    JSON representation of A Parking Session.
+
+    + Body
+
+            [{
+                "id": "cf3da0c0-6313-46a8-871f-bb5b587d5ecc",
+                "locationNumber": "10202990",
+                "vehicleId": "abc-234",
+                "licensePlate": "ABC 123",
+                "durationInMinutes": "30",
+                "userAccountId": "8d21a912-561a-48ff-b31b-00d600a2544e",
+                "startTime": "2014-07-22T10:14:40.0000-0700"
+            },
+            {
+                "id": "cf3da0c0-6313-46a8-871f-bb5b567d5ecc",
+                "locationNumber": "10202990",
+                "vehicleId": "abc-234",
+                "licensePlate": "ABC 123",
+                "durationInMinutes": "30",
+                "userAccountId": "8d21a912-561a-48ff-b31b-00d600a2544e",
+                "startTime": "2014-07-22T10:14:40.0000-0700"
+            }]
+            
+
+### Retrieve an individual parking session [GET]
+Get an individual parking session
+
+**Request Contract**
+
+    Header: Authorization: Bearer <token>
+
+**Response Contract**
+    
+    Content-Type: application/json
+    {
+        "startTime": "",
+        "howMany": "",
+    }
+    
+The *id* is assigned by the API at the moment of creation. 
+    
+**Possible Response Codes**
+
+- 200
+- 404
+
++ Request parkingSessionId exists
+
+        /public/parking/sessions?sinceTimeStampRfc3339={sinceTime}&howMany={howMany}
++ Response 200
+    [SessionsSince][]
+
++ Request parkingSessionId Does Not Exists
+
+        /public/parking/sessions?sinceTimeStampRfc3339={sinceTime}&howMany={howMany}
++ Response 400
+
+        {
+            "error": "The request is invalid"
+        }        
+
+## SessionStop [/public/parking/sessions/{parkingSessionId}/stop]
+An individual vehicle resource
+
+### Stop a parking session [PUT]
+Stop an individual parking session
+
+Parking Session is identified by the `parkingSessionId`.
+
+**Request Contract**
+
+    Header: Authorization: Bearer <token>
+
+**Response Contract**
+    
+The *id* is assigned by the API at the moment of creation. 
+    
+**Possible Response Codes**
+
+- 204
+- 400
+
++ Request stop parking session
+
+        /public/parking/sessions/{parkingSessionId}/stop
+        
++ Response 204
+    + Header
+    
+            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e
+
++ Request parkingSessionId Does Not Exists
+
+        /public/parking/sessions/{parkingSessionId}/stop
++ Response 400
+
+        {
+            "error": "The request is invalid"
+        }
