@@ -1,0 +1,160 @@
+# Group Events3
+Event resources
+
+## Events [/public/events/{workflowId}/]
+Get event(s) generated under a specific workflowId.
+
++ Parameters
+    + workflowId (required, string, `8d21a912-561a-48ff-b31b-00d600a2544e`) ... `workflowId` representing a collection of related events in the form of a GUID.
+
++ Model (application/json)
+
+    JSON representation of A Event.
+
+    + Body
+
+            [{
+                "$type" : "Pbp.Contracts.Shared.Parking.Events.ParkingSessionCreated, Pbp.Contracts.Shared",
+                "vehiclePlate" : "WEST111",
+                "vehicleState" : "BC",
+                "vehicleType" : "Car",
+                "locationId" : 8990,
+                "parkingSessionId" : "4f53q912-561a-48ff-b31b-00d600a2544e",
+                "vendorLocationId" : "ZZ2532",
+                "stall" : "",
+                "startTime" : "2014-08-17T17:12:47.2834849Z",
+                "expireTime" : "2014-08-17T17:42:47.2834849Z",
+                "vendorId" : 504,
+                "account" : "76662345678"
+            },
+            {
+                "$type" : "Pbp.Contracts.Shared.Parking.Events.ParkingSessionExtended, Pbp.Contracts.Shared",
+                "vehicleState" : "BC",
+                "vehicleType" : "Car",
+                "vehiclePlate" : "DFDFDF",
+                "newExpiryTime" : "2014-09-17T18:42:47.2834849Z",
+                "oldExpiryTime" : "2014-09-17T17:42:47.2834849Z",
+                "locationId" : 8990,
+                "vendorLocationId" : "RR1235",
+                "stall": "",
+                "vendorId" : 504,
+                "account" : "76662345678",
+                "extensionLvpId" : "B2982F39-0373-4486-A200-24FE7AC68F45"
+            },
+            {
+                "$type": "Pbp.Contracts.Shared.Payments.Events.PaymentAccountCreated, Pbp.Contracts.Shared",
+                "memberId": "B2982F39-0373-4486-A200-24FE7AC68F45",
+                "paymentAccountId": "B2982F39-0373-4486-A200-24FE7AC68F45",
+                "maskedCardNumber": "411111------1111",
+                "expiryMonth": 12,
+                "expiryYear": 2015,
+                "nameOnCard": "John Smith",
+                "issueNumber": 31,
+                "startMonth": 1,
+                "startYear": 2014
+            },
+            {
+                "$type": "Pbp.Contracts.Shared.UserAccounts.Events.UserAccountPasswordChanged, Pbp.Contracts.Shared",
+                "userAccountId": "8d21a912-561a-48ff-b31b-00d600a2544e",
+            }]
+            
+### Retrieve all parking events in a workflow [GET]
+
+Workflow is identified by the workflowId.
+
+**Request Contract**
+
+    Header: Authorization: Bearer <token>
+    
+**Mandatory Fields**
+
+- workflowId 
+
+**Response Contract**
+
+        Content-Type: application/json
+        [{
+            "$type" : "Pbp.Contracts.Shared.Parking.Events.ParkingSessionCreated, Pbp.Contracts.Shared",
+            "vehiclePlate" : "WEST111",
+            "vehicleState" : "BC",
+            "vehicleType" : "Car",
+            "locationId" : 8990,
+            "parkingSessionId" : "4f53q912-561a-48ff-b31b-00d666a2544e",
+            "vendorLocationId" : "ZZ2532",
+            "stall" : "",
+            "startTime" : "2014-09-17T17:12:47.2834849Z",
+            "expireTime" : "2014-09-17T17:42:47.2834849Z",
+            "vendorId" : 504,
+            "account" : "76662345678"
+        },
+        {
+            "$type" : "Pbp.Contracts.Shared.Parking.Events.ParkingSessionCreated, Pbp.Contracts.Shared",
+            "vehiclePlate" : "WEST111",
+            "vehicleState" : "BC",
+            "vehicleType" : "Car",
+            "locationId" : 8990,
+            "parkingSessionId" : "4f53q912-561a-48ff-b31b-00d600a2544e",
+            "vendorLocationId" : "ZZ2532",
+            "stall" : "",
+            "startTime" : "2014-09-17T17:12:47.2834849Z",
+            "expireTime" : "2014-09-17T17:42:47.2834849Z",
+            "vendorId" : 504,
+            "account" : "76662345678"
+        },
+        {
+            "$type" : "Pbp.Contracts.Shared.Parking.Events.ParkingSessionExtended, Pbp.Contracts.Shared",
+            "vehicleState" : "BC",
+            "vehicleType" : "Car",
+            "vehiclePlate" : "DFDFDF",
+            "newExpiryTime" : "2014-09-17T18:42:47.2834849Z",
+            "oldExpiryTime" : "2014-09-17T17:42:47.2834849Z",
+            "locationId" : 8990,
+            "vendorLocationId" : "ZZ2532",
+            "stall": "",
+            "vendorId" : 504,
+            "account" : "76662345678",
+            "extensionLvpId" : "B2982F39-0373-4486-A200-24FE7AC68F45"
+        },
+        {
+            "$type": "Pbp.Contracts.Shared.Payments.Events.PaymentAccountCreated, Pbp.Contracts.Shared",
+            "memberId": "B2982F39-0373-4486-A200-24FE7AC68F45",
+            "paymentAccountId": "B2982F39-0373-4486-A200-24FE7AC68F45",
+            "maskedCardNumber": "411111------1111",
+            "expiryMonth": 12,
+            "expiryYear": 2015,
+            "nameOnCard": "John Smith",
+            "issueNumber": 31,
+            "startMonth": 1,
+            "startYear": 2014
+        }]
+
+**Possible Response Codes**
+
+- 200
+- 400
+- 401
+- 500
+
++ Request all fields supplied
+    
+        All mandatory fields supplied
++ Response 200
+    [Events][]
+
++ Response 500
+    
+        Unhandled error
+
++ Request missing workflowId field
+
+        Missing {workflowId}
++ Response 400
+
+        {"error": "The request is invalid"}
+
++ Request missing or invalid authorization
+
+        Authoriazation header field is missing or bearer token is not valid
++ Response 401
+
+        {"message":"Authorization has been denied for this request."}
