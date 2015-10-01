@@ -1,4 +1,3 @@
-# This has to be the first file to set the format for API Blueprint files.
 format.apib
 file1.apib
 file2.apib
