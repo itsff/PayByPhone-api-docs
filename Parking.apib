@@ -168,10 +168,10 @@
 
 + Parameters
     + accountId: `1b98d239-8de8-4111-9d7d-562fc31c193a` (required, string) - Parking account id.
+    + parkingSessionId: `2bf49b64-28cd-4fc7-96e4-a44b010bf6ea` (required, string) - The ID of the parking session to be extended, this must be an active session
 
 + Request 
     + Attributes (application/json)
-        + `parkingSessionId`:`2bf49b64-28cd-4fc7-96e4-a44b010bf6ea` (required, string) - The ID of the parking session to be extended, this must be an active session
         + `durationTimeUnits`:`Hour` (required, string) - "Hours" or "Minutes" or "CalendarDays" (more options to be added soon)
         + `durationValue`:`1` (required, string) - How many minutes or hours the user wants to park
         + `cvv`:`111` (required, string) - The CV2 code from the user's payment card
