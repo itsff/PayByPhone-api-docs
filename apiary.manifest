@@ -9,7 +9,6 @@ Vehicles.apib
 Locations.apib
 Sessions.apib
 ParkingPreferences.apib
-ParkingQuote.apib
 Payment.apib
 PaymentAccounts.apib
 Notifications2.apib

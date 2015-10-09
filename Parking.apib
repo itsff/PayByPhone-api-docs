@@ -530,7 +530,7 @@ Delete a vehicle from a parking account
         }
     ]
 
-## get a parking quote [/parking/accounts/{parkingAccountGuid}/quote?locationNumber={locationNumber}&startTime={StartTime}&timeUnit={TimeUnit}&quantity={Quantity}&licensePlate={LicensePlate}&stall={stall}&isExtend={isExtend}&ratePolicyId={ratePolicyId}]
+## get a parking quote [/parking/accounts/{parkingAccountGuid}/quote?locationId={locationId}&startTime={StartTime}&timeUnit={TimeUnit}&quantity={Quantity}&licensePlate={LicensePlate}&stall={stall}&isExtend={isExtend}&ratePolicyId={ratePolicyId}]
 
 ### Retrieve a parking quote detail [GET]
 
@@ -581,8 +581,8 @@ Retrieve a parking quote detail
     + Attributes (GetParkingQuoteResponse)
 
     {
-        "locationNumber": "40002",
-        "stallId": "123",
+        "locationId": "40002",
+        "stall": "123",
         "quoteDate":"2015-06-25T18:00:00-0000",
         "totalCost": {
                "amount": 5.00,
