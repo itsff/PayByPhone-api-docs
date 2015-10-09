@@ -14,7 +14,7 @@
 Apiary has an undocumented way of merging multiple `.apib` files.
 
 `apiary.manifest` contains an ordered list of `.apib`'s by project on each line. 
-Edit the project's respective `.apib' and simply push it back to Github. Apiary integration with Github will read `apiary.manifest` and generate a final `apiary.apib` containing the full documentation!
+Edit the project's respective `.apib` and simply push it back to Github. Apiary integration with Github will read `apiary.manifest` and generate a final `apiary.apib` containing the full documentation!
 
 NOTE: Keep `format.apib` and `introduction.apib` on the top. Don't edit the `apiary.apib` directly, it will be overwritten.
 
