@@ -13,9 +13,9 @@
 
 Apiary has an undocumented way of merging multiple `.apib` files.
 
-Inside `apiary.manifest` theres a list of `.apib`s separated by project. 
-Edit one of the respective listed `.apibs` and simply push it back to Github. Apiary integration with Github will read `apiary.manifest` and generate a final `apiary.apib` containing the ful documentation!
+`apiary.manifest` contains an ordered list of `.apib`'s by project on each line. 
+Edit the project's respective `.apib' and simply push it back to Github. Apiary integration with Github will read `apiary.manifest` and generate a final `apiary.apib` containing the full documentation!
 
-NOTE: Keep `format.apib` and `introduction.apib` on the top.
+NOTE: Keep `format.apib` and `introduction.apib` on the top. Don't edit the `apiary.apib` directly, it will be overwritten.
 
-If you want, however, to have your own generated `apiary.apib`, run `run_preview.sh`. It will merge the files in the order it's shown in `apiary.manifest`, generate an `apiary.apib` and host an Apiary server on port 9999 (You need Apiary's Ruby Gem for that)
+If you want to generate your own `apiary.apib` on your local machine, run `run_preview.sh`. It will merge the files in the order it's shown in `apiary.manifest`, generate an `apiary.apib` and host an Apiary server on port 9999 locally.(You need to have Apiary's Ruby Gem for that)
