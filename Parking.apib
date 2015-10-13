@@ -29,7 +29,7 @@
 + Response 200 
     + Attributes (application/json)
         + `parkingSessionId`:`de9bd239-44f3-483e-9fd4-7c98567da200` (string) - The parking session ID, this is needed if you want to extend an existing parking session (NOTE: this property will soon be renamed to parkingSessionId)
-        + `locationNumber`:`5594` (string) - The Lot ID where the user is parked (NOTE: Stall ID will be added soon)
+        + `locationNumber`:`5594` (string) - The Lot ID where the user is parked
         + `licensePlate`:`TEST111` (string) - The license plate of the vehicle that is parked
         + `durationInMinutes`:`464` (string) - The total duration of the parking session from the start-time
         + `startTime`:`2015-09-01T16:16:00.000Z` (string) - The total duration of the parking session from the start-time
@@ -553,7 +553,7 @@ Retrieve a parking quote detail
 
 + Parameters
     + parkingAccountGuid: `b12e8e08-ee59-4774-8062-a40401272436` (required, guid) - GUID of the user parking account.
-    + locationId: `40002` (required, int) - Location ID. Note that this can not be a reverse lookup stall, such as in the location details endpoint
+    + locationId: `40002` (required, string) - Location ID. Note that this can not be a reverse lookup stall, such as in the location details endpoint
     + startTime: `2015-08-28T20:56:00-0000` (required, dateTime) - StartTime of the rate calculation, in UTC
     + timeUnit: `1` (required, enum) - Time unit enumeration, as described in Time Units table below.
         + 1 (string) - Minute
@@ -574,19 +574,44 @@ Retrieve a parking quote detail
     + quantity: `60` (required, int) - Number of time units.
     + licensePlate: `273cvn` (optional, string) - License plate being parked. Used to calculate promotion discounts.
     + stall: `52444` (optional, string) - Stall number of the current parking session. Used for extensions to ensure the app is extending the right session.
-    + isExtend: `1` (optional, int) - 1 or 0, resembling a boolean to indicate whether requesting the quote for an extension of a current parking session.
+    + isExtend: `True` (optional, boolean) - True or False, resembling a boolean to indicate whether requesting the quote for an extension of a current parking session.
     + ratePolicyId: `75001` (optional, int) - The ID of the rate policy you want to use
 
++ Response
+
+    + Attributes
+        + locationId: `40006` (int) - The Location ID where the user is parked.
+        + stall: `123` (string)  - Stall where the vehicle is parked if the parking session took place in a stall, null otherwise.
+        + quoteDate: `2015-06-25T18:00:00-0000` (dateTime)  - Quote Time of the rate calculation, in UTC
+        + totalCost: (money) - Total cost of the parkfig session
+            + amount
+            + currency           
+        + parkingAccountId:  `56514ff5-44fc-463b-820f-1d47393e1703` (guid)
+        + parkingStartTime: `2014-12-29T22:00:00-0000` (dateTime)  - Parking Start Time of the rate calculation, in UTC
+        + parkingExpiryTime: `2014-12-29T23:00:00-0000` (dateTime)  - Parking Expiry Time of the rate calculation, in UTC
+        + parkingDurationAdjustment: `NotAdjusted` (enum) 
+            + NotAdjusted
+            + DurationIncreased
+            + DurationDecreased
+        + licensePlate: `ABC123` (string) - The license plate of the vehicle that is parked
+        + quoteItems : (array[string])
+            + quoteItemType
+                + promotion
+            + name
+            + costAmount
+                + amount
+                + currency
+         
 + Response 200 (application/json)
-    + Attributes (GetParkingQuoteResponse)
+    Content-Type: application/json
 
     {
-        "locationId": "40002",
+        "locationId": "40006",
         "stall": "123",
         "quoteDate":"2015-06-25T18:00:00-0000",
         "totalCost": {
                "amount": 5.00,
-               "currencyCodeISO4217": "CAD"
+               "currency": "CAD"
         },
         "parkingAccountId": "56514ff5-44fc-463b-820f-1d47393e1703",
         "parkingStartTime": "2014-12-29T22:00:00-0000",
@@ -598,21 +623,21 @@ Retrieve a parking quote detail
             "name": "Parking",
             "costAmout":{
                 "amount":9.00,
-                "currencyCodeISO4217":"CAD"
+                "currency":"CAD"
             }
-            },{
+        },{
             "quoteItemType":"convenienceFee",
             "name": "Convenience Fee",
             "costAmount": {
                 "amount": 1.00,
-                "currencyCodeISO4217": "CAD"
+                "currency": "CAD"
             }
-            },{
+        },{
             "quoteItemType":"promotion",
             "name": "COV electric vehicle discount.",
             "costAmount": {
                 "amount": -5.00,
-                "currencyCodeISO4217": "CAD"
+                "currency": "CAD"
             }
         }]
     }
