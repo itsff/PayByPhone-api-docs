@@ -214,14 +214,14 @@ Get all vehicles from a User's Account.
             "id":"14890",
             "licensePlate":"TEST9233",
             "province":"BC",
-            "countryId":"CA",
+            "country":"CA",
             "vehicleType":"car"
         },
         {
             "id":"14891",
             "licensePlate":"TEST9233",
             "province":"BC",
-            "countryId":"CA",
+            "country":"CA",
             "vehicleType":"motorcycle"
         }
     ]
@@ -262,8 +262,8 @@ Get all vehicles from a User's Account.
 - LicensePlateInvalidFormat - License Plate is not a valid format. Minimum 2 characters, maximum 10 characters. A-Z and 0-9 characters only.
 - LicensePlateMustNotBeEmpty - License Plate must not be empty.
 - ProvinceDoesNotExist - Province does not exist. Valid provinces are Countries and Regions supported by API#Provinces
-- CountryIdMustNotBeEmpty - Country Id must not be empty.
-- CountryIdDoesNotExist - Country Id does not exist. Valid country ids are: CA, US, GB, AU, FR, CH. See Countries and Regions supported by API#Countries
+- CountryCodeMustNotBeEmpty - Country Code must not be empty.
+- CountryCodeDoesNotExist - Country Code does not exist. Valid country ids are: CA, US, GB, AU, FR, CH. See Countries and Regions supported by API#Countries
 - VehicleTypeMustNotBeEmpty - VehicleType Vehicle Type must not be empty.
 - VehicleTypeDoesNotExist - Vehicle Type does not exist. Valid types are: car, motorcycle, electricMotorcycle, heavyGoodsVehicle
 - JsonReaderException - Provided json is in an invalid format
@@ -274,7 +274,7 @@ Get all vehicles from a User's Account.
     {
         "licensePlate":"TEST9233",
         "province":"BC",
-        "countryId":"CA",
+        "countryCode":"CA",
         "vehicleType":"car"
     }
 
@@ -288,29 +288,6 @@ Get all vehicles from a User's Account.
 
 ## Manage a vehicle belonging to a parking account [/parking/accounts/{accountId}/vehicles/{vehicleId}]
 
-### Get a specific vehicle belonging to a parking account [GET]
-
-**Possible Response Codes**
-
-- 200 - Ok
-- 401 - Unauthorized
-- 403 - Forbidden
-- 404 - Not Found
-
-+ Request Contract
-
-    Header: Authorization: Bearer <token>
-
-+ Response 200
-    [
-        {
-            "id":"14890",
-            "licensePlate":"TEST9233",
-            "province":"BC",
-            "countryId":"CA",
-            "vehicleType":"car"
-        }
-    ]
 
 ### Update a vehicle on a parking account [PUT]
 
@@ -327,7 +304,7 @@ Get all vehicles from a User's Account.
         {
              "parkingAccountId": "23fccd39-70c2-446f-915c-6d2362b64e28",
              "vehicleId": "12793707",
-             "countryId": "CA",
+             "countryCode": "CA",
              "licensePlate": "GGG328",
              "province": "MB",
              "vehicleType": "motorcycle",
@@ -347,8 +324,8 @@ Get all vehicles from a User's Account.
 - LicensePlateInvalidFormat - License Plate is not a valid format. Minimum 2 characters, maximum 10 characters. A-Z and 0-9 characters only.
 - LicensePlateMustNotBeEmpty - License Plate must not be empty.
 - ProvinceDoesNotExist - Province does not exist. Valid provinces are Countries and Regions supported by API#Provinces
-- CountryIdMustNotBeEmpty - Country Id must not be empty.
-- CountryIdDoesNotExist - Country Id does not exist. Valid country ids are: CA, US, GB, AU, FR, CH. See Countries and Regions supported by API#Countries
+- CountryCodeMustNotBeEmpty - Country Code must not be empty.
+- CountryCodeDoesNotExist - Country Code does not exist. Valid country ids are: CA, US, GB, AU, FR, CH. See Countries and Regions supported by API#Countries
 - VehicleTypeMustNotBeEmpty - Vehicle Type must not be empty.
 - VehicleTypeDoesNotExist - Vehicle Type does not exist. Valid types are: car, motorcycle, electricMotorcycle, heavyGoodsVehicle
 - VehicleIdInvalidFormat - Vehicle Id must be an integer.
@@ -361,7 +338,7 @@ Get all vehicles from a User's Account.
         {
             "licensePlate":"TEST9233",
             "province":"BC",
-            "countryId":"CA",
+            "countryCode":"CA",
             "vehicleType":"car"
         }
 
