@@ -507,7 +507,7 @@ Delete a vehicle from a parking account
         }
     ]
 
-## Get a parking quote [/parking/accounts/{parkingAccountGuid}/quote?locationId={locationId}&startTime={StartTime}&timeUnit={TimeUnit}&quantity={Quantity}&licensePlate={LicensePlate}&stall={stall}&isExtend={isExtend}&ratePolicyId={ratePolicyId}]
+## Get a parking quote [/parking/accounts/{parkingAccountGuid}/quote?locationId={locationId}&timeUnit={TimeUnit}&quantity={Quantity}&licensePlate={LicensePlate}&stall={stall}&isExtend={isExtend}&ratePolicyId={ratePolicyId}]
 
 ### Retrieve a parking quote detail [GET]
 
@@ -521,7 +521,6 @@ Retrieve a parking quote detail
 **Responsee Failure Reasons**
 
 - LocationInvalidFormat - LocationId could not be converted to an integer format.
-- StartTimeInvalidFormat - StartTime could not be converted to a date format
 - TimeUnitInvalidFormat - Time unit is not in the accepted time units enumeration.
 - Value is not valid for Quantity - Error thrown when the quantity parameter could not be converted to an integer format.
 - QuantityInvalidFormat - Quantity can not be zero.
@@ -531,7 +530,6 @@ Retrieve a parking quote detail
 + Parameters
     + parkingAccountGuid: `b12e8e08-ee59-4774-8062-a40401272436` (required, guid) - GUID of the user parking account.
     + locationId: `40002` (required, string) - Location ID. Note that this can not be a reverse lookup stall, such as in the location details endpoint
-    + startTime: `2015-08-28T20:56:00-0000` (required, dateTime) - StartTime of the rate calculation, in UTC
     + timeUnit: `1` (required, enum) - Time unit enumeration, as described in Time Units table below.
         + 1 (string) - Minute
         + 2 (string) - Hours
