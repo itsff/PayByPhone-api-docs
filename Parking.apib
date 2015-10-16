@@ -544,8 +544,8 @@ Retrieve a parking quote detail
 + Parameters
     + parkingAccountGuid: `b12e8e08-ee59-4774-8062-a40401272436` (required, guid) - GUID of the user parking account.
     + locationId: `40002` (required, string) - Location ID. Note that this can not be a reverse lookup stall, such as in the location details endpoint
-    + timeUnit: `1` (required, enum) - Time unit enumeration, as described in Time Units table below.
-        + 1 (string) - Minute
+    + timeUnit: `Minutes` (required, string) - Time unit enumeration string, as described in Time Units table below. Either the name or the value.
+        + 1 (string) - Minutes
         + 2 (string) - Hours
         + 3 (string) - Days
         + 4 (string) - Weeks
@@ -553,12 +553,25 @@ Retrieve a parking quote detail
         + 6 (string) - HalfHour
         + 7 (string) - MidnightCurrentDay
         + 8 (string) - CalendarDays
-        + 9 (string) - TimeBucket
+        + 9 (string) - TimeBucket 
         + 10 (string) - SingleHour
         + 11 (string) - WeekdaysStartMonday
         + 12 (string) - CalendarWeeks
-        + 0 (string) - NotSpecified
-        + 0 (string) - Unknown
+        + 0 (string) - NotSpecified/Unknown
+        + Minutes (string)
+        + Hours (string)
+        + Days (string)
+        + Weeks (string)
+        + Months (string)
+        + HalfHour (string)
+        + MidnightCurrentDay (string)
+        + CalendarDays (string)
+        + TimeBucket (string)
+        + SingleHour (string)
+        + WeekdaysStartMonday (string)
+        + CalendarWeeks (string)
+        + NotSpecified (string)
+        + Unknown (string)
 
     + quantity: `60` (required, int) - Number of time units.
     + licensePlate: `273cvn` (optional, string) - License plate being parked. Used to calculate promotion discounts.
