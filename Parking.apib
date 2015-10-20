@@ -100,8 +100,10 @@
             "stall": 0,
             "licensePlate": "TEST111",
             "parkingAccountId": "8c12d339-b0e4-49b2-838a-9ff4fa379951",
-            "durationRequestedValue": 9,
-            "durationRequestedTimeUnits": "Hours",
+            "duration":{
+                    "timeUnit":Hours",
+                    "quantity":"9"
+                },
             "startTime": "2015-09-24T10:45:00Z",
             "cvv": "****",
             "$type": "StartParkingRequested"
@@ -115,8 +117,9 @@
         + `locationId`:`70000` (required, string) - The lot ID of the location where the user wants to park
         + `stall`:`1` (required, string) - The stall number of the location where the user wants to park
         + `licensePlate`:`ABC123` (required, string) - The license plate of the vehicle that is parked
-        + `durationTimeUnits`:`Hour` (required, string) - "Hours", "Minutes", "CalendarDays", "MidnightCurrentDay", "Months" (more options to be added soon)
-        + `durationValue`:`1` (required, string) - How many minutes or hours the user wants to park
+        + `duration`: (required, duration) -  The duration of the parking session
+            + `timeUnit`: `Minutes` (required, string) - TimeUnit Enumeration name or value. "Minutes", "Hours", "Days", "Weeks", "Months", "HalfHour", "MidnightCurrentDay", "CalendarDays", "TimeBucket", "SingleHour", "WeekdaysStartMonday", "CalendarWeeks", "NotSpecified", "Unknown"
+            + `quantity`: `1` (required, string) - How many minutes or hours the user wants to park
         + `cvv`:`111` (required, string) - The CV2 code from the user's payment card
         + `startTime`:`2015-07-28T20:40:00-0000` (required, string) - The start time of the transaction to be started. Must be within 3 minutes of the current time.
     + Body 
@@ -125,8 +128,10 @@
                 "locationId":"70000",
                 "stall":"1",
                 "licensePlate":"ABC123",
-                "durationTimeUnits":"Hour",
-                "durationValue":"1",
+                "duration":{
+                    "timeUnit":Hours",
+                    "quantity":"1"
+                },
                 "cvv":"111",
                 "startTime": "2015-07-28T20:40:00-0000"
             }
