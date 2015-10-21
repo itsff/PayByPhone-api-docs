@@ -93,22 +93,6 @@
             "$type":"StartParkingFailed"
         }
 
-- StartParkingRequested
-        
-        {
-            "locationId": 3107,
-            "stall": 0,
-            "licensePlate": "TEST111",
-            "parkingAccountId": "8c12d339-b0e4-49b2-838a-9ff4fa379951",
-            "duration":{
-                    "timeUnit":Hours",
-                    "quantity":"9"
-                },
-            "startTime": "2015-09-24T10:45:00Z",
-            "cvv": "****",
-            "$type": "StartParkingRequested"
-        }
-
 + Parameters
     + accountId: `1b98d239-8de8-4111-9d7d-562fc31c193a` (required, string) - Parking account id.
 
@@ -263,7 +247,7 @@ Get all vehicles from a User's Account.
              "vehicleId": "12793707",
              "countryCode": "CA",
              "licensePlate": "GGG328",
-             "province": "MB",
+             "jurisdiction": "MB",
              "vehicleType": "car",
              "$type": "VehicleAdded"
         }
@@ -271,8 +255,8 @@ Get all vehicles from a User's Account.
 - AddVehicleFailed
 
         {
-            "Data": [ {"Province": "BC"}, {"CountryId": "AU"} ],
-            "FailureReason":"ProvinceDoesNotMatchCountry",
+            "Data": [ {"jurisdiction": "BC"}, {"CountryId": "AU"} ],
+            "FailureReason":"jurisdictionDoesNotMatchCountry",
             "$type":"AddVehicleFailed"
         }
 
@@ -280,19 +264,19 @@ Get all vehicles from a User's Account.
 
 - LicensePlateInvalidFormat - License Plate is not a valid format. Minimum 2 characters, maximum 10 characters. A-Z and 0-9 characters only.
 - LicensePlateMustNotBeEmpty - License Plate must not be empty.
-- ProvinceDoesNotExist - Province does not exist. Valid provinces are Countries and Regions supported by API#Provinces
+- jurisdictionDoesNotExist - Jurisdiction does not exist. Valid jurisdictions are Countries and Regions supported by API#Provinces
 - CountryCodeMustNotBeEmpty - Country Code must not be empty.
 - CountryCodeDoesNotExist - Country Code does not exist. Valid country ids are: CA, US, GB, AU, FR, CH. See Countries and Regions supported by API#Countries
 - VehicleTypeMustNotBeEmpty - VehicleType Vehicle Type must not be empty.
 - VehicleTypeDoesNotExist - Vehicle Type does not exist. Valid types are: car, motorcycle, electricMotorcycle, heavyGoodsVehicle
 - JsonReaderException - Provided json is in an invalid format
-- ProvinceDoesNotMatchCountry - Provided country does not contain provided province.
+- JurisdictionDoesNotMatchCountry - Provided country does not contain provided jurisdiction.
 
 + Request
 
     {
         "licensePlate":"TEST9233",
-        "province":"BC",
+        "jurisdiction":"BC",
         "countryCode":"CA",
         "vehicleType":"car"
     }
@@ -325,15 +309,15 @@ Get all vehicles from a User's Account.
              "vehicleId": "12793707",
              "countryCode": "CA",
              "licensePlate": "GGG328",
-             "province": "MB",
+             "jurisdiction": "MB",
              "vehicleType": "motorcycle",
              "$type": "VehicleUpdated"
         }
 
 - UpdateVehicleFailed
         {
-            "Data": [ {"Province": "BC"}, {"CountryId": "AU"} ],
-            "FailureReason":"ProvinceDoesNotMatchCountry",
+            "Data": [ {"jurisdiction": "BC"}, {"CountryId": "AU"} ],
+            "FailureReason":"JurisdictionDoesNotMatchCountry",
             "$type":"AddVehicleFailed"
         }
 
@@ -342,7 +326,7 @@ Get all vehicles from a User's Account.
 - VehicleNotFound - Vehicle with vehicle Id not found.
 - LicensePlateInvalidFormat - License Plate is not a valid format. Minimum 2 characters, maximum 10 characters. A-Z and 0-9 characters only.
 - LicensePlateMustNotBeEmpty - License Plate must not be empty.
-- ProvinceDoesNotExist - Province does not exist. Valid provinces are Countries and Regions supported by API#Provinces
+- JurisdictionDoesNotExist - Jurisdiction does not exist. Valid jurisdictions are Countries and Regions supported by API#Provinces
 - CountryCodeMustNotBeEmpty - Country Code must not be empty.
 - CountryCodeDoesNotExist - Country Code does not exist. Valid country ids are: CA, US, GB, AU, FR, CH. See Countries and Regions supported by API#Countries
 - VehicleTypeMustNotBeEmpty - Vehicle Type must not be empty.
@@ -356,7 +340,7 @@ Get all vehicles from a User's Account.
     Body:
         {
             "licensePlate":"TEST9233",
-            "province":"BC",
+            "jurisdiction":"BC",
             "countryCode":"CA",
             "vehicleType":"car"
         }
