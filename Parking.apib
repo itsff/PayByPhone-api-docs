@@ -669,7 +669,7 @@ Retrieve a parking quote detail
 
 ## Parking location details [/parking/locations/{advertisedLocationNumber}?countryCode={countryCode}&stall={stall}]
 
-### Get an individual location detail [GET]
+### Get an individual location detail AASDASDASD [GET]
 
 **Max Stays Remarks and Examples**
 - MaxStayCouldNotBeVerified - The maximum stay could not be accurately determined. The app should not show any message regarding max stay at the parking step, before the user enters duration.
@@ -745,69 +745,3 @@ Retrieve a parking quote detail
             "isReverseStallLookup": false,
             "paymentTypes": [Visa, Mastercard, Amex]
         }]
-
-## Parking Rate Options [parking/locations/{locationId}/rateOptions?parkingAccountId={parkingAccountId}&licensePlate={licensePlate}]
-
-### Get a Parking Rate Options [GET]
-
-**Response Codes**
-
-- 200 - OK
-- 400 - Bad request
-- 404 - Not Found
-
-+ Request
-    Header: Authorization: Bearer <token>
-
-+ Parameters
-    + locationId: `75001` (required, string) - LocationId in the database
-    + parkingAccountId: `b12e8e08-ee59-4774-8062-a40401272436` (optional, guid)
-    + licensePlate: `ABC123` (optional, guid) - The license plate. When you provide a license plate you *must* provide a `parkingAccountId`
-
-+ Response
-    + Attributes
-        + name: The name of the eligibility
-        + type: The type of the eligibility
-        + ratePolicyId: The ID of the rate policy
-        + maxStayDuration:
-            + durationType: The time unit of the duration
-            + quantity: The amount of time units of the duration
-        + maxStayStatus: The status of the max stay
-        + acceptedTimeUnits: (array[string]) The time units accepted for this rate option
-        + isDefault: (boolean) If it is the default rate option
-
-+ Response 200 (application/json)
-    Content-Type: application/json
-
-    [
-        {
-            "name": "Professionel",
-            "type": "PRO",
-            "ratePolicyId": "75001",
-            "maxStayDuration": {
-              "durationType": "Minute",
-              "quantity": 150
-            },
-            "maxStayStatus": "ParkingAllowed",
-            "acceptedTimeUnits": [
-                "Minutes",
-                "Hours"
-            ],
-            "isDefault": false
-      },
-      {
-            "name": "Visiteur",
-            "type": "VIS",
-            "ratePolicyId": "75001",
-            "maxStayDuration": {
-                "durationType": "Minute",
-                "quantity": 120
-            },
-            "maxStayStatus": "ParkingAllowed",
-            "acceptedTimeUnits": [
-            "Minutes",
-            "Hours"
-            ],
-            "isDefault": true
-      }
-    ]
