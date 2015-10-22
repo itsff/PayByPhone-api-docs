@@ -746,16 +746,14 @@ Retrieve a parking quote detail
             "paymentTypes": [Visa, Mastercard, Amex]
         }]
 
-## Parking location details [/parking/locations/{advertisedLocationNumber}?countryCode={countryCode}&stall={stall}]
+## Parking Rate Options [parking/locations/{locationId}/rateOptions?parkingAccountId={parkingAccountId}&licensePlate={licensePlate}]
 
-### Get an individual location detail [GET]
+### Get a Parking Rate Option [GET]
 
-**Max Stays Remarks and Examples**
-- MaxStayCouldNotBeVerified - The maximum stay could not be accurately determined. The app should not show any message regarding max stay at the parking step, before the user enters duration.
-- NoMaxStay - The location does not have a max stay. User can park for any duration. The app should not show any message regarding max stay at the parking step, before the user enters duration.
-- ParkingAllowed currentMaxStayInSeconds: 7200 - User can only park for 7200 seconds. The app is safe to show a message regarding this limit. 
-- ParkingAllowed currentMaxStayInSeconds: 0 - Even though parking is allowed, we could not accurately determine the exact maximum allowed duration. The app should not show any message regarding max stay at the parking step, before the user enters duration.
-- ParkingNotAllowed - Parking is not allowed at the time of calling this endpoint. The app is safe to show a "no parking at this time" message. 
+**Response codes**
+- 200 - OK
+- 400 - Bad Request
+- 404 - Not Found
 
 + Request
     Header: Authorization: Bearer <token>
