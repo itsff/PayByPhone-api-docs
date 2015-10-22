@@ -746,6 +746,81 @@ Retrieve a parking quote detail
             "paymentTypes": [Visa, Mastercard, Amex]
         }]
 
-## Parking Rate Options [parking/locations/{locationId}/rateOptions?parkingAccountId={parkingAccountId}&licensePlate={licensePlate}]
+## Parking location details [/parking/locations/{advertisedLocationNumber}?countryCode={countryCode}&stall={stall}]
 
-### Get a Parking Rate Options [GET]
+### Get an individual location detail [GET]
+
+**Max Stays Remarks and Examples**
+- MaxStayCouldNotBeVerified - The maximum stay could not be accurately determined. The app should not show any message regarding max stay at the parking step, before the user enters duration.
+- NoMaxStay - The location does not have a max stay. User can park for any duration. The app should not show any message regarding max stay at the parking step, before the user enters duration.
+- ParkingAllowed currentMaxStayInSeconds: 7200 - User can only park for 7200 seconds. The app is safe to show a message regarding this limit. 
+- ParkingAllowed currentMaxStayInSeconds: 0 - Even though parking is allowed, we could not accurately determine the exact maximum allowed duration. The app should not show any message regarding max stay at the parking step, before the user enters duration.
+- ParkingNotAllowed - Parking is not allowed at the time of calling this endpoint. The app is safe to show a "no parking at this time" message. 
+
++ Request
+    Header: Authorization: Bearer <token>
+
++ Parameters
+    + advertisedLocationNumber: `10` (required, string) - Can either be a Lot ID or a Stall, if the location supports reverse lookup.
+    + countryCode: `CA` (optional, string) - Country ISO 3166 code of the location.
+    + stall: `1` (optional, string) - If the location is stallbased then you can pass the stall number either to verify its existence or to get the location in case the stall belongs to another lot in the same group. 
+
++ Response
+
+    + Attributes
+        + paymentTypes: `Visa` (array[string]) - List of valid payment types for given location.
+            + Visa (string)
+            + Mastercard (string)
+            + Amex (string)
+            + Discover (string)
+            + DebitCard (string)
+            + PaypointCash (string)
+        + currentMaxStayInSeconds: `86400` (string) - Number of seconds that a user is allowed to park at the moment of calling this endpoint. 
+        + maxStayStatus: `ParkingAllowed` (enum) - Enumeration. Valid items are
+            + MaxStayCouldNotBeVerified (string)
+            + ParkingAllowed (string)
+            + ParkingNotAllowed (string)
+            + NoMaxStay (string)
+        + status: `lotOpen` (enum) - Enumeration. Valid items are
+            + lotOpen
+            + lotClosed
+            + lotYetToBeActiviated
+        + defaultTimeUnit: `Hours` (string) - The units most commonly used to park at this location. Valid items are.
+            + Minutes
+            + Hours
+            + Days
+            + Weeks
+            + Months
+            + HalfHour
+            + MidnightCurrentDay
+            + CalendarDays
+            + TimeBucket
+            + SingleHour
+            + WeekdaysStartMonday
+            + CalendarWeeks
+        + lotMessages: (string) - A collection if key/value pairs that contain messages and the culture they belong to.
+    
++ Response 200
+    Content-Type: application/json
+        [{
+            "locationNumber": 10,
+            "name": "1160 Burrard Street",
+            "vendor": "Impark Vancouver",
+            "status": "lotOpen",
+            "extendNotAllowed": false,
+            "isStallBased": false,
+            "isPlateBased": true,
+            "currency": "CAD",
+            "country": "CA",
+            "defaultTimeUnit": "Hours",
+            "promptForCvv": false,
+            "currentMaxStayInSeconds": 86400,
+            "maxStayStatus": "ParkingAllowed",
+            "latitude": 49.2794818,
+            "longitude": -123.1285743,
+            "validIn": ["CA"],
+            "lotMessages": [],
+            "stall": "",
+            "isReverseStallLookup": false,
+            "paymentTypes": [Visa, Mastercard, Amex]
+        }]
