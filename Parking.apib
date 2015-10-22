@@ -775,27 +775,38 @@ Retrieve a parking quote detail
         + acceptedTimeUnits: (array[string]) The time units accepted for this rate option
         + isDefault: (boolean) If it is the default rate option
 
-+ Response 200
++ Response 200 (application/json)
     Content-Type: application/json
-        [{
-            "locationNumber": 10,
-            "name": "1160 Burrard Street",
-            "vendor": "Impark Vancouver",
-            "status": "lotOpen",
-            "extendNotAllowed": false,
-            "isStallBased": false,
-            "isPlateBased": true,
-            "currency": "CAD",
-            "country": "CA",
-            "defaultTimeUnit": "Hours",
-            "promptForCvv": false,
-            "currentMaxStayInSeconds": 86400,
+
+    [
+        {
+            "name": "Professionel",
+            "type": "PRO",
+            "ratePolicyId": "75001",
+            "maxStayDuration": {
+              "durationType": "Minute",
+              "quantity": 150
+            },
             "maxStayStatus": "ParkingAllowed",
-            "latitude": 49.2794818,
-            "longitude": -123.1285743,
-            "validIn": ["CA"],
-            "lotMessages": [],
-            "stall": "",
-            "isReverseStallLookup": false,
-            "paymentTypes": [Visa, Mastercard, Amex]
-        }]
+            "acceptedTimeUnits": [
+                "Minutes",
+                "Hours"
+            ],
+            "isDefault": false
+      },
+      {
+            "name": "Visiteur",
+            "type": "VIS",
+            "ratePolicyId": "75001",
+            "maxStayDuration": {
+                "durationType": "Minute",
+                "quantity": 120
+            },
+            "maxStayStatus": "ParkingAllowed",
+            "acceptedTimeUnits": [
+            "Minutes",
+            "Hours"
+            ],
+            "isDefault": true
+      }
+    ]
