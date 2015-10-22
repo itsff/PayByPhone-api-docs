@@ -764,40 +764,17 @@ Retrieve a parking quote detail
     + licensePlate: `ABC123` (optional, guid) - The license plate. When you provide a license plate you *must* provide a `parkingAccountId`
 
 + Response
-
     + Attributes
-        + paymentTypes: `Visa` (array[string]) - List of valid payment types for given location.
-            + Visa (string)
-            + Mastercard (string)
-            + Amex (string)
-            + Discover (string)
-            + DebitCard (string)
-            + PaypointCash (string)
-        + currentMaxStayInSeconds: `86400` (string) - Number of seconds that a user is allowed to park at the moment of calling this endpoint. 
-        + maxStayStatus: `ParkingAllowed` (enum) - Enumeration. Valid items are
-            + MaxStayCouldNotBeVerified (string)
-            + ParkingAllowed (string)
-            + ParkingNotAllowed (string)
-            + NoMaxStay (string)
-        + status: `lotOpen` (enum) - Enumeration. Valid items are
-            + lotOpen
-            + lotClosed
-            + lotYetToBeActiviated
-        + defaultTimeUnit: `Hours` (string) - The units most commonly used to park at this location. Valid items are.
-            + Minutes
-            + Hours
-            + Days
-            + Weeks
-            + Months
-            + HalfHour
-            + MidnightCurrentDay
-            + CalendarDays
-            + TimeBucket
-            + SingleHour
-            + WeekdaysStartMonday
-            + CalendarWeeks
-        + lotMessages: (string) - A collection if key/value pairs that contain messages and the culture they belong to.
-    
+        + name: The name of the eligibility
+        + type: The type of the eligibility
+        + ratePolicyId: The ID of the rate policy
+        + maxStayDuration:
+            + durationType: The time unit of the duration
+            + quantity: The amount of time units of the duration
+        + maxStayStatus: The status of the max stay
+        + acceptedTimeUnits: (array[string]) The time units accepted for this rate option
+        + isDefault: (boolean) If it is the default rate option
+
 + Response 200
     Content-Type: application/json
         [{
