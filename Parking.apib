@@ -175,8 +175,9 @@
 
 + Request 
     + Attributes (application/json)
-        + `durationTimeUnits`:`Hour` (required, string) - "Hours" or "Minutes" or "CalendarDays" (more options to be added soon)
-        + `durationValue`:`1` (required, string) - How many minutes or hours the user wants to park
+        + `duration`: (required, duration) -  The duration of the parking session
+            + `timeUnit`: `Minutes` (required, string) - TimeUnit Enumeration name or value. "Minutes", "Hours", "Days", "Weeks", "Months", "HalfHour", "MidnightCurrentDay", "CalendarDays", "TimeBucket", "SingleHour", "WeekdaysStartMonday", "CalendarWeeks", "NotSpecified", "Unknown"
+            + `quantity`: `1` (required, string) - How many minutes or hours the user wants to park
         + `cvv`:`111` (required, string) - The CV2 code from the user's payment card
     + Headers
         Authorization: Bearer <token> 
@@ -184,8 +185,10 @@
         [
             {
                 "parkingSessionId":"2bf49b64-28cd-4fc7-96e4-a44b010bf6ea",
-                "durationTimeUnits":"Hour",
-                "durationValue":"1",
+                "duration":{
+                    "timeUnit":Hours",
+                    "quantity":"1"
+                },
                 "cvv":"111"
             }
         ]
