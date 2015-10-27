@@ -1,3 +1,4 @@
 ## Versioning
-
-PBP's API's use an 
+Each endpoint in PayByPhone's API is separately versionable. The `X-Pbp-Version` header is used
+to indicate which version of the endpoint the caller which to invoke. An example to invoke a
+version 2 of a resource would be to add the following HTTP Header to the request `X-Pbp-Version: 2`
