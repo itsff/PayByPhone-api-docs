@@ -15,9 +15,13 @@ Get event(s) generated under a specific workflowId.
 
             [{
                 "$type" : "Pbp.Contracts.Shared.Parking.Events.ParkingSessionCreated, Pbp.Contracts.Shared",
-                "vehiclePlate" : "WEST111",
-                "vehicleState" : "BC",
-                "vehicleType" : "Car",
+                "vehicle":{
+                     "id":1234,
+                     "licensePlate":"ABC123",
+                     "jurisdiction":"BC",
+                     "countryCode":"CA",
+                     "type":"motorcycle"
+                },
                 "locationId" : 8990,
                 "parkingSessionId" : "4f53q912-561a-48ff-b31b-00d600a2544e",
                 "vendorLocationId" : "ZZ2532",
@@ -25,7 +29,7 @@ Get event(s) generated under a specific workflowId.
                 "startTime" : "2014-08-17T17:12:47.2834849Z",
                 "expireTime" : "2014-08-17T17:42:47.2834849Z",
                 "vendorId" : 504,
-                "account" : "76662345678"
+                "parkingAccountId" : "76662345678"
             },
             {
                 "$type" : "Pbp.Contracts.Shared.Parking.Events.ParkingSessionExtended, Pbp.Contracts.Shared",
@@ -126,7 +130,7 @@ Get event(s) generated under a specific workflowId.
                  },
                  "cvv": "****",
                  "$type": "Pbp.Contracts.Shared.Parking.Events.ExtendParkingRequested, Pbp.Contracts.Shared"
-            },
+            },          
             {
                 "$type": "Pbp.Contracts.Shared.UserAccounts.Events.UserAccountPasswordChanged, Pbp.Contracts.Shared",
                 "userAccountId": "8d21a912-561a-48ff-b31b-00d600a2544e",
@@ -149,9 +153,13 @@ Workflow is identified by the workflowId.
         Content-Type: application/json
         [{
             "$type" : "Pbp.Contracts.Shared.Parking.Events.ParkingSessionCreated, Pbp.Contracts.Shared",
-            "vehiclePlate" : "WEST111",
-            "vehicleState" : "BC",
-            "vehicleType" : "Car",
+            "vehicle":{
+                    "id":1234,
+                    "licensePlate":"ABC123",
+                    "jurisdiction":"BC",
+                    "countryCode":"CA",
+                    "type":"motorcycle"
+            },
             "locationId" : 8990,
             "parkingSessionId" : "4f53q912-561a-48ff-b31b-00d600a2544e",
             "vendorLocationId" : "ZZ2532",
@@ -159,7 +167,7 @@ Workflow is identified by the workflowId.
             "startTime" : "2014-09-17T17:12:47.2834849Z",
             "expireTime" : "2014-09-17T17:42:47.2834849Z",
             "vendorId" : 504,
-            "account" : "76662345678"
+            "parkingAccountId" : "76662345678"
         },
         {
             "$type" : "Pbp.Contracts.Shared.Parking.Events.ParkingSessionExtended, Pbp.Contracts.Shared",

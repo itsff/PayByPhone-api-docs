@@ -29,21 +29,29 @@
 + Response 200 
     + Attributes (application/json)
         + `parkingSessionId`:`de9bd239-44f3-483e-9fd4-7c98567da200` (string) - The parking session ID, this is needed if you want to extend an existing parking session (NOTE: this property will soon be renamed to parkingSessionId)
-        + `locationNumber`:`5594` (string) - The Lot ID where the user is parked
-        + `licensePlate`:`TEST111` (string) - The license plate of the vehicle that is parked
-        + `durationInMinutes`:`464` (string) - The total duration of the parking session from the start-time
-        + `startTime`:`2015-09-01T16:16:00.000Z` (string) - The total duration of the parking session from the start-time
-        + `stallId`:`82445` (string) - Stall where the vehicle is parked if the parking session took place in a stall, null otherwise.
+        + `locationId`: `5594` (string) - The Lot ID where the user is parked
+        + `vehicle`: (required, duration) -  The duration of the parking session
+            + `id`: 1234 (required, int) - The ID of the vehicle that is parked.
+            + `licensePlate`: `ABC123` (string) - The license plate of the vehicle that is parked
+            + `jurisdiction`: `BC` (required, string) - Jurisdiciton the parked vehicle is registered in. Valid jurisdictions are Countries and Regions supported by API#Provinces
+            + `countryCode`: `CA` (optional, string) - Country ISO 3166 code of the location.
+            + `type`: `motorcycle` (required, string) - Vehicle Type. Valid types are: car, motorcycle, electricMotorcycle, heavyGoodsVehicle
+        + `startTime`: `2015-09-01T16:16:00.000Z` (string) - The total duration of the parking session from the start-time
+        + `stall`: `82445` (string) - Stall where the vehicle is parked if the parking session took place in a stall, null otherwise.
     + Body 
         [
             {
                 "parkingSessionId":"de9bd239-44f3-483e-9fd4-7c98567da200",
-                "locationNumber":"5594",
-                "vehicleId":"5415645",
-                "licensePlate":"TEST111",
-                "durationInMinutes":464,
+                "locationId":"5594",
+                "vehicle":{
+                    "id":1234,
+                    "licensePlate":"ABC123",
+                    "jurisdiction":"BC",
+                    "countryCode":"CA",
+                    "type":"motorcycle"
+                },
                 "startTime":"2015-09-01T16:16:00.000Z",
-                "stallId":"82445"
+                "stall":"82445"
             }
         ]
 
