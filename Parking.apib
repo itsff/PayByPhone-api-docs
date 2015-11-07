@@ -697,61 +697,28 @@ Retrieve a parking quote detail
 + Response
 
     + Attributes
-        + paymentTypes: `Visa` (array[string]) - List of valid payment types for given location.
-            + Visa (string)
-            + Mastercard (string)
-            + Amex (string)
-            + Discover (string)
-            + DebitCard (string)
-            + PaypointCash (string)
-        + currentMaxStayInSeconds: `86400` (string) - Number of seconds that a user is allowed to park at the moment of calling this endpoint. 
-        + maxStayStatus: `ParkingAllowed` (enum) - Enumeration. Valid items are
-            + MaxStayCouldNotBeVerified (string)
-            + ParkingAllowed (string)
-            + ParkingNotAllowed (string)
-            + NoMaxStay (string)
         + status: `lotOpen` (enum) - Enumeration. Valid items are
             + lotOpen
             + lotClosed
-            + lotYetToBeActiviated
-        + defaultTimeUnit: `Hours` (string) - The units most commonly used to park at this location. Valid items are.
-            + Minutes
-            + Hours
-            + Days
-            + Weeks
-            + Months
-            + HalfHour
-            + MidnightCurrentDay
-            + CalendarDays
-            + TimeBucket
-            + SingleHour
-            + WeekdaysStartMonday
-            + CalendarWeeks
+            + lotYetToBeActivated
         + lotMessages: (string) - A collection if key/value pairs that contain messages and the culture they belong to.
     
 + Response 200
     Content-Type: application/json
-        [{
-            "locationNumber": 10,
-            "name": "1160 Burrard Street",
-            "vendor": "Impark Vancouver",
+        [{           
+            "locationId": "12345",
+            "name": "344th Street",
+            "vendorName": "COV",
             "status": "lotOpen",
-            "extendNotAllowed": false,
-            "isStallBased": false,
-            "isPlateBased": true,
+            "allowExtend": "false",
+            "isStallBased": "true",
+            "isPlateBased": "false",
             "currency": "CAD",
-            "country": "CA",
-            "defaultTimeUnit": "Hours",
-            "promptForCvv": false,
-            "currentMaxStayInSeconds": 86400,
-            "maxStayStatus": "ParkingAllowed",
-            "latitude": 49.2794818,
-            "longitude": -123.1285743,
-            "validIn": ["CA"],
+            "countryCode": "CA",
+            "promptForCvv": "true",
             "lotMessages": [],
-            "stall": "",
-            "isReverseStallLookup": false,
-            "paymentTypes": [Visa, Mastercard, Amex]
+            "stall": 123,
+            "isReverseLookup": "true"
         }]
 
 ## Parking Rate Options [/parking/locations/{locationId}/rateOptions?parkingAccountId={parkingAccountId}&licensePlate={licensePlate}]
