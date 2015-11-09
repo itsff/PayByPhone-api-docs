@@ -721,7 +721,7 @@ Retrieve a parking quote detail
             "isReverseLookup": "true"
         }]
 
-## Parking Rate Options [/parking/locations/{locationId}/rateOptions?parkingAccountId={parkingAccountId}&licensePlate={licensePlate}]
+## Parking Rate Options [/parking/locations/{locationId}/rateOptions?parkingAccountId={parkingAccountId}&licensePlate={licensePlate}&startTime={startTime}]
 
 ### Get a Parking Rate Option [GET]
 
@@ -731,6 +731,22 @@ Both `parkingAccountId` and `licensePlate` are optional. But if you provide a `l
 - 200 - OK
 - 400 - Bad Request
 - 404 - Not Found
+
+
+**Remarks**
+
+`/rateOptions` endpoint consumes the underlying `/restrictions` endpoint and will behave according to what it receives back from `/restrictions`:
+- When `maxStayStatus` is `parkingAllowed`
+    - `maxStayDuration` should have a `durationType` and `quantity`
+    - `acceptedTimeUnits` should have the accepted time units.
+
+- When `maxStayStatus` is `noMaxStay` then:
+    - `maxStayDuration` is null
+    - `acceptedTimeUnits` is should have the accepted time units
+
+- When `maxStayStatus` is `parkingNotAllowed`
+    - `maxStayDuration` is null
+    - `acceptedTimeUnits` is null
 
 + Request
     Header: Authorization: Bearer <token>
