@@ -2,7 +2,7 @@
 FeedItem resources
 
 ## Feeditems [/public/notifications/feedItems?since={since}&limit={limit}]
-Get item(s) from the member activity feed starting from a specific date and time.
+Get item(s) from the member activity feed starting from a specific date and time, returned in reverse chronological order.
 
 + Parameters
     + since (required, string, `2014-06-10T08:56:04.0000-0700`) ... Start date and time from which to retrieve the activity feed items
@@ -15,20 +15,20 @@ Get item(s) from the member activity feed starting from a specific date and time
     + Body
 
             [{
-                "subject": "Parking Complete",
-                "content": "Parking For:  \r\nLocation: 20506621 \r\nExpired: 03/07/2014 12:37 PM \r\nCost: $0.54\r\n",
-                "timeStampRfc3339": "2014-07-03T12:38:35Z",
-                "imageUrlPath": "http://paybyphone.co.uk/images/app_assets/pbp_icon.png",
-                "moreDetailsUrl": "http://www.google.com", 
-                "type": "Parking History"
-            },
-            {
                 "subject": "SFMTA Advisory",
                 "content": "Please be aware that MUNI will be closed for service upgrades on Wednesday nights from 3:00 am to 4:00 am.",
                 "timeStampRfc3339": "2014-07-08T15:42:12Z ",
                 "imageUrlPath": "https://si0.twimg.com/profile_images/3288835160/696dc7d131ccb873b1c399dcb08d0c8c.jpeg",
                 "moreDetailsUrl": "http://www.sfmta.com", 
-                "type": "Service Update"                
+                "type": "Service Update"
+            },
+            {
+                "subject": "Parking Complete",
+                "content": "Parking For:  \r\nLocation: 20506621 \r\nExpired: 03/07/2014 12:37 PM \r\nCost: $0.54\r\n",
+                "timeStampRfc3339": "2014-07-03T12:38:35Z",
+                "imageUrlPath": "http://paybyphone.co.uk/images/app_assets/pbp_icon.png",
+                "moreDetailsUrl": "http://www.google.com",
+                "type": "Parking History"
             }]
             
 ### Retrieve all feed items for a member [GET]
