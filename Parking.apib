@@ -675,9 +675,15 @@ Retrieve a parking quote detail
       }
     ]
 
-## Parking location details [/parking/locations/{advertisedLocationNumber}?countryCode={countryCode}&stall={stall}]
+## Parking location search [/parking/locations/?advertisedLocationNumber={advertisedLocationNumber}&countryCode={countryCode}&stall={stall}]
 
-### Get an individual location detail [GET]
+### Find zero or more locations' details [GET]
+
+**Response codes**
+- 200 - OK
+- 400 - Bad Request
+- 404 - Not Found
+- 500 - Internal Server Error
 
 **Max Stays Remarks and Examples**
 - MaxStayCouldNotBeVerified - The maximum stay could not be accurately determined. The app should not show any message regarding max stay at the parking step, before the user enters duration.
@@ -720,6 +726,56 @@ Retrieve a parking quote detail
             "stall": 123,
             "isReverseLookup": "true"
         }]
+
+## Parking location details [/parking/locations/{locationId}]
+
+### Get an individual location's details [GET]
+
+**Response codes**
+- 200 - OK
+- 400 - Bad Request
+- 404 - Not Found
+- 500 - Internal Server Error
+
+**Max Stays Remarks and Examples**
+- MaxStayCouldNotBeVerified - The maximum stay could not be accurately determined. The app should not show any message regarding max stay at the parking step, before the user enters duration.
+- NoMaxStay - The location does not have a max stay. User can park for any duration. The app should not show any message regarding max stay at the parking step, before the user enters duration.
+- ParkingAllowed currentMaxStayInSeconds: 7200 - User can only park for 7200 seconds. The app is safe to show a message regarding this limit. 
+- ParkingAllowed currentMaxStayInSeconds: 0 - Even though parking is allowed, we could not accurately determine the exact maximum allowed duration. The app should not show any message regarding max stay at the parking step, before the user enters duration.
+- ParkingNotAllowed - Parking is not allowed at the time of calling this endpoint. The app is safe to show a "no parking at this time" message. 
+
++ Request
+    Header: Authorization: Bearer <token>
+
++ Parameters
+    + locationId: `10` (required, string) - Must be a valid locationId.
+
++ Response
+
+    + Attributes
+        + status: `lotOpen` (enum) - Enumeration. Valid items are
+            + lotOpen
+            + lotClosed
+            + lotYetToBeActivated
+        + lotMessages: (string) - A collection if key/value pairs that contain messages and the culture they belong to.
+
++ Response 200
+    Content-Type: application/json
+        {
+            "locationId": "12345",
+            "name": "344th Street",
+            "vendorName": "COV",
+            "status": "lotOpen",
+            "allowExtend": "false",
+            "isStallBased": "true",
+            "isPlateBased": "false",
+            "currency": "CAD",
+            "countryCode": "CA",
+            "promptForCvv": "true",
+            "lotMessages": [],
+            "stall": 123,
+            "isReverseLookup": "true"
+        }
 
 ## Parking Rate Options [/parking/locations/{locationId}/rateOptions?parkingAccountId={parkingAccountId}&licensePlate={licensePlate}&startTime={startTime}]
 
