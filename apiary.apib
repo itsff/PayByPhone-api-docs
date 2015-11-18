@@ -1,8 +1,6 @@
 FORMAT: 1A
 
 # PayByPhone API
-
-
 This is a list of PayByPhone Apis
 
 ## Response Codes
@@ -18,14 +16,10 @@ Any code you write to call PayByPhone's APIs should expect to receive and handle
 
 Failed connection attempts should also be handled with exponential backoff.
 
-
-
 ## Versioning
 Each endpoint in PayByPhone's API is separately versionable. The `X-Pbp-Version` header is used
 to indicate which version of the endpoint the caller which to invoke. An example to invoke a
 version 2 of a resource would be to add the following HTTP Header to the request `X-Pbp-Version: 2`
-
-
 
 # Data Structures
 
@@ -90,8 +84,6 @@ version 2 of a resource would be to add the following HTTP Header to the request
 + issueNumber: `2` (number) - The issue number for the debit card.
 + startMonth: `2` (number) - Assigned by the API at the moment of creation.
 + startYear: `2012` (number) - Assigned by the API at the moment of creation.
-
-
 
 # Group Identity And Access
 
@@ -294,38 +286,6 @@ Change the password used to authenticate a user account
             }
 
 + Response 202
-
-
-# Group Events
-
-## Get events by workflow [GET /events/workflow/{id}]
-
-**Possible Response Codes**
-
-- 200 - OK
-- 400 - Bad Request
-- 401 - Unauthorized
-
-+ Parameters
-    + id: `b942cd39-60c5-4fdd-9b4f-2c6fe8a4ea26` (required, string) - Unique identifier of the workflow.
-
-+ Response 200 (application/json)
-    [
-        {
-            "$type": "PaymentAccountCreated",
-            "paymentAccountId": "7c3367cd-883b-47c2-bcf9-5043d6b8dea8",
-            "memberId": "c61a93b7-e506-4cd4-ab74-6340e6149736",
-            "maskedCardNumber": "411111------1111",
-            "expiryMonth": 12,
-            "expiryYear": 2015,
-            "nameOnCard": "John Smith",
-            "issueNumber": null,
-            "startMonth": null,
-            "startYear": null
-        }
-    ]
-
-
 # Group Parking
 
 ## Get current or historic parking sessions [/parking/accounts/{accountId}/sessions/?periodType=Current]
@@ -338,6 +298,7 @@ Change the password used to authenticate a user account
 - 400 - Bad Request
 - 401 - Unauthorized
 - 403 - Forbidden
+- 404 - Not Found
 
 + Request
     + Header
@@ -449,7 +410,7 @@ Change the password used to authenticate a user account
                 "stall":"1",
                 "licensePlate":"ABC123",
                 "duration":{
-                    "timeUnit":"Hours",
+                    "timeUnit":Hours",
                     "quantity":"1"
                 },
                 "cvv":"111",
@@ -522,7 +483,7 @@ Change the password used to authenticate a user account
             {
                 "parkingSessionId":"2bf49b64-28cd-4fc7-96e4-a44b010bf6ea",
                 "duration":{
-                    "timeUnit":"Hours",
+                    "timeUnit":Hours",
                     "quantity":"1"
                 },
                 "cvv":"111"
@@ -545,6 +506,7 @@ Get all vehicles from a User's Account.
 - 200 - Ok
 - 401 - Unauthorized
 - 403 - Forbidden
+- 404 - Not Found
 
 + Request Contract
 
@@ -576,6 +538,7 @@ Get all vehicles from a User's Account.
 - 400 - Bad Request
 - 401 - Unauthorized
 - 403 - Forbidden
+- 404 - Not Found
 
 **Possible events**
 
@@ -603,7 +566,7 @@ Get all vehicles from a User's Account.
 
 - LicensePlateInvalidFormat - License Plate is not a valid format. Minimum 2 characters, maximum 10 characters. A-Z and 0-9 characters only.
 - LicensePlateMustNotBeEmpty - License Plate must not be empty.
-- jurisdictionDoesNotExist - Jurisdiction does not exist. Valid jurisdictions are Countries and Regions supported by API#Provinces
+- JurisdictionDoesNotExist - Jurisdiction does not exist. Valid jurisdictions are Countries and Regions supported by API#Provinces
 - CountryCodeMustNotBeEmpty - Country Code must not be empty.
 - CountryCodeDoesNotExist - Country Code does not exist. Valid country ids are: CA, US, GB, AU, FR, CH. See Countries and Regions supported by API#Countries
 - VehicleTypeMustNotBeEmpty - VehicleType Vehicle Type must not be empty.
@@ -619,67 +582,6 @@ Get all vehicles from a User's Account.
         "countryCode":"CA",
         "vehicleType":"car"
     }
-
-+ Response 202 (application/json)
-    + Headers
-    
-        Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
-
-
-
-
-## Manage a vehicle belonging to a parking account [/parking/accounts/{accountId}/vehicles/{vehicleId}]
-
-
-### Update a vehicle on a parking account [PUT]
-
-**Possible Response Codes**
-
-- 403 - Forbidden
-
-**Possible events**
-
-- VehicleUpdated    
-        {
-             "parkingAccountId": "23fccd39-70c2-446f-915c-6d2362b64e28",
-             "vehicleId": "12793707",
-             "countryCode": "CA",
-             "licensePlate": "GGG328",
-             "jurisdiction": "MB",
-             "vehicleType": "motorcycle",
-             "$type": "VehicleUpdated"
-        }
-
-- UpdateVehicleFailed
-        {
-            "Data": [ {"jurisdiction": "BC"}, {"CountryId": "AU"} ],
-            "FailureReason":"JurisdictionDoesNotMatchCountry",
-            "$type":"AddVehicleFailed"
-        }
-
-**Validation Errors**
-
-- VehicleNotFound - Vehicle with vehicle Id not found.
-- LicensePlateInvalidFormat - License Plate is not a valid format. Minimum 2 characters, maximum 10 characters. A-Z and 0-9 characters only.
-- LicensePlateMustNotBeEmpty - License Plate must not be empty.
-- JurisdictionDoesNotExist - Jurisdiction does not exist. Valid jurisdictions are Countries and Regions supported by API#Provinces
-- CountryCodeMustNotBeEmpty - Country Code must not be empty.
-- CountryCodeDoesNotExist - Country Code does not exist. Valid country ids are: CA, US, GB, AU, FR, CH. See Countries and Regions supported by API#Countries
-- VehicleTypeMustNotBeEmpty - Vehicle Type must not be empty.
-- VehicleTypeDoesNotExist - Vehicle Type does not exist. Valid types are: car, motorcycle, electricMotorcycle, heavyGoodsVehicle
-- VehicleIdInvalidFormat - Vehicle Id must be an integer.
-- UserNotRegistered - Member not registered.
-- JsonReaderException - Provided json is in an invalid format.
-
-+ Request 
-
-    Body:
-        {
-            "licensePlate":"TEST9233",
-            "jurisdiction":"BC",
-            "countryCode":"CA",
-            "vehicleType":"car"
-        }
 
 + Response 202 (application/json)
     + Headers
@@ -723,7 +625,9 @@ Delete a vehicle from a parking account
     
         Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
 
-## Get parking preferences for the parking account [GET /parking/accounts/{accountId}/preferences]
+## Manage Parking Preferences [/parking/accounts/{accountId}/preferences]
+
+### Get parking preferences for the parking account [GET]
 
 **Possible Response Codes**
 
@@ -1003,9 +907,15 @@ Retrieve a parking quote detail
       }
     ]
 
-## Parking location details [/parking/locations/{advertisedLocationNumber}?countryCode={countryCode}&stall={stall}]
+## Parking location search [/parking/locations/?advertisedLocationNumber={advertisedLocationNumber}&countryCode={countryCode}&stall={stall}]
 
-### Get an individual location detail [GET]
+### Find zero or more locations' details [GET]
+
+**Response codes**
+- 200 - OK
+- 400 - Bad Request
+- 404 - Not Found
+- 500 - Internal Server Error
 
 **Max Stays Remarks and Examples**
 - MaxStayCouldNotBeVerified - The maximum stay could not be accurately determined. The app should not show any message regarding max stay at the parking step, before the user enters duration.
@@ -1048,6 +958,56 @@ Retrieve a parking quote detail
             "stall": 123,
             "isReverseLookup": "true"
         }]
+
+## Parking location details [/parking/locations/{locationId}]
+
+### Get an individual location's details [GET]
+
+**Response codes**
+- 200 - OK
+- 400 - Bad Request
+- 404 - Not Found
+- 500 - Internal Server Error
+
+**Max Stays Remarks and Examples**
+- MaxStayCouldNotBeVerified - The maximum stay could not be accurately determined. The app should not show any message regarding max stay at the parking step, before the user enters duration.
+- NoMaxStay - The location does not have a max stay. User can park for any duration. The app should not show any message regarding max stay at the parking step, before the user enters duration.
+- ParkingAllowed currentMaxStayInSeconds: 7200 - User can only park for 7200 seconds. The app is safe to show a message regarding this limit. 
+- ParkingAllowed currentMaxStayInSeconds: 0 - Even though parking is allowed, we could not accurately determine the exact maximum allowed duration. The app should not show any message regarding max stay at the parking step, before the user enters duration.
+- ParkingNotAllowed - Parking is not allowed at the time of calling this endpoint. The app is safe to show a "no parking at this time" message. 
+
++ Request
+    Header: Authorization: Bearer <token>
+
++ Parameters
+    + locationId: `10` (required, string) - Must be a valid locationId.
+
++ Response
+
+    + Attributes
+        + status: `lotOpen` (enum) - Enumeration. Valid items are
+            + lotOpen
+            + lotClosed
+            + lotYetToBeActivated
+        + lotMessages: (string) - A collection if key/value pairs that contain messages and the culture they belong to.
+
++ Response 200
+    Content-Type: application/json
+        {
+            "locationId": "12345",
+            "name": "344th Street",
+            "vendorName": "COV",
+            "status": "lotOpen",
+            "allowExtend": "false",
+            "isStallBased": "true",
+            "isPlateBased": "false",
+            "currency": "CAD",
+            "countryCode": "CA",
+            "promptForCvv": "true",
+            "lotMessages": [],
+            "stall": 123,
+            "isReverseLookup": "true"
+        }
 
 ## Parking Rate Options [/parking/locations/{locationId}/rateOptions?parkingAccountId={parkingAccountId}&licensePlate={licensePlate}&startTime={startTime}]
 
@@ -1132,8 +1092,6 @@ Both `parkingAccountId` and `licensePlate` are optional. But if you provide a `l
       }
     ]
 
-
-
 # Group Payment Methods
 
 Placeholder for Payment Methods endpoint documentation
@@ -1201,837 +1159,13 @@ Placeholder for Payment Methods endpoint documentation
         + paymentAccountId: `d6d1817e-98ee-4600-b82b-f1aace2abea5` (string) - Payment account Id
 
 + Response 202 (application/json)
-
-
 # Group Notifications Placeholder
 
 Placeholder for Notifications endpoint documentation
 
-
-# Group Vehicles
-Parking Vehicle resources
-
-## Vehicles [/public/parking/accounts/{userAccountId}/vehicles]
-The vehicles root resource
-
-+ Parameters
-    + userAccountId (required, string, `8d21a912-561a-48ff-b31b-00d600a2544e`) ... `userAccountId` of the UserAccount in the form of a GUID.
-
-+ Model (application/json)
-
-    JSON representation of Vehicles.
-
-    + Body
-
-            [{ 
-                "id": "abc-234", 
-                "userAccountId" : "8d21a912-561a-48ff-b31b-00d600a2544e",
-                "licensePlate": "ZZZ 666", 
-                "province" : "BC", 
-                "vehicleType" : 3 
-            }]
-
-
-
-## Vehicle [/public/parking/accounts/{userAccountId}/vehicles/{vehicleId}]
-An individual vehicle resource
-
-+ Parameters
-    + userAccountId (required, string, `8d21a912-561a-48ff-b31b-00d600a2544e`) ... `userAccountId` of the UserAccount in the form of a GUID.
-    + vehicleId (required, string, `fff-gr34-fff`) ... `vehicleId` of the Vehicle Resource to perform action with. Has example value.
-
-+ Model (application/json)
-
-    JSON representation of A Vehicle.
-
-    + Body
-
-            { 
-                "id": "abc-234", 
-                "userAccountId" : "8d21a912-561a-48ff-b31b-00d600a2544e",
-                "licensePlate": "ZZZ 666", 
-                "province" : "BC", 
-                "vehicleType" : 3 
-            }
-            
-### Retrieve an individual vehicle for user [GET]
-Get an individual vehicle from a User's Account.
-
-User is identified by the `userAccountId`.
-
-Vehicle is identified by the `vehicleId`.
-
-**Request Contract**
-
-    Header: Authorization: Bearer <token>
-
-**Response Contract**
-    
-    Content-Type: application/json
-    { 
-        "id": "", 
-        "userAccountId" : "",
-        "licensePlate": "", 
-        "province" : "", 
-        "vehicleType" :  
-    }
-
-The *id* is assigned by the API at the moment of creation. 
-    
-**Possible Response Codes**
-
-- 200
-- 404
-
-+ Request vehicleId Exists
-
-        /public/parking/accounts/{userAccountId}/vehicles/{vehicleId}
-+ Response 200
-    [Vehicle][]
-
-+ Request vehicleId Does Not Exists 
-
-        /public/parking/accounts/{userAccountId}/vehicles/{vehicleId}
-+ Response 404
-
-
-# Group Locations
-Parking Location resources
-
-## Locations [/public/parking/locations]
-The locations root resource
-
-+ Model (application/json)
-
-    JSON representation of Locations.
-
-    + Body
-
-            [{ 
-                "locationNumber" : 10202990,
-                "name" : "12TH STREET NORTH",
-                "vendor" : "SFMTA",
-                "vendorRegion" : "PORT",
-                "status" : "LotStatus_LotIsOpen",
-                "extendNotAllowed" : false,
-                "isStallBased" : true,
-                "isPlateBased" : true,
-                "currency" : "USD",
-                "country" : "us",
-                "defaultTimeUnit" : "TimeUnit_Hours",
-                "promptForCvv" : false,
-                "currentMaxStay" : 120,
-                "latitude" : 19.235135,
-                "longitude" : 23.445135,
-                "validIn" : ["ca","us"],
-                "lotMessage" : "Some custom message for this lot 10202990."
-            }]
-
-### Retrieve location for location number [GET]
-
-Get location from a location number.
-
-Location is identified by the `locationNumber`.
-
-
-**Request Contract**
-
-    Header: Authorization: Bearer <token>
-
-**Response Contract**
-    
-    Content-Type: application/json
-    [{ 
-        "locationNumber" : "",
-        "name" : "",
-        "vendor" : "",
-        "vendorRegion" : "",
-        "status" : "",
-        "extendNotAllowed" : "",
-        "isStallBased" : "",
-        "isPlateBased" : "",
-        "currency" : "",
-        "country" : "",
-        "defaultTimeUnit" : "",
-        "altTimeUnit" : "",
-        "promptForCvv" : "",
-        "currentMaxStay" : "",
-        "latitude" : "",
-        "longitude" : "",
-        "validIn" : [],
-        "lotMessage" : ""
-    }]
-
-The *id* is assigned by the API at the moment of creation. 
-    
-**Possible Response Codes**
-
-- 200
-- 404
-
-+ Request userAccountId Exists
-
-        /public/parking/locations/
-+ Response 200
-    [Locations][]
-
-+ Request userAccountId Does Not Exists 
-
-        /public/parking/locations/
-+ Response 404
-
-
-## Location [/public/parking/locations/{locationNumber}?country={country}]
-An individual location resource
-
-+ Parameters
-    + locationNumber (required, string, `fff-gr34-fff`) ... `locationNumber` of the Location Resource to perform action with. Has example value.
-    + country (required, string, `us`) ... `country` of the Location in the form of a 2-letter abbreviation.
-
-+ Model (application/json)
-
-    JSON representation of A Location.
-
-    + Body
-
-            { 
-                "locationNumber" : 10202990,
-                "name" : "12TH STREET NORTH",
-                "vendor" : "SFMTA",
-                "vendorRegion" : "PORT",
-                "status" : "LotStatus_LotIsOpen",
-                "extendNotAllowed" : false,
-                "isStallBased" : true,
-                "isPlateBased" : true,
-                "currency" : "USD",
-                "country" : "us",
-                "defaultTimeUnit" : "TimeUnit_Hours",
-                "promptForCvv" : false,
-                "currentMaxStay" : 120,
-                "latitude" : 19.235135,
-                "longitude" : 23.445135,
-                "validIn" : ["ca","us"],
-                "lotMessage" : "Some custom message for this lot 10202990."
-            }
-            
-### Retrieve an individual location for user [GET]
-Get an individual location from a User's Account.
-
-User is identified by the `userAccountId`.
-
-Location is identified by the `locationNumber`.
-
-**Request Contract**
-
-    Header: Authorization: Bearer <token>
-
-**Response Contract**
-    
-    Content-Type: application/json
-    [{
-        "locationNumber" : "",
-        "name" : "",
-        "vendor" : "",
-        "vendorRegion" : "",
-        "status" : "",
-        "extendNotAllowed" : "",
-        "isStallBased" : "",
-        "isPlateBased" : "",
-        "currency" : "",
-        "country" : "",
-        "defaultTimeUnit" : "",
-        "altTimeUnit" : "",
-        "promptForCvv" : "",
-        "currentMaxStay" : "",
-        "latitude" : "",
-        "longitude" : "",
-        "validIn" : [],
-        "lotMessage" : ""
-    }]
-
-The *locationNumber* is assigned by the API at the moment of creation. 
-    
-**Possible Response Codes**
-
-- 200
-- 404
-
-+ Request locationId Exists
-
-        /public/parking/locations/{locationNumber}
-+ Response 200
-    [Location][]
-
-+ Request locationId Does Not Exists 
-
-        /public/parking/locations/{locationNumber}
-+ Response 404
-
-
-# Group Sessions
-Parking Session resources
-
-## Sessions [/public/parking/sessions]
-The parking sessions root resource
-
-**Request Contract**
-
-    Header: Authorization: Bearer <token>
-    Content-Type: application/json
-    {
-        "locationNumber": "",
-        "vehicleId": "",
-        "durationInMinutes": "",
-        "userAccountId": "",
-        "startTime": ""
-    }
-
-**Mandatory Fields**
-
-- locationNumber
-- vehicleId
-- durationInMinutes
-- userAccountId
-- startTime
-
-**Possible Response Codes**
-
-- 202
-- 400
-
-### Create a parking session [POST]
-+ Request lot no plate (application/json)
-
-        {
-            "durationInMinutes":30,
-            "locationNumber":"10202990",
-            "stall":null,
-            "userAccountId":"8d21a912-561a-48ff-b31b-00d600a2544e",
-            "startTime":"2014-07-28T09:23:28.0000-0700",
-            "vehicleId":null
-        }
-+ Response 202
-    + Header
-
-            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e/
-
-+ Request lot with plate (application/json)
-
-        {
-            "durationInMinutes":30,
-            "locationNumber":"7399",
-            "stall":null,
-            "userAccountId":"8d21a912-561a-48ff-b31b-00d600a2544e",
-            "startTime":"2014-07-28T09:23:28.0000-0700",
-            "vehicleId":"abc-234"
-        }
-+ Response 202
-    + Header
-
-            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e/
-
-* Request lot+stall no plate (application/json)
-
-        {
-            "durationInMinutes":30,
-            "locationNumber":"20200031",
-            "stall":"1234",
-            "userAccountId":"8d21a912-561a-48ff-b31b-00d600a2544e",
-            "startTime":"2014-07-28T09:23:28.0000-0700",
-            "vehicleId":null
-        }
-+ Response 202
-    + Header
-
-            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e/
-
-* Request lot+stall with plate (application/json)
-
-        {
-            "durationInMinutes":30,
-            "locationNumber":"4229",
-            "stall":"1",
-            "userAccountId":"8d21a912-561a-48ff-b31b-00d600a2544e",
-            "startTime":"2014-07-28T09:23:28.0000-0700",
-            "vehicleId":"abc-234"
-        }
-+ Response 202
-    + Header
-
-            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e/
-
-+ Request stall reverse lookup no plate (application/json)
-
-        {
-            "durationInMinutes":30,
-            "locationNumber":null,
-            "stall":"26106",
-            "userAccountId":"8d21a912-561a-48ff-b31b-00d600a2544e",
-            "startTime":"2014-07-28T09:23:28.0000-0700",
-            "vehicleId":null
-        }
-+ Response 202
-    + Header
-
-            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e/
-
-+ Request stall reverse lookup with plate (application/json)
-
-        {
-            "durationInMinutes":30,
-            "locationNumber":null,
-            "stall":"53326",
-            "userAccountId":"8d21a912-561a-48ff-b31b-00d600a2544e",
-            "startTime":"2014-07-28T09:23:28.0000-0700",
-            "vehicleId":"abc-234"
-        }
-+ Response 202
-    + Header
-
-            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e/
-
-+ Response 400
-
-        {
-            "error": "The request is invalid"
-        }
-
-
-## Session [/public/parking/sessions/{parkingSessionId}]
-
-An individual parking session resource
-
-+ Parameters
-    + parkingSessionId (required, string, `abc-23-4443-ff`) ... string `parkingSessionId` of the Parking Session Resource to perform action with. Has example value.
-
-+ Model (application/json)
-
-    JSON representation of A Parking Session.
-
-    + Body
-
-            {
-                "id": "cf3da0c0-6313-46a8-871f-bb5b577d5ecc",
-                "locationNumber": "10202990",
-                "vehicleId": "abc-234",
-                "licensePlate": "ABC 123",
-                "durationInMinutes": "30",
-                "userAccountId": "8d21a912-561a-48ff-b31b-00d600a2544e",
-                "startTime": "2014-07-22T10:14:40.0000-0700"
-            }
-
-### Retrieve an individual parking session [GET]
-Get an individual parking session
-
-Parking Session is identified by the `parkingSessionId`.
-
-**Request Contract**
-
-    Header: Authorization: Bearer <token>
-
-**Response Contract**
-    
-    Content-Type: application/json
-    {
-        "id": "",
-        "locationNumber": "",
-        "vehicleId": "",
-        "licensePlate": "",
-        "durationInMinutes": "",
-        "userAccountId": "",
-        "startTime": ""
-    }
-    
-The *id* is assigned by the API at the moment of creation. 
-    
-**Possible Response Codes**
-
-- 200
-- 404
-
-+ Request parkingSessionId exists
-
-        /public/parking/sessions/{parkingSessionId}
-+ Response 200
-    [Session][]
-
-+ Request parkingSessionId Does Not Exists
-
-        /public/parking/sessions/{parkingSessionId}
-+ Response 400
-
-        {
-            "error": "The request is invalid"
-        }
-        
-## SessionsSince [/public/parking/sessions?sinceTimeStampRfc3339={sinceTime}&howMany={howMany}]
-
-Parking sessions since given timestamp
-
-+ Parameters
-    + sinceTime (required, date, `2014-07-22T10:14:40.0000-0700`) ... date `sinceTime` sessions since sinceTime. Has example value.
-    + howMany (required, number) ... number `howMany` records to return.
-
-+ Model (application/json)
-
-    JSON representation of A Parking Session.
-
-    + Body
-
-            [{
-                "id": "cf3da0c0-6313-46a8-871f-bb5b587d5ecc",
-                "locationNumber": "10202990",
-                "vehicleId": "abc-234",
-                "licensePlate": "ABC 123",
-                "durationInMinutes": "30",
-                "userAccountId": "8d21a912-561a-48ff-b31b-00d600a2544e",
-                "startTime": "2014-07-22T10:14:40.0000-0700"
-            },
-            {
-                "id": "cf3da0c0-6313-46a8-871f-bb5b567d5ecc",
-                "locationNumber": "10202990",
-                "vehicleId": "abc-234",
-                "licensePlate": "ABC 123",
-                "durationInMinutes": "30",
-                "userAccountId": "8d21a912-561a-48ff-b31b-00d600a2544e",
-                "startTime": "2014-07-22T10:14:40.0000-0700"
-            }]
-            
-
-### Retrieve an individual parking session [GET]
-Get an individual parking session
-
-**Request Contract**
-
-    Header: Authorization: Bearer <token>
-
-**Response Contract**
-    
-    Content-Type: application/json
-    {
-        "startTime": "",
-        "howMany": "",
-    }
-    
-The *id* is assigned by the API at the moment of creation. 
-    
-**Possible Response Codes**
-
-- 200
-- 404
-
-+ Request parkingSessionId exists
-
-        /public/parking/sessions?sinceTimeStampRfc3339={sinceTime}&howMany={howMany}
-+ Response 200
-    [SessionsSince][]
-
-+ Request parkingSessionId Does Not Exists
-
-        /public/parking/sessions?sinceTimeStampRfc3339={sinceTime}&howMany={howMany}
-+ Response 400
-
-        {
-            "error": "The request is invalid"
-        }        
-
-## SessionStop [/public/parking/sessions/{parkingSessionId}/stop]
-An individual vehicle resource
-
-### Stop a parking session [PUT]
-Stop an individual parking session
-
-Parking Session is identified by the `parkingSessionId`.
-
-**Request Contract**
-
-    Header: Authorization: Bearer <token>
-
-**Response Contract**
-    
-The *id* is assigned by the API at the moment of creation. 
-    
-**Possible Response Codes**
-
-- 204
-- 400
-
-+ Request stop parking session
-
-        /public/parking/sessions/{parkingSessionId}/stop
-        
-+ Response 204
-    + Header
-    
-            Location: http://api.dev.paybyphone.com/public/events/8d21a912-561a-48ff-b31b-00d600a2544e
-
-+ Request parkingSessionId Does Not Exists
-
-        /public/parking/sessions/{parkingSessionId}/stop
-+ Response 400
-
-        {
-            "error": "The request is invalid"
-        }
-
-
-# Group Parking Preferences
-Parking Preferences resources
-
-## Preferences [/public/parking/accounts/{userAccountId}/preferences]
-The parking preferences root resource
-
-+ Parameters
-    + userAccountId (required, string, `8d21a912-561a-48ff-b31b-00d600a2544e`) ... `userAccountId` of the UserAccount in the form of a GUID.
-
-+ Model (application/json)
-
-    JSON representation of Parking Preferences
-
-    + Body
-
-            { 
-                "email": "sjones@test.com", 
-                "sendEmailReceipts": true, 
-                "sendTextReminders": false, 
-                "sendTextReceipts": false
-            }
-
-### Create new parking preference [POST]
-
-Add new preferences to a Users Account
-User is identified by the `userAccountId`.
-
-**Request Contract**
-
-    Header: Authorization: Bearer <token>
-    Content-Type: application/json
-    {
-        "email" : "", 
-        "sendEmailReceipts": "", 
-        "sendTextReminders": "", 
-        "sendTextReceipts": ""
-    }
-
-**Mandatory Fields**
-
-- email
-- sendEmailReceipts
-- sendTextReminders
-- sendTextReceipts
-
-**Possible Response Codes**
-
-- 202
-- 400
-- 404
-- 409
-
-+ Request with mandatory fields 
-    [Preferences][]
-
-+ Response 202 (application/json)
-    + Header
-
-            Location: http://api.dev.paybyphone.com/public/parking/accounts/f2b66f0b-1a48-4d6a-86b6-5ec41d63d84a/preferences
-
-+ Request no email (application/json)            
-
-        {
-            "email" : null, 
-            "SendEmailReceipts": true,
-            "sendTextReminders": true, 
-            "sendTextReceipts": true
-        }
-+ Response 400
-
-        {
-            "error": "The request is invalid"
-        }
-
-+ Request no sendEmailReceipts (application/json)            
-
-        {
-            "email" : "sjones@test.com", 
-            "sendEmailReceipts": null, 
-            "sendTextReminders": true, 
-            "sendTextReceipts": true
-        }
-+ Response 400
-
-        {
-            "error": "The request is invalid"
-        }
-
-+ Request no sendTextReminders (application/json)            
-
-        {
-            "email" : "sjones@test.com", 
-            "sendEmailReceipts": true, 
-            "sendTextReminders": null, 
-            "sendTextReceipts": true
-        }
-+ Response 400
-
-        {
-            "error": "The request is invalid"
-        }
-
-+ Request no sendTextReceipts (application/json)            
-
-        {
-            "email" : "sjones@test.com", 
-            "sendEmailReceipts": true, 
-            "sendTextReminders": true, 
-            "sendTextReceipts": null
-        }
-+ Response 400
-
-        {
-            "error": "The request is invalid"
-        }
-
-+ Request userAccountId Does not exist        
-        
-        /public/parking/accounts/{userAccountId}/preferences
-+ Response 404
-
-### Retrieve parking preferences for user account [GET]
-Get a parking preferences for a UserAccount,
-
-User is identified by the `userAccountId`.
-
-**Request Contract**
-
-    Header: Authorization: Bearer <token>
-
-**Response Contract**
-    
-    Content-Type: application/json
-    { 
-        "email": "sjones@test.com", 
-        "sendEmailReceipts": true, 
-        "sendTextReminders": false, 
-        "sendTextReceipts": false
-    }
-
-**Possible Response Codes**
-
-- 200
-- 404
-
-+ Request userAccountId Exists
-
-        /public/parking/accounts/{userAccountId}/preferences
-+ Response 200
-    [Preferences][]
-
-+ Request userAccountId Does Not Exists 
-
-        /public/parking/accounts/{userAccountId}/preferences
-+ Response 404
-
-### Edit parking preferences [PUT]
-
-Update parking preferences record for a User
-
-User is identified by the `userAccountId`.
-
-    Header: Authorization: Bearer <token>
-    Content-Type: application/json
-    {
-        "email" : "", 
-        "sendEmailReceipts": "", 
-        "sendTextReminders": "", 
-        "sendTextReceipts": ""
-    }
-
-**Mandatory Fields**
-
-- email
-- sendEmailReceipts
-- sendTextReminders
-- sendTextReceipts
-
-**Possible Response Codes**
-
-- 204
-- 400
-- 404
-- 409 
-
-+ Request all fields supplied
-    [Preferences][]
-
-+ Response 204 (application/json)
-
-+ Request no email (application/json)            
-
-        {
-            "email" : null, 
-            "SendEmailReceipts": true,
-            "sendTextReminders": true, 
-            "sendTextReceipts": true
-        }
-+ Response 400
-
-        {
-            "error": "The request is invalid"
-        }
-
-+ Request no sendEmailReceipts (application/json)            
-
-        {
-            "email" : "sjones@test.com", 
-            "sendEmailReceipts": null, 
-            "sendTextReminders": true, 
-            "sendTextReceipts": true
-        }
-+ Response 400
-
-        {
-            "error": "The request is invalid"
-        }
-
-+ Request no sendTextReminders (application/json)            
-
-        {
-            "email" : "sjones@test.com", 
-            "sendEmailReceipts": true, 
-            "sendTextReminders": null, 
-            "sendTextReceipts": true
-        }
-+ Response 400
-
-        {
-            "error": "The request is invalid"
-        }
-
-+ Request no sendTextReceipts (application/json)            
-
-        {
-            "email" : "sjones@test.com", 
-            "sendEmailReceipts": true, 
-            "sendTextReminders": true, 
-            "sendTextReceipts": null
-        }
-+ Response 400
-
-        {
-            "error": "The request is invalid"
-        }
-
-+ Request userAccountId Does Not Exists 
-
-        /public/parking/accounts/{userAccountId}/preferences
-+ Response 404
-
-
 # Group Payment
 ## About
 Payment API provides payment account related resources
-
-
 # Group Payment Accounts
 
 ## Payment Accounts [/public/payment/accounts]
@@ -2476,22 +1610,18 @@ Payment Account is identified by the `paymentAccountId`.
 + Response 500 (application/json)
 
         {"error": "Unhandled error"}
-
-
 # Group Notifications2
 ## About
 Notifications API provides Feed And Device related resources
-
-
 # Group FeedItems
 FeedItem resources
 
-## Feeditems [/public/notifications/feedItems?sinceTimeStampRfc3339={timestamp}&howMany={howMany}]
-Get item(s) from the member activity feed starting from a specific date and time.
+## Feeditems [/public/notifications/feedItems?since={since}&limit={limit}]
+Get item(s) from the member activity feed starting from a specific UTC date and time, returned in reverse chronological order.
 
 + Parameters
-    + timestamp (required, string, `2014-06-10T08:56:04.0000-0700`) ... Start date and time from which to retrieve the activity feed items
-    + howMany (required, number, `50`) ... How many items to retrieve from the activity feed
+    + since (required, string, `2014-06-10T08:56:04.0000Z`) ... Start UTC date and time from which to retrieve the activity feed items
+    + limit (required, number, `50`) ... The maximum number of items to retrieve from the activity feed
 
 + Model (application/json)
 
@@ -2500,20 +1630,20 @@ Get item(s) from the member activity feed starting from a specific date and time
     + Body
 
             [{
+                "subject": "SFMTA Advisory",
+                "content": "Please be aware that MUNI will be closed for service upgrades on Wednesday nights from 3:00 am to 4:00 am.",
+                "timeStampRfc3339": "2014-07-08T15:42:12Z",
+                "imageUrlPath": "https://si0.twimg.com/profile_images/3288835160/696dc7d131ccb873b1c399dcb08d0c8c.jpeg",
+                "moreDetailsUrl": "http://www.sfmta.com", 
+                "type": "Service Update"
+            },
+            {
                 "subject": "Parking Complete",
                 "content": "Parking For:  \r\nLocation: 20506621 \r\nExpired: 03/07/2014 12:37 PM \r\nCost: $0.54\r\n",
                 "timeStampRfc3339": "2014-07-03T12:38:35Z",
                 "imageUrlPath": "http://paybyphone.co.uk/images/app_assets/pbp_icon.png",
-                "moreDetailsUrl": "http://www.google.com", 
+                "moreDetailsUrl": "http://www.google.com",
                 "type": "Parking History"
-            },
-            {
-                "subject": "SFMTA Advisory",
-                "content": "Please be aware that MUNI will be closed for service upgrades on Wednesday nights from 3:00 am to 4:00 am.",
-                "timeStampRfc3339": "2014-07-08T15:42:12Z ",
-                "imageUrlPath": "https://si0.twimg.com/profile_images/3288835160/696dc7d131ccb873b1c399dcb08d0c8c.jpeg",
-                "moreDetailsUrl": "http://www.sfmta.com", 
-                "type": "Service Update"                
             }]
             
 ### Retrieve all feed items for a member [GET]
@@ -2526,8 +1656,8 @@ Member is identified by the userAccountId extracted from the access token.
     
 **Mandatory Fields**
 
-- timestamp
-- howMany 
+- since
+- limit
 
 **Response Contract**
 
@@ -2570,16 +1700,16 @@ Member is identified by the userAccountId extracted from the access token.
 
         {"error": "The request is invalid"}
 
-+ Request missing timeStamp field
++ Request missing since field
 
-        Missing {timeStamp}
+        Missing {since}
 + Response 400
 
         {"error": "The request is invalid"}
 
-+ Request missing howMany field
++ Request missing limit field
 
-        Missing {howMany}
+        Missing {limit}
 + Response 400
 
         {"error": "The request is invalid"}
@@ -2590,8 +1720,6 @@ Member is identified by the userAccountId extracted from the access token.
 + Response 401
 
         {"message":"Authorization has been denied for this request."}
-
-
 # Group Devices
 Device resources
 
@@ -2842,14 +1970,7 @@ Device language is determined by the Accept-Language header, using first value o
 
         {"message":"Authorization has been denied for this request."}
 
-
-# Group EVENTS API
-## About
-Events API provides event related resources
-
-
-# Group Events3
-Event resources
+# Group Events
 
 ## Events [/public/events/{workflowId}/]
 Get event(s) generated under a specific workflowId.
@@ -2859,7 +1980,7 @@ Get event(s) generated under a specific workflowId.
 
 + Model (application/json)
 
-    JSON representation of A Event.
+    JSON representation of a Parking API Event.
 
     + Body
 
