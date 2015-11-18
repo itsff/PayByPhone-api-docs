@@ -11,4 +11,6 @@ PaymentAccounts.apib
 Notifications2.apib
 FeedItems.apib
 Devices.apib
+EventsApi.apib
+Events3.apib
 Events.apib
