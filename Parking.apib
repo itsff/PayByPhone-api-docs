@@ -114,6 +114,7 @@
             + `quantity`: `1` (required, string) - How many minutes or hours the user wants to park
         + `cvv`:`111` (required, string) - The CV2 code from the user's payment card
         + `startTime`:`2015-07-28T20:40:00-0000` (required, string) - The start time of the transaction to be started. Must be within 3 minutes of the current time.
+        + `ratePolicyId`:`70000` (required, string) - The rate policy Id for a personalized parking session.
     + Body 
         [
             {
@@ -121,11 +122,12 @@
                 "stall":"1",
                 "licensePlate":"ABC123",
                 "duration":{
-                    "timeUnit":Hours",
+                    "timeUnit":"Hours",
                     "quantity":"1"
                 },
                 "cvv":"111",
-                "startTime": "2015-07-28T20:40:00-0000"
+                "startTime": "2015-07-28T20:40:00-0000",
+                "ratePolicyId":"70000"
             }
         ]
 
