@@ -538,7 +538,10 @@ Retrieve a parking quote detail
 - Value is not valid for Quantity - Error thrown when the quantity parameter could not be converted to an integer format.
 - QuantityInvalidFormat - Quantity can not be zero.
 - LicensePlateMustNotBeEmpty - When getting a quote in a location that has a wait-time-after-max-stay restriction, you need to provide the license plate. This is to enforce the wait-time-after-max-stay restriction.
-- CannotExtendBecauseOfNoReturnRule - When getting a quote in a location that has a wait-time-after-max-stay restriction, if you parked for the maximum stay you will need to wait until you can start parking again in that location.
+- CannotExtendBecauseOfNoReturnRule - When getting a quote in a location that has a wait-time-after-max-stay restriction, if you parked for the maximum stay you will need to wait until you can start parking again in
+that location.
+- RatePolicyIdInvalidFormat - LocationId could not be converted to an integer format.
+- RatePolicyNotFound - Rate Policy Id specified is not associated with the location or the license plate.
 
 + Parameters
     + parkingAccountGuid: `b12e8e08-ee59-4774-8062-a40401272436` (required, guid) - GUID of the user parking account.
