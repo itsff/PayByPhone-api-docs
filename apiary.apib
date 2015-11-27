@@ -1,6 +1,8 @@
 FORMAT: 1A
 
 # PayByPhone API
+
+
 This is a list of PayByPhone Apis
 
 ## Response Codes
@@ -16,10 +18,14 @@ Any code you write to call PayByPhone's APIs should expect to receive and handle
 
 Failed connection attempts should also be handled with exponential backoff.
 
+
+
 ## Versioning
 Each endpoint in PayByPhone's API is separately versionable. The `X-Pbp-Version` header is used
 to indicate which version of the endpoint the caller which to invoke. An example to invoke a
 version 2 of a resource would be to add the following HTTP Header to the request `X-Pbp-Version: 2`
+
+
 
 # Data Structures
 
@@ -84,6 +90,8 @@ version 2 of a resource would be to add the following HTTP Header to the request
 + issueNumber: `2` (number) - The issue number for the debit card.
 + startMonth: `2` (number) - Assigned by the API at the moment of creation.
 + startYear: `2012` (number) - Assigned by the API at the moment of creation.
+
+
 
 # Group Identity And Access
 
@@ -286,6 +294,8 @@ Change the password used to authenticate a user account
             }
 
 + Response 202
+
+
 # Group Parking
 
 ## Get current or historic parking sessions [/parking/accounts/{accountId}/sessions/?periodType=Current]
@@ -298,7 +308,6 @@ Change the password used to authenticate a user account
 - 400 - Bad Request
 - 401 - Unauthorized
 - 403 - Forbidden
-- 404 - Not Found
 
 + Request
     + Header
@@ -365,6 +374,7 @@ Change the password used to authenticate a user account
 - LicensePlateInvalidFormat
 - DurationInvalidFormat
 - JsonReaderException
+- StartTimeTooFarBackInThePast
 
 **Possible events**
 
@@ -403,6 +413,7 @@ Change the password used to authenticate a user account
             + `quantity`: `1` (required, string) - How many minutes or hours the user wants to park
         + `cvv`:`111` (required, string) - The CV2 code from the user's payment card
         + `startTime`:`2015-07-28T20:40:00-0000` (required, string) - The start time of the transaction to be started. Must be within 3 minutes of the current time.
+        + `ratePolicyId`:`70000` (required, string) - The rate policy Id for a personalized parking session.
     + Body 
         [
             {
@@ -410,11 +421,12 @@ Change the password used to authenticate a user account
                 "stall":"1",
                 "licensePlate":"ABC123",
                 "duration":{
-                    "timeUnit":Hours",
+                    "timeUnit":"Hours",
                     "quantity":"1"
                 },
                 "cvv":"111",
-                "startTime": "2015-07-28T20:40:00-0000"
+                "startTime": "2015-07-28T20:40:00-0000",
+                "ratePolicyId":"70000"
             }
         ]
 
@@ -506,7 +518,6 @@ Get all vehicles from a User's Account.
 - 200 - Ok
 - 401 - Unauthorized
 - 403 - Forbidden
-- 404 - Not Found
 
 + Request Contract
 
@@ -538,7 +549,6 @@ Get all vehicles from a User's Account.
 - 400 - Bad Request
 - 401 - Unauthorized
 - 403 - Forbidden
-- 404 - Not Found
 
 **Possible events**
 
@@ -566,7 +576,7 @@ Get all vehicles from a User's Account.
 
 - LicensePlateInvalidFormat - License Plate is not a valid format. Minimum 2 characters, maximum 10 characters. A-Z and 0-9 characters only.
 - LicensePlateMustNotBeEmpty - License Plate must not be empty.
-- JurisdictionDoesNotExist - Jurisdiction does not exist. Valid jurisdictions are Countries and Regions supported by API#Provinces
+- jurisdictionDoesNotExist - Jurisdiction does not exist. Valid jurisdictions are Countries and Regions supported by API#Provinces
 - CountryCodeMustNotBeEmpty - Country Code must not be empty.
 - CountryCodeDoesNotExist - Country Code does not exist. Valid country ids are: CA, US, GB, AU, FR, CH. See Countries and Regions supported by API#Countries
 - VehicleTypeMustNotBeEmpty - VehicleType Vehicle Type must not be empty.
@@ -582,6 +592,67 @@ Get all vehicles from a User's Account.
         "countryCode":"CA",
         "vehicleType":"car"
     }
+
++ Response 202 (application/json)
+    + Headers
+    
+        Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
+
+
+
+
+## Manage a vehicle belonging to a parking account [/parking/accounts/{accountId}/vehicles/{vehicleId}]
+
+
+### Update a vehicle on a parking account [PUT]
+
+**Possible Response Codes**
+
+- 403 - Forbidden
+
+**Possible events**
+
+- VehicleUpdated    
+        {
+             "parkingAccountId": "23fccd39-70c2-446f-915c-6d2362b64e28",
+             "vehicleId": "12793707",
+             "countryCode": "CA",
+             "licensePlate": "GGG328",
+             "jurisdiction": "MB",
+             "vehicleType": "motorcycle",
+             "$type": "VehicleUpdated"
+        }
+
+- UpdateVehicleFailed
+        {
+            "Data": [ {"jurisdiction": "BC"}, {"CountryId": "AU"} ],
+            "FailureReason":"JurisdictionDoesNotMatchCountry",
+            "$type":"AddVehicleFailed"
+        }
+
+**Validation Errors**
+
+- VehicleNotFound - Vehicle with vehicle Id not found.
+- LicensePlateInvalidFormat - License Plate is not a valid format. Minimum 2 characters, maximum 10 characters. A-Z and 0-9 characters only.
+- LicensePlateMustNotBeEmpty - License Plate must not be empty.
+- JurisdictionDoesNotExist - Jurisdiction does not exist. Valid jurisdictions are Countries and Regions supported by API#Provinces
+- CountryCodeMustNotBeEmpty - Country Code must not be empty.
+- CountryCodeDoesNotExist - Country Code does not exist. Valid country ids are: CA, US, GB, AU, FR, CH. See Countries and Regions supported by API#Countries
+- VehicleTypeMustNotBeEmpty - Vehicle Type must not be empty.
+- VehicleTypeDoesNotExist - Vehicle Type does not exist. Valid types are: car, motorcycle, electricMotorcycle, heavyGoodsVehicle
+- VehicleIdInvalidFormat - Vehicle Id must be an integer.
+- UserNotRegistered - Member not registered.
+- JsonReaderException - Provided json is in an invalid format.
+
++ Request 
+
+    Body:
+        {
+            "licensePlate":"TEST9233",
+            "jurisdiction":"BC",
+            "countryCode":"CA",
+            "vehicleType":"car"
+        }
 
 + Response 202 (application/json)
     + Headers
@@ -625,9 +696,7 @@ Delete a vehicle from a parking account
     
         Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
 
-## Manage Parking Preferences [/parking/accounts/{accountId}/preferences]
-
-### Get parking preferences for the parking account [GET]
+## Get parking preferences for the parking account [GET /parking/accounts/{accountId}/preferences]
 
 **Possible Response Codes**
 
@@ -768,7 +837,10 @@ Retrieve a parking quote detail
 - Value is not valid for Quantity - Error thrown when the quantity parameter could not be converted to an integer format.
 - QuantityInvalidFormat - Quantity can not be zero.
 - LicensePlateMustNotBeEmpty - When getting a quote in a location that has a wait-time-after-max-stay restriction, you need to provide the license plate. This is to enforce the wait-time-after-max-stay restriction.
-- CannotExtendBecauseOfNoReturnRule - When getting a quote in a location that has a wait-time-after-max-stay restriction, if you parked for the maximum stay you will need to wait until you can start parking again in that location.
+- CannotExtendBecauseOfNoReturnRule - When getting a quote in a location that has a wait-time-after-max-stay restriction, if you parked for the maximum stay you will need to wait until you can start parking again in
+that location.
+- RatePolicyIdInvalidFormat - LocationId could not be converted to an integer format.
+- RatePolicyNotFound - Rate Policy Id specified is not associated with the location or the license plate.
 
 + Parameters
     + parkingAccountGuid: `b12e8e08-ee59-4774-8062-a40401272436` (required, guid) - GUID of the user parking account.
@@ -1092,6 +1164,8 @@ Both `parkingAccountId` and `licensePlate` are optional. But if you provide a `l
       }
     ]
 
+
+
 # Group Payment Methods
 
 Placeholder for Payment Methods endpoint documentation
@@ -1159,13 +1233,18 @@ Placeholder for Payment Methods endpoint documentation
         + paymentAccountId: `d6d1817e-98ee-4600-b82b-f1aace2abea5` (string) - Payment account Id
 
 + Response 202 (application/json)
+
+
 # Group Notifications Placeholder
 
 Placeholder for Notifications endpoint documentation
 
+
 # Group Payment
 ## About
 Payment API provides payment account related resources
+
+
 # Group Payment Accounts
 
 ## Payment Accounts [/public/payment/accounts]
@@ -1610,9 +1689,13 @@ Payment Account is identified by the `paymentAccountId`.
 + Response 500 (application/json)
 
         {"error": "Unhandled error"}
+
+
 # Group Notifications2
 ## About
 Notifications API provides Feed And Device related resources
+
+
 # Group FeedItems
 FeedItem resources
 
@@ -1720,6 +1803,8 @@ Member is identified by the userAccountId extracted from the access token.
 + Response 401
 
         {"message":"Authorization has been denied for this request."}
+
+
 # Group Devices
 Device resources
 
@@ -1970,7 +2055,14 @@ Device language is determined by the Accept-Language header, using first value o
 
         {"message":"Authorization has been denied for this request."}
 
-# Group Events
+
+# Group EVENTS API
+## About
+Events API provides event related resources
+
+
+# Group Events3
+Event resources
 
 ## Events [/public/events/{workflowId}/]
 Get event(s) generated under a specific workflowId.
@@ -1980,7 +2072,7 @@ Get event(s) generated under a specific workflowId.
 
 + Model (application/json)
 
-    JSON representation of a Parking API Event.
+    JSON representation of A Event.
 
     + Body
 
@@ -2283,3 +2375,33 @@ Workflow is identified by the workflowId.
 + Response 401
 
         {"message":"Authorization has been denied for this request."}
+
+
+# Group Events
+
+## Get events by workflow [GET /events/workflow/{id}]
+
+**Possible Response Codes**
+
+- 200 - OK
+- 400 - Bad Request
+- 401 - Unauthorized
+
++ Parameters
+    + id: `b942cd39-60c5-4fdd-9b4f-2c6fe8a4ea26` (required, string) - Unique identifier of the workflow.
+
++ Response 200 (application/json)
+    [
+        {
+            "$type": "PaymentAccountCreated",
+            "paymentAccountId": "7c3367cd-883b-47c2-bcf9-5043d6b8dea8",
+            "memberId": "c61a93b7-e506-4cd4-ab74-6340e6149736",
+            "maskedCardNumber": "411111------1111",
+            "expiryMonth": 12,
+            "expiryYear": 2015,
+            "nameOnCard": "John Smith",
+            "issueNumber": null,
+            "startMonth": null,
+            "startYear": null
+        }
+    ]
