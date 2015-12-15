@@ -789,15 +789,31 @@ that location.
             "isReverseLookup": "true"
         }
 
-## Parking Rate Options [/parking/locations/{locationId}/rateOptions?parkingAccountId={parkingAccountId}&licensePlate={licensePlate}&startTime={startTime}]
+## Parking Rate Options [/parking/locations/{locationId}/rateOptions?parkingAccountId={parkingAccountId}&licensePlate={licensePlate}&parkingSessionId={parkingSessionId}&startTime={startTime}]
 
 ### Get a Parking Rate Option [GET]
 
-Both `parkingAccountId` and `licensePlate` are optional. But if you provide a `licensePlate` you *must* inform the `parkingAccountId` that owns that license plate, otherwise you'll get a 404 response.
+To get the available parking rate option(s) for use when:
+- Starting a parking session at a given location: Call this endpoint with the desired combination of parameters, restricted as per the section below.
+- Extending an active parking session: Call this endpoint with only `parkingAccountId` and `parkingSessionId`.
+
+**Parameter combination restrictions**
+
+This endpoint supports a number of optional parameters, some of which must be provided in combination with (and/or to the exclusion of) other specific parameters:
+- When providing a `licensePlate` parameter value
+    - a valid `parkingAccountId` must be provided
+    - a `parkingSessionId` must *not* be provided
+- When providing a `parkingSessionId` parameter value
+    - a valid `parkingAccountId` must be provided
+    - a `licensePlate` must *not* be provided
+    - a `startTime` must *not* be provided
+
 
 **Response codes**
+
 - 200 - OK
 - 400 - Bad Request
+- 403 - Forbidden
 - 404 - Not Found
 
 
