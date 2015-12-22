@@ -1,8 +1,6 @@
 FORMAT: 1A
 
 # PayByPhone API
-
-
 This is a list of PayByPhone Apis
 
 ## Response Codes
@@ -18,14 +16,10 @@ Any code you write to call PayByPhone's APIs should expect to receive and handle
 
 Failed connection attempts should also be handled with exponential backoff.
 
-
-
 ## Versioning
 Each endpoint in PayByPhone's API is separately versionable. The `X-Pbp-Version` header is used
 to indicate which version of the endpoint the caller which to invoke. An example to invoke a
 version 2 of a resource would be to add the following HTTP Header to the request `X-Pbp-Version: 2`
-
-
 
 # Data Structures
 
@@ -90,8 +84,6 @@ version 2 of a resource would be to add the following HTTP Header to the request
 + issueNumber: `2` (number) - The issue number for the debit card.
 + startMonth: `2` (number) - Assigned by the API at the moment of creation.
 + startYear: `2012` (number) - Assigned by the API at the moment of creation.
-
-
 
 # Group Identity And Access
 
@@ -294,13 +286,11 @@ Change the password used to authenticate a user account
             }
 
 + Response 202
-
-
 # Group Parking
 
 ## Get current or historic parking sessions [/parking/accounts/{accountId}/sessions/?periodType=Current]
 
-## Get a user's current/histotic parking sessions [GET]
+## Get a user's current/historic parking sessions [GET]
 
 **Possible Response Codes**
 
@@ -328,7 +318,7 @@ Change the password used to authenticate a user account
     + Attributes (application/json)
         + `parkingSessionId`:`de9bd239-44f3-483e-9fd4-7c98567da200` (string) - The parking session ID, this is needed if you want to extend an existing parking session (NOTE: this property will soon be renamed to parkingSessionId)
         + `locationId`: `5594` (string) - The Lot ID where the user is parked
-        + `vehicle`: (required, duration) -  The duration of the parking session
+        + `vehicle`: (required) - The vehicle information associated with the parking session
             + `id`: 1234 (required, int) - The ID of the vehicle that is parked.
             + `licensePlate`: `ABC123` (string) - The license plate of the vehicle that is parked
             + `jurisdiction`: `BC` (required, string) - Jurisdiciton the parked vehicle is registered in. Valid jurisdictions are Countries and Regions supported by API#Provinces
@@ -336,6 +326,9 @@ Change the password used to authenticate a user account
             + `type`: `motorcycle` (required, string) - Vehicle Type. Valid types are: car, motorcycle, electricMotorcycle, heavyGoodsVehicle
         + `startTime`: `2015-09-01T16:16:00.000Z` (string) - The total duration of the parking session from the start-time
         + `stall`: `82445` (string) - Stall where the vehicle is parked if the parking session took place in a stall, null otherwise.
+        + `rateOption`: (required) - The rate option details associated with the parking session
+            + `ratePolicyId`: `5594` (required, string) - The identifier of the rate policy applied to the parking session
+            + `type`: `VIS` (required, string) - The eligibility type applied to the parking session
     + Body 
         [
             {
@@ -349,7 +342,11 @@ Change the password used to authenticate a user account
                     "type":"motorcycle"
                 },
                 "startTime":"2015-09-01T16:16:00.000Z",
-                "stall":"82445"
+                "stall":"82445",
+                "rateOption":{
+                    "ratePolicyId":"5594",
+                    "type":"VIS"
+                }
             }
         ]
 
@@ -374,8 +371,6 @@ Change the password used to authenticate a user account
 - LicensePlateInvalidFormat
 - DurationInvalidFormat
 - JsonReaderException
-- StartTimeTooFarBackInThePast
-- MaxStayExceeded
 
 **Possible events**
 
@@ -1165,8 +1160,6 @@ Both `parkingAccountId` and `licensePlate` are optional. But if you provide a `l
       }
     ]
 
-
-
 # Group Payment Methods
 
 Placeholder for Payment Methods endpoint documentation
@@ -1234,18 +1227,12 @@ Placeholder for Payment Methods endpoint documentation
         + paymentAccountId: `d6d1817e-98ee-4600-b82b-f1aace2abea5` (string) - Payment account Id
 
 + Response 202 (application/json)
-
-
 # Group Notifications Placeholder
 
 Placeholder for Notifications endpoint documentation
-
-
 # Group Payment
 ## About
 Payment API provides payment account related resources
-
-
 # Group Payment Accounts
 
 ## Payment Accounts [/public/payment/accounts]
@@ -1690,13 +1677,9 @@ Payment Account is identified by the `paymentAccountId`.
 + Response 500 (application/json)
 
         {"error": "Unhandled error"}
-
-
 # Group Notifications2
 ## About
 Notifications API provides Feed And Device related resources
-
-
 # Group FeedItems
 FeedItem resources
 
@@ -1804,8 +1787,6 @@ Member is identified by the userAccountId extracted from the access token.
 + Response 401
 
         {"message":"Authorization has been denied for this request."}
-
-
 # Group Devices
 Device resources
 
@@ -2055,13 +2036,9 @@ Device language is determined by the Accept-Language header, using first value o
 + Response 401
 
         {"message":"Authorization has been denied for this request."}
-
-
 # Group EVENTS API
 ## About
 Events API provides event related resources
-
-
 # Group Events3
 Event resources
 
@@ -2376,8 +2353,6 @@ Workflow is identified by the workflowId.
 + Response 401
 
         {"message":"Authorization has been denied for this request."}
-
-
 # Group Events
 
 ## Get events by workflow [GET /events/workflow/{id}]
