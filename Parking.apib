@@ -536,7 +536,8 @@ Retrieve a parking quote detail
 **Response Codes**
 
 - 200 - Ok.
-- 400 - Bad Bad request.
+- 400 - Bad request.
+- 404 - Not Found.
 
 **Responsee Failure Reasons**
 
@@ -549,7 +550,8 @@ Retrieve a parking quote detail
 that location.
 - RatePolicyIdInvalidFormat - LocationId could not be converted to an integer format.
 - RatePolicyNotFound - Rate Policy Id specified is not associated with the location or the license plate.
-
+- VehicleNotFound - Vehicle with vehicle Id not found.
+   
 + Parameters
     + parkingAccountGuid: `b12e8e08-ee59-4774-8062-a40401272436` (required, guid) - GUID of the user parking account.
     + locationId: `40002` (required, string) - Location ID. Note that this can not be a reverse lookup stall, such as in the location details endpoint
