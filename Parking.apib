@@ -568,6 +568,130 @@ that location.
 + Parameters
     + parkingAccountGuid: `b12e8e08-ee59-4774-8062-a40401272436` (required, guid) - GUID of the user parking account.
     + locationId: `40002` (optional, string) - Location ID. Note that this can not be a reverse lookup stall, such as in the location details endpoint
+    + durationTimeUnit: `Minutes` (required, string) - Time unit enumeration string, as described in Time Units table below. Either the name or the value.
+        + 1 (string) - Minutes
+        + 2 (string) - Hours
+        + 3 (string) - Days
+        + 4 (string) - Weeks
+        + 5 (string) - Months
+        + 6 (string) - HalfHour
+        + 7 (string) - MidnightCurrentDay
+        + 8 (string) - CalendarDays
+        + 9 (string) - TimeBucket 
+        + 10 (string) - SingleHour
+        + 11 (string) - WeekdaysStartMonday
+        + 12 (string) - CalendarWeeks
+        + 0 (string) - NotSpecified/Unknown
+        + Minutes (string)
+        + Hours (string)
+        + Days (string)
+        + Weeks (string)
+        + Months (string)
+        + HalfHour (string)
+        + MidnightCurrentDay (string)
+        + CalendarDays (string)
+        + TimeBucket (string)
+        + SingleHour (string)
+        + WeekdaysStartMonday (string)
+        + CalendarWeeks (string)
+        + NotSpecified (string)
+        + Unknown (string)
+
+    + durationQuantity: `60` (required, int) - Number of time units.
+    + licensePlate: `273cvn` (optional, string) - License plate being parked. Used to calculate promotion discounts.
+    + stall: `52444` (optional, string) - Stall number of the current parking session. Used for extensions to ensure the app is extending the right session.
+    + ratePolicyId: `75001` (optional, int) - The ID of the rate policy you want to use
+
++ Response
+
+    + Attributes
+        + locationId: `40006` (int) - The Location ID where the user is parked.
+        + stall: `123` (string)  - Stall where the vehicle is parked if the parking session took place in a stall, null otherwise.
+        + quoteDate: `2015-06-25T18:00:00-0000` (dateTime)  - Quote Time of the rate calculation, in UTC
+        + totalCost: (money) - Total cost of the parkfig session
+            + amount
+            + currency           
+        + parkingAccountId:  `56514ff5-44fc-463b-820f-1d47393e1703` (guid)
+        + parkingStartTime: `2014-12-29T22:00:00-0000` (dateTime)  - Parking Start Time of the rate calculation, in UTC
+        + parkingExpiryTime: `2014-12-29T23:00:00-0000` (dateTime)  - Parking Expiry Time of the rate calculation, in UTC
+        + parkingDurationAdjustment: `NotAdjusted` (enum) 
+            + NotAdjusted
+            + DurationIncreased
+            + DurationDecreased
+        + licensePlate: `ABC123` (string) - The license plate of the vehicle that is parked
+        + quoteItems : (array[string])
+            + quoteItemType
+                + promotion
+            + name
+            + costAmount
+                + amount
+                + currency
+         
++ Response 200 (application/json)
+    Content-Type: application/json
+
+    {
+        "locationId": "40006",
+        "stall": "123",
+        "quoteDate":"2015-06-25T18:00:00-0000",
+        "totalCost": {
+               "amount": 5.00,
+               "currency": "CAD"
+        },
+        "parkingAccountId": "56514ff5-44fc-463b-820f-1d47393e1703",
+        "parkingStartTime": "2014-12-29T22:00:00-0000",
+        "parkingExpiryTime": "2014-12-29T23:00:00-0000",
+        "patrkingDurationAdjustment": "NotAdjusted",
+        "licensePlate": "ABC123",
+        "quoteItems":[{
+            "quoteItemType":"parking",
+            "name": "Parking",
+            "costAmout":{
+                "amount":9.00,
+                "currency":"CAD"
+            }
+        },{
+            "quoteItemType":"convenienceFee",
+            "name": "Convenience Fee",
+            "costAmount": {
+                "amount": 1.00,
+                "currency": "CAD"
+            }
+        },{
+            "quoteItemType":"promotion",
+            "name": "COV electric vehicle discount.",
+            "costAmount": {
+                "amount": -5.00,
+                "currency": "CAD"
+            }
+        }]
+    }
+    
+## Get a parking extension quote [/parking/accounts/{parkingAccountGuid}/quote?durationTimeUnit={TimeUnit}&durationQuantity={Quantity}&parkingSessionId={ParkingSessionId}
+
+### Retrieve a parking extension quote detail [GET]
+
+Retrieve a parking extension quote detail
+
+**Response Codes**
+
+- 200 - Ok
+- 400 - Bad request
+- 404 - Not Found
+
+**Response Failure Reasons**
+
+- DurationTimeUnitRequired - You forgot you provide DurationTimeUnit
+- DurationTimeUnitInvalidFormat - Time unit is not in the accepted time units enumeration.
+- Value is not valid for Quantity - Error thrown when the quantity parameter could not be converted to an integer format.
+- QuantityInvalidFormat - Quantity can not be zero.
+- LocationIdMustBeNullWhenParkingSessionIdSpecified - Remove LocationId from the request and keep ParkingSessionId
+- RatePolicyIdMustBeNullWhenParkingSessionIdSpecified - Remove RatePolicyId from the request and keep ParkingSessionId
+- LicensePlateMustBeNullWhenParkingSessionIdSpecified - Remove LicensePlate from the request and keep ParkingSessionId
+- StallMustBeNullWhenParkingSessionIdSpecified - Remove Stall from the request and keep ParkingSessionId
+   
++ Parameters
+    + parkingAccountGuid: `b12e8e08-ee59-4774-8062-a40401272436` (required, guid) - GUID of the user parking account.
     + timeUnit: `Minutes` (required, string) - Time unit enumeration string, as described in Time Units table below. Either the name or the value.
         + 1 (string) - Minutes
         + 2 (string) - Hours
@@ -597,11 +721,8 @@ that location.
         + NotSpecified (string)
         + Unknown (string)
 
-    + quantity: `60` (required, int) - Number of time units.
-    + licensePlate: `273cvn` (optional, string) - License plate being parked. Used to calculate promotion discounts.
-    + stall: `52444` (optional, string) - Stall number of the current parking session. Used for extensions to ensure the app is extending the right session.
+    + durationQuantity: `60` (required, int) - Number of time units.
     + parkingSessionId: `b12e8e08-ee59-4774-8062-a40401272436` (optional, Guid) - The parkingSessionId used for extension. Is present, means it's an Extension Quote. Location, Stall, RatePolicyId, 
-    + ratePolicyId: `75001` (optional, int) - The ID of the rate policy you want to use
 
 + Response
 
