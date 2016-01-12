@@ -562,7 +562,6 @@ that location.
 - RatePolicyIdMustBeNullWhenParkingSessionIdSpecified - Remove RatePolicyId from the request and keep ParkingSessionId
 - LicensePlateMustBeNullWhenParkingSessionIdSpecified - Remove LicensePlate from the request and keep ParkingSessionId
 - StallMustBeNullWhenParkingSessionIdSpecified - Remove Stall from the request and keep ParkingSessionId
-- 
    
 + Parameters
     + parkingAccountGuid: `b12e8e08-ee59-4774-8062-a40401272436` (required, guid) - GUID of the user parking account.
@@ -666,7 +665,7 @@ that location.
         }]
     }
     
-## Get a parking extension quote [/parking/accounts/{parkingAccountGuid}/quote?durationTimeUnit={TimeUnit}&durationQuantity={Quantity}&parkingSessionId={ParkingSessionId}
+## Get a parking extension quote detail [/parking/accounts/{parkingAccountGuid}/quote?durationTimeUnit={TimeUnit}&durationQuantity={Quantity}&parkingSessionId={ParkingSessionId}
 
 ### Retrieve a parking extension quote detail [GET]
 
