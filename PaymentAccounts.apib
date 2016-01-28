@@ -90,6 +90,7 @@ The Member is identified by the **memberid** claim in the authorization bearer t
 - UnknownCardType
 - CountryMustNotBeEmpty
 - CountryUnknown
+- YouCanNotCreateSecondPaymentMethodWithSameCcNumber
 
 **Possible events**
 
@@ -118,10 +119,9 @@ The Member is identified by the **memberid** claim in the authorization bearer t
         
 **Possible Response Codes**
 
-- 202
-- 401
-- 500
-- 400
+- 202 - Accepted
+- 400 - Bad Request
+- 401 - Unauthorized
 
 + Request NA with name (application/json)
 
@@ -219,7 +219,7 @@ The Member is identified by the **memberid** claim in the authorization bearer t
             "id": "81c8d439-aa44-4338-8b76-cc920bf50225",
             "maskedCardNumber": "411111------1111",
             "paymentCardType": "Visa",
-            "nameOnCard": "Clark Test12151420",
+            "nameOnCard": "John Smith",
             "expiryMonth": 12,
             "expiryYear": 2018,
             "startMonth": null,
@@ -241,9 +241,8 @@ The Member is identified by the **memberid** claim in the authorization bearer t
     
 **Possible Response Codes**
 
-- 200
-- 401
-- 500
+- 200 - OK
+- 401 - Unauthorized
 
 + Request
     
@@ -302,7 +301,7 @@ Payment Account is identified by the `paymentAccountId`
         "id": "81c8d439-aa44-4338-8b76-cc920bf50225",
         "maskedCardNumber": "411111------1111",
         "paymentCardType": "Visa",
-        "nameOnCard": "Clark Test12151420",
+        "nameOnCard": "Test",
         "expiryMonth": 12,
         "expiryYear": 2014,
         "startMonth": null,
@@ -312,11 +311,9 @@ Payment Account is identified by the `paymentAccountId`
     
 **Possible Response Codes**
 
-- 200
-- 400
-- 401
-- 404
-- 500
+- 200 - OK
+- 400 - Bad Request
+- 401 - Unauthorized
 
 + Request paymentAccountId exists
     
@@ -359,11 +356,35 @@ Payment Account is identified by the `paymentAccountId`.
 
     Header: Authorization: Bearer <token>
 
+**Possible Failure reasons**
+
+- PaymentAccountDoesntBelongToMember
+- DataError
+
+**Possible events**
+
+- PaymentAccountDeleted_V3
+       
+        {
+            "memberId": "4c9cd539-a9e2-4769-be8d-ced9e0e15a89",
+            "paymentAccountId": "549cd539-07df-450b-8abc-3a73b99ab338",
+            "$type":"PaymentAccountDeleted_V3"
+        }
+
+- DeletePaymentAccountFailed_V3
+
+        {
+            "Data": [ ],
+            "FailureReason":"PaymentAccountDoesntBelongToMember",
+            "$type":"DeletePaymentAccountFailed_V3"
+        }
+
 **Possible Response Codes**
 
-- 202
-- 401
-- 500
+- 202 - Accepted
+- 400 - Bad Request
+- 401 - Unauthorized
+- 403 - Forbidden
 
 + Request paymentAccountId Exists
 
