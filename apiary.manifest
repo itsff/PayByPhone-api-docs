@@ -7,7 +7,7 @@ Parking.apib
 PaymentMethods.apib
 Notifications.apib
 Payment.apib
-PaymentAccounts.apib
+PaymentMethods.apib
 Notifications2.apib
 FeedItems.apib
 Devices.apib
