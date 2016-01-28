@@ -61,12 +61,68 @@ The Member is identified by the **memberid** claim in the authorization bearer t
 - startMonth (integer : 1-12, <= current month if current year)
 - startYear (integer : <= current year)
 - issueNumber (integer : 2 digits)
+
+**Possible Validation Errors**
+
+- StartMonthMustBeLessOrEqualToCurrentMonthWhenStartYearIsCurrentYear StartMonthOutOfRange
+- StartYearMustBeLessOrEqualToCurrentYear
+- StartMonthIsRequiredWhenStartYearIsProvided
+- IssueNumberMustBeDigits
+- IssueNumberMustBe1Or2Digits
+- StartYearMustBeEmpty
+- StartMonthMustBeEmpty
+- IssueNumberMustBeEmpty
+- CvvMustNotBeEmpty
+- CvvMustBeDigits
+- CvvMustBeEmpty
+- NameOnCardMustNotBeEmpty
+- NameOnCardInvalidFormat
+- NameOnCardMustBeBetween2And70Characters
+- NameOnCardMustBeEmpty
+- ExpiryMonthMustNotBeEmpty
+- ExpiryMonthMustBeAValidMonthNumber
+- ExpiryMonthMustBeGreaterThanOrEqualToCurrentMonth
+- ExpiryYearMustNotBeEmpty
+- ExpiryYearMustBeLessThanOrEqualToCurrentYearPlus10
+- ExpiryYearMustBeGreaterThanOrEqualToCurrentYear
+- CardNumberInvalidFormat
+- CardNumberFailedLuhnTest
+- UnknownCardType
+- CountryMustNotBeEmpty
+- CountryUnknown
+
+**Possible events**
+
+- PaymentAccountCreated_V3
+        [
+            {
+                "paymentAccountId": "549cd539-07df-450b-8abc-3a73b99ab338",
+                "memberId": "4c9cd539-a9e2-4769-be8d-ced9e0e15a89",
+                "maskedCardNumber": "496379------6452",
+                "expiryMonth": 12,
+                "expiryYear": 2020,
+                "nameOnCard": "John Smith",
+                "issueNumber": null,
+                "startMonth": null,
+                "startYear": null,
+                "$type": "PaymentAccountCreated_V3"
+            }
+        ]
+
+- CreatePaymentAccountFailed_V3
+
+        {
+            "Data": [ ],
+            "FailureReason":"YouCanNotCreateSecondPaymentMethodWithSameCcNumber",
+            "$type":"CreatePaymentAccountFailed_V3"
+        }
         
 **Possible Response Codes**
 
 - 202
 - 401
 - 500
+- 400
 
 + Request NA with name (application/json)
 
