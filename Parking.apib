@@ -18,15 +18,15 @@
 
 + Parameters
     + accountId: `1b98d239-8de8-4111-9d7d-562fc31c193a` (required, string) - Parking account id.
-    + periodType: 'Current' (required, enum[string]) - 
+    + periodType: 'Current' (required, enum[string]) -
         + Members
             + `Current`
             + `Historic`
     + since: `2015-09-01T16:16:00.000Z` (optional, string) - Date and time when to retrieve the parking sessions from.
     + offset: '0' (optional, int) - Offset should be more than 0.
-    + limit: '10' (optional, int) - Limit should be more than 0 and less than 50. 
+    + limit: '10' (optional, int) - Limit should be more than 0 and less than 50.
 
-+ Response 200 
++ Response 200
     + Attributes (application/json)
         + `parkingSessionId`:`de9bd239-44f3-483e-9fd4-7c98567da200` (string) - The parking session ID, this is needed if you want to extend an existing parking session (NOTE: this property will soon be renamed to parkingSessionId)
         + `locationId`: `5594` (string) - The Lot ID where the user is parked
@@ -41,7 +41,7 @@
         + `rateOption`: (required) - The rate option details associated with the parking session
             + `ratePolicyId`: `5594` (required, string) - The identifier of the rate policy applied to the parking session
             + `type`: `VIS` (required, string) - The eligibility type applied to the parking session
-    + Body 
+    + Body
         [
             {
                 "parkingSessionId":"de9bd239-44f3-483e-9fd4-7c98567da200",
@@ -87,7 +87,7 @@
 **Possible events**
 
 - ParkingSessionCreated
-    
+
         {
              "ParkingSessionId": "23fccd39-70c2-446f-915c-6d2362b64e58",
              "VehicleId": "12793707",
@@ -111,7 +111,7 @@
 + Parameters
     + accountId: `1b98d239-8de8-4111-9d7d-562fc31c193a` (required, string) - Parking account id.
 
-+ Request 
++ Request
     + Attributes (application/json)
         + `locationId`:`70000` (required, string) - The lot ID of the location where the user wants to park
         + `stall`:`1` (required, string) - The stall number of the location where the user wants to park
@@ -122,7 +122,7 @@
         + `cvv`:`111` (required, string) - The CV2 code from the user's payment card
         + `startTime`:`2015-07-28T20:40:00-0000` (required, string) - The start time of the transaction to be started. Must be within 3 minutes of the current time.
         + `ratePolicyId`:`70000` (required, string) - The rate policy Id for a personalized parking session.
-    + Body 
+    + Body
         [
             {
                 "locationId":"70000",
@@ -140,7 +140,7 @@
 
 + Response 202
     + Headers
-    
+
         Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
 
 
@@ -165,7 +165,7 @@
 **Possible events**
 
 - ParkingSessionExtended
-    
+
         {
              "ParkingSessionId": "23fccd39-70c2-446f-915c-6d2362b64e58",
              "VehicleId": "12793707",
@@ -190,15 +190,15 @@
     + accountId: `1b98d239-8de8-4111-9d7d-562fc31c193a` (required, string) - Parking account id.
     + parkingSessionId: `2bf49b64-28cd-4fc7-96e4-a44b010bf6ea` (required, string) - The ID of the parking session to be extended, this must be an active session
 
-+ Request 
++ Request
     + Attributes (application/json)
         + `duration`: (required, duration) -  The duration of the parking session
             + `timeUnit`: `Minutes` (required, string) - TimeUnit Enumeration name or value. "Minutes", "Hours", "Days", "Weeks", "Months", "HalfHour", "MidnightCurrentDay", "CalendarDays", "TimeBucket", "SingleHour", "WeekdaysStartMonday", "CalendarWeeks", "NotSpecified", "Unknown"
             + `quantity`: `1` (required, string) - How many minutes or hours the user wants to park
         + `cvv`:`111` (required, string) - The CV2 code from the user's payment card
     + Headers
-        Authorization: Bearer <token> 
-    + Body 
+        Authorization: Bearer <token>
+    + Body
         [
             {
                 "parkingSessionId":"2bf49b64-28cd-4fc7-96e4-a44b010bf6ea",
@@ -212,7 +212,7 @@
 
 + Response 202
     + Headers
-    
+
         Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
 
 ## Manage vehicles [/parking/accounts/{accountId}/vehicles]
@@ -261,7 +261,7 @@ Get all vehicles from a User's Account.
 **Possible events**
 
 - VehicleAdded
-    
+
         {
              "parkingAccountId": "23fccd39-70c2-446f-915c-6d2362b64e28",
              "vehicleId": "12793707",
@@ -303,7 +303,7 @@ Get all vehicles from a User's Account.
 
 + Response 202 (application/json)
     + Headers
-    
+
         Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
 
 
@@ -320,7 +320,7 @@ Get all vehicles from a User's Account.
 
 **Possible events**
 
-- VehicleUpdated    
+- VehicleUpdated
         {
              "parkingAccountId": "23fccd39-70c2-446f-915c-6d2362b64e28",
              "vehicleId": "12793707",
@@ -352,7 +352,7 @@ Get all vehicles from a User's Account.
 - UserNotRegistered - Member not registered.
 - JsonReaderException - Provided json is in an invalid format.
 
-+ Request 
++ Request
 
     Body:
         {
@@ -364,7 +364,7 @@ Get all vehicles from a User's Account.
 
 + Response 202 (application/json)
     + Headers
-    
+
         Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
 
 ### Delete a vehicle [DELETE]
@@ -378,7 +378,7 @@ Delete a vehicle from a parking account
 
 **Possible events**
 
-- VehicleDeleted    
+- VehicleDeleted
         {
              "parkingAccountId": "23fccd39-70c2-446f-915c-6d2362b64e28",
              "vehicleId": "12793707",
@@ -393,7 +393,7 @@ Delete a vehicle from a parking account
             "$type":"DeleteVehicleFailed"
         }
 
-**Validation Errors**        
+**Validation Errors**
 - VehicleNotFound - Vehicle with vehicle Id not found.
 - JsonReaderException - Provided json is in an invalid format.
 - UserNotRegistered - Member not registered.
@@ -401,7 +401,7 @@ Delete a vehicle from a parking account
 
 + Response 202 (application/json)
     + Headers
-    
+
         Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
 
 ## Get parking preferences for the parking account [GET /parking/accounts/{accountId}/preferences]
@@ -421,14 +421,14 @@ Delete a vehicle from a parking account
 + Parameters
     + accountId: `00000000-0000-0000-0000-000000000000` (required, string) - Parking account id.
 
-+ Response 200 
++ Response 200
     + Attributes (application/json)
         + `parkingAccountId`:`00000000-0000-0000-0000-000000000000` (string) - The parking account ID
         + `sendEmailReceipts`:`false` (string) - Does account holder wishes to get receipts from email
         + `sendTextReminders`:`false` (string) - Does account holder wishes to receive text reminder
         + `sendTextReceipts`:`false` (string) - Does account holder wishes to get receipts from text
         + `email`:`null` (string) - Email account for account holder
-    + Body 
+    + Body
         {
             "parkingAccountId":"00000000-0000-0000-0000-000000000000",
             "sendEmailReceipts":false,
@@ -449,7 +449,7 @@ Delete a vehicle from a parking account
 **Possible events**
 
 - PreferencesCreated/PreferencesUpdated
-    
+
         {
              "parkingAccountId": "23fccd39-70c2-446f-915c-6d2362b64e28",
              "Email": "test@server.com",
@@ -468,7 +468,7 @@ Delete a vehicle from a parking account
 
 + Request (application/json)
     + Body
-    
+
             {
                 "email":"email@-domain.com",
                 "sendEmailReceipts":true,
@@ -478,7 +478,7 @@ Delete a vehicle from a parking account
 
 + Response 202 (application/json)
     + Headers
-    
+
         Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
 
 ## Get or Create a parking account [/parking/accounts]
@@ -493,7 +493,7 @@ Delete a vehicle from a parking account
 **Possible events**
 
 - ParkingAccountCreated
-    
+
         {
             "ParkingAccountId":"23fccd39-70c2-446f-915c-6d2362b64e28",
             "MemberId":"23fccd39-70c2-446f-915c-6d2362b64e58",
@@ -510,7 +510,7 @@ Delete a vehicle from a parking account
 
 + Response 202 (application/json)
     + Headers
-    
+
         Location: https://api.paybyphone.com/events/workflow/d92cfe7d-dd59-49d6-be1a-a3b3bb5d3e6a
 
 ### Get all parking accounts for the member [GET]
@@ -562,7 +562,7 @@ that location.
 - RatePolicyIdMustBeNullWhenParkingSessionIdSpecified - Remove RatePolicyId from the request and keep ParkingSessionId
 - LicensePlateMustBeNullWhenParkingSessionIdSpecified - Remove LicensePlate from the request and keep ParkingSessionId
 - StallMustBeNullWhenParkingSessionIdSpecified - Remove Stall from the request and keep ParkingSessionId
-   
+
 + Parameters
     + parkingAccountGuid: `b12e8e08-ee59-4774-8062-a40401272436` (required, guid) - GUID of the user parking account.
     + locationId: `40002` (optional, string) - Location ID. Note that this can not be a reverse lookup stall, such as in the location details endpoint
@@ -575,7 +575,7 @@ that location.
         + 6 (string) - HalfHour
         + 7 (string) - MidnightCurrentDay
         + 8 (string) - CalendarDays
-        + 9 (string) - TimeBucket 
+        + 9 (string) - TimeBucket
         + 10 (string) - SingleHour
         + 11 (string) - WeekdaysStartMonday
         + 12 (string) - CalendarWeeks
@@ -608,11 +608,11 @@ that location.
         + quoteDate: `2015-06-25T18:00:00-0000` (dateTime)  - Quote Time of the rate calculation, in UTC
         + totalCost: (money) - Total cost of the parkfig session
             + amount
-            + currency           
+            + currency
         + parkingAccountId:  `56514ff5-44fc-463b-820f-1d47393e1703` (guid)
         + parkingStartTime: `2014-12-29T22:00:00-0000` (dateTime)  - Parking Start Time of the rate calculation, in UTC
         + parkingExpiryTime: `2014-12-29T23:00:00-0000` (dateTime)  - Parking Expiry Time of the rate calculation, in UTC
-        + parkingDurationAdjustment: `NotAdjusted` (enum) 
+        + parkingDurationAdjustment: `NotAdjusted` (enum)
             + NotAdjusted
             + DurationIncreased
             + DurationDecreased
@@ -624,7 +624,7 @@ that location.
             + costAmount
                 + amount
                 + currency
-         
+
 + Response 200 (application/json)
     Content-Type: application/json
 
@@ -664,7 +664,7 @@ that location.
             }
         }]
     }
-    
+
 ## Get a parking extension quote [/parking/accounts/{parkingAccountGuid}/quote?durationTimeUnit={DurationTimeUnit}&durationQuantity={DurationQuantity}&parkingSessionId={parkingSessionId}]
 
 ### Retrieve a parking extension quote [GET]
@@ -687,7 +687,7 @@ Retrieve a parking extension quote detail
 - RatePolicyIdMustBeNullWhenParkingSessionIdSpecified - Remove RatePolicyId from the request and keep ParkingSessionId
 - LicensePlateMustBeNullWhenParkingSessionIdSpecified - Remove LicensePlate from the request and keep ParkingSessionId
 - StallMustBeNullWhenParkingSessionIdSpecified - Remove Stall from the request and keep ParkingSessionId
-   
+
 + Parameters
     + parkingAccountGuid: `b12e8e08-ee59-4774-8062-a40401272436` (required, guid) - GUID of the user parking account.
     + durationTimeUnit: `Minutes` (required, string) - Time unit enumeration string, as described in Time Units table below. Either the name or the value.
@@ -699,7 +699,7 @@ Retrieve a parking extension quote detail
         + 6 (string) - HalfHour
         + 7 (string) - MidnightCurrentDay
         + 8 (string) - CalendarDays
-        + 9 (string) - TimeBucket 
+        + 9 (string) - TimeBucket
         + 10 (string) - SingleHour
         + 11 (string) - WeekdaysStartMonday
         + 12 (string) - CalendarWeeks
@@ -720,7 +720,7 @@ Retrieve a parking extension quote detail
         + Unknown (string)
 
     + durationQuantity: `60` (required, int) - Number of time units.
-    + parkingSessionId: `b12e8e08-ee59-4774-8062-a40401272436` (optional, Guid) - The parkingSessionId used for extension. Is present, means it's an Extension Quote. Location, Stall, RatePolicyId, 
+    + parkingSessionId: `b12e8e08-ee59-4774-8062-a40401272436` (optional, Guid) - The parkingSessionId used for extension. Is present, means it's an Extension Quote. Location, Stall, RatePolicyId,
 
 + Response
 
@@ -730,11 +730,11 @@ Retrieve a parking extension quote detail
         + quoteDate: `2015-06-25T18:00:00-0000` (dateTime)  - Quote Time of the rate calculation, in UTC
         + totalCost: (money) - Total cost of the parkfig session
             + amount
-            + currency           
+            + currency
         + parkingAccountId:  `56514ff5-44fc-463b-820f-1d47393e1703` (guid)
         + parkingStartTime: `2014-12-29T22:00:00-0000` (dateTime)  - Parking Start Time of the rate calculation, in UTC
         + parkingExpiryTime: `2014-12-29T23:00:00-0000` (dateTime)  - Parking Expiry Time of the rate calculation, in UTC
-        + parkingDurationAdjustment: `NotAdjusted` (enum) 
+        + parkingDurationAdjustment: `NotAdjusted` (enum)
             + NotAdjusted
             + DurationIncreased
             + DurationDecreased
@@ -746,7 +746,7 @@ Retrieve a parking extension quote detail
             + costAmount
                 + amount
                 + currency
-         
+
 + Response 200 (application/json)
     Content-Type: application/json
 
@@ -834,9 +834,9 @@ Retrieve a parking extension quote detail
 **Max Stays Remarks and Examples**
 - MaxStayCouldNotBeVerified - The maximum stay could not be accurately determined. The app should not show any message regarding max stay at the parking step, before the user enters duration.
 - NoMaxStay - The location does not have a max stay. User can park for any duration. The app should not show any message regarding max stay at the parking step, before the user enters duration.
-- ParkingAllowed currentMaxStayInSeconds: 7200 - User can only park for 7200 seconds. The app is safe to show a message regarding this limit. 
+- ParkingAllowed currentMaxStayInSeconds: 7200 - User can only park for 7200 seconds. The app is safe to show a message regarding this limit.
 - ParkingAllowed currentMaxStayInSeconds: 0 - Even though parking is allowed, we could not accurately determine the exact maximum allowed duration. The app should not show any message regarding max stay at the parking step, before the user enters duration.
-- ParkingNotAllowed - Parking is not allowed at the time of calling this endpoint. The app is safe to show a "no parking at this time" message. 
+- ParkingNotAllowed - Parking is not allowed at the time of calling this endpoint. The app is safe to show a "no parking at this time" message.
 
 + Request
     Header: Authorization: Bearer <token>
@@ -844,7 +844,7 @@ Retrieve a parking extension quote detail
 + Parameters
     + advertisedLocationNumber: `10` (required, string) - Can either be a Lot ID or a Stall, if the location supports reverse lookup.
     + countryCode: `CA` (optional, string) - Country ISO 3166 code of the location.
-    + stall: `1` (optional, string) - If the location is stallbased then you can pass the stall number either to verify its existence or to get the location in case the stall belongs to another lot in the same group. 
+    + stall: `1` (optional, string) - If the location is stallbased then you can pass the stall number either to verify its existence or to get the location in case the stall belongs to another lot in the same group.
 
 + Response
 
@@ -854,10 +854,10 @@ Retrieve a parking extension quote detail
             + lotClosed
             + lotYetToBeActivated
         + lotMessages: (string) - A collection if key/value pairs that contain messages and the culture they belong to.
-    
+
 + Response 200
     Content-Type: application/json
-        [{           
+        [{
             "locationId": "12345",
             "name": "344th Street",
             "vendorName": "COV",
@@ -894,9 +894,9 @@ Retrieve a parking extension quote detail
 **Max Stays Remarks and Examples**
 - MaxStayCouldNotBeVerified - The maximum stay could not be accurately determined. The app should not show any message regarding max stay at the parking step, before the user enters duration.
 - NoMaxStay - The location does not have a max stay. User can park for any duration. The app should not show any message regarding max stay at the parking step, before the user enters duration.
-- ParkingAllowed currentMaxStayInSeconds: 7200 - User can only park for 7200 seconds. The app is safe to show a message regarding this limit. 
+- ParkingAllowed currentMaxStayInSeconds: 7200 - User can only park for 7200 seconds. The app is safe to show a message regarding this limit.
 - ParkingAllowed currentMaxStayInSeconds: 0 - Even though parking is allowed, we could not accurately determine the exact maximum allowed duration. The app should not show any message regarding max stay at the parking step, before the user enters duration.
-- ParkingNotAllowed - Parking is not allowed at the time of calling this endpoint. The app is safe to show a "no parking at this time" message. 
+- ParkingNotAllowed - Parking is not allowed at the time of calling this endpoint. The app is safe to show a "no parking at this time" message.
 
 + Request
     Header: Authorization: Bearer <token>
