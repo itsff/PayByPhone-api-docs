@@ -1,7 +1,7 @@
 # How to create and generate Apiary documentation
 
 ## TL;DR
-1- Find the project's `.apib` you want to edit the documentation. e.g.: `Parking.apib`
+1- Find the project's `.apib` you want to edit the documentation. e.g.: `Parking.apib` (Don't edit the `apiary.apib` directly, it will be overwritten.)
 
 2- Edit stuff!
 
