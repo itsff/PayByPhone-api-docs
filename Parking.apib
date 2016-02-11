@@ -601,7 +601,6 @@ that location.
     + ratePolicyId: `75001` (optional, int) - The ID of the rate policy you want to use
 
 + Response
-
     + Attributes
         + locationId: `40006` (int) - The Location ID where the user is parked.
         + stall: `123` (string)  - Stall where the vehicle is parked if the parking session took place in a stall, null otherwise.
@@ -723,7 +722,6 @@ Retrieve a parking extension quote detail
     + parkingSessionId: `b12e8e08-ee59-4774-8062-a40401272436` (optional, Guid) - The parkingSessionId used for extension. Is present, means it's an Extension Quote. Location, Stall, RatePolicyId,
 
 + Response
-
     + Attributes
         + locationId: `40006` (int) - The Location ID where the user is parked.
         + stall: `123` (string)  - Stall where the vehicle is parked if the parking session took place in a stall, null otherwise.
@@ -796,7 +794,6 @@ Retrieve a parking extension quote detail
 -LocationInvalidFormat - LocationId could not be converted to an integer format.
 
 + Request
-
     Header: Authorization: Bearer <token>
 
 + Parameters
@@ -847,7 +844,6 @@ Retrieve a parking extension quote detail
     + stall: `1` (optional, string) - If the location is stallbased then you can pass the stall number either to verify its existence or to get the location in case the stall belongs to another lot in the same group.
 
 + Response
-
     + Attributes
         + status: `lotOpen` (enum) - Enumeration. Valid items are
             + lotOpen
@@ -906,7 +902,6 @@ Retrieve a parking extension quote detail
     + stall: `1` (optional, string) - provide a specific stall for locations with multiple stalls
 
 + Response
-
     + Attributes
         + status: `lotOpen` (enum) - Enumeration. Valid items are
             + lotOpen
@@ -929,7 +924,7 @@ Retrieve a parking extension quote detail
             "promptForCvv": "true",
             "lotMessages": [],
             "stall": 123,
-            "isReverseLookup": "true",
+            "isReverseLookup": "false",
             "acceptedPaymentTypes": [
                 "Visa",
                 "Mastercard",
