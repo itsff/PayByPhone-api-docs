@@ -85,7 +85,7 @@ All requests made to this version of the Parking API must add the following HTTP
 - LocationNotFound
 - CvvMustNotBeEmpty
 - CvvInvalidFormat
-- LicensePlateMustNotBeEmpty
+- LicensePlateRequired
 - LicensePlateInvalidFormat
 - DurationInvalidFormat
 - JsonReaderException
@@ -289,7 +289,7 @@ Get all vehicles from a User's Account.
 **Possible Validation Errors**
 
 - LicensePlateInvalidFormat - License Plate is not a valid format. Minimum 2 characters, maximum 10 characters. A-Z and 0-9 characters only.
-- LicensePlateMustNotBeEmpty - License Plate must not be empty.
+- LicensePlateRequired - License plate is required.
 - jurisdictionDoesNotExist - Jurisdiction does not exist. Valid jurisdictions are Countries and Regions supported by API#Provinces
 - CountryCodeMustNotBeEmpty - Country Code must not be empty.
 - CountryCodeDoesNotExist - Country Code does not exist. Valid country ids are: CA, US, GB, AU, FR, CH. See Countries and Regions supported by API#Countries
@@ -348,7 +348,7 @@ Get all vehicles from a User's Account.
 
 - VehicleNotFound - Vehicle with vehicle Id not found.
 - LicensePlateInvalidFormat - License Plate is not a valid format. Minimum 2 characters, maximum 10 characters. A-Z and 0-9 characters only.
-- LicensePlateMustNotBeEmpty - License Plate must not be empty.
+- LicensePlateRequired - License plate is required.
 - JurisdictionDoesNotExist - Jurisdiction does not exist. Valid jurisdictions are Countries and Regions supported by API#Provinces
 - CountryCodeMustNotBeEmpty - Country Code must not be empty.
 - CountryCodeDoesNotExist - Country Code does not exist. Valid country ids are: CA, US, GB, AU, FR, CH. See Countries and Regions supported by API#Countries
@@ -554,7 +554,7 @@ Retrieve a parking quote detail
 - DurationTimeUnitInvalidFormat - Time unit is not in the accepted time units enumeration.
 - Value is not valid for Quantity - Error thrown when the quantity parameter could not be converted to an integer format.
 - QuantityInvalidFormat - Quantity can not be zero.
-- LicensePlateMustNotBeEmpty - When getting a quote in a location that has a wait-time-after-max-stay restriction, you need to provide the license plate. This is to enforce the wait-time-after-max-stay restriction.
+- LicensePlateRequired - When getting a quote in a location that has a wait-time-after-max-stay restriction, you need to provide the license plate. This is to enforce the wait-time-after-max-stay restriction.
 - CannotExtendBecauseOfNoReturnRule - When getting a quote in a location that has a wait-time-after-max-stay restriction, if you parked for the maximum stay you will need to wait until you can start parking again in
 that location.
 - RatePolicyIdInvalidFormat - LocationId could not be converted to an integer format.
@@ -562,7 +562,7 @@ that location.
 - VehicleNotFound - Vehicle with vehicle Id not found.
 - RatePolicyRequired - Missing RatePolicyId on the request for Start Parking
 - RatePolicyIdInvalidFormat - RatePolicyId in a unsupported format such as negative number or characters
-- LicensePlateRequiredWhenCreatingAParkingSession - Missing LicensePlate on the reqesut for Start Parking
+- LicensePlateRequired - License plate is required.
 - LicensePlateInvalidFormat - LicensePlateInvalidFormat in a unsupported format such as negative number or characters
 - InvalidStallNumber - LicensePlateInvalidFormat in a unsupported format such as negative number or characters
 - LocationIdMustBeNullWhenParkingSessionIdSpecified - Remove LocationId from the request and keep ParkingSessionId
@@ -967,7 +967,7 @@ This endpoint supports a number of optional parameters, some of which must be pr
 - 200 - OK
 - 400 - Bad Request
     - When getting parking rate options in order to start a parking session, the following failure reasons may be returned
-        - LicensePlateMustNotBeEmpty
+        - LicensePlateRequired
         - ParkingAccountIdDoesNotContainTheGivenLicensePlate
     - When getting parking rate options in order to start or extend a parking session, the following failure reasons may be returned
         - LocationEmpty
