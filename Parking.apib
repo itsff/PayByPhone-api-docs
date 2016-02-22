@@ -282,7 +282,7 @@ Get all vehicles from a User's Account.
 
         {
             "Data": [ {"jurisdiction": "BC"}, {"CountryId": "AU"} ],
-            "FailureReason":"jurisdictionDoesNotMatchCountry",
+            "FailureReason":"JurisdictionInvalidForCountry",
             "$type":"AddVehicleFailed"
         }
 
@@ -296,7 +296,7 @@ Get all vehicles from a User's Account.
 - VehicleTypeMustNotBeEmpty - VehicleType Vehicle Type must not be empty.
 - VehicleTypeDoesNotExist - Vehicle Type does not exist. Valid types are: car, motorcycle, electricMotorcycle, heavyGoodsVehicle
 - JsonReaderException - Provided json is in an invalid format
-- JurisdictionDoesNotMatchCountry - Provided country does not contain provided jurisdiction.
+- JurisdictionInvalidForCountry - Provided country does not contain provided jurisdiction.
 
 + Request
 
@@ -340,7 +340,7 @@ Get all vehicles from a User's Account.
 - UpdateVehicleFailed
         {
             "Data": [ {"jurisdiction": "BC"}, {"CountryId": "AU"} ],
-            "FailureReason":"JurisdictionDoesNotMatchCountry",
+            "FailureReason":"JurisdictionInvalidForCountry",
             "$type":"AddVehicleFailed"
         }
 
