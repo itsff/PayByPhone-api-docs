@@ -354,7 +354,7 @@ Get all vehicles from a User's Account.
 - VehicleTypeRequired - Vehicle Type is required.
 - VehicleTypeNotFound - Vehicle Type not found. Valid types are: car, motorcycle, electricMotorcycle, heavyGoodsVehicle
 - VehicleIdInvalidFormat - Vehicle Id must be an integer.
-- UserNotRegistered - Member not registered.
+- MemberAccountNotFound - Member account could not be found.
 - JsonReaderException - Provided json is in an invalid format.
 
 + Request
@@ -394,14 +394,14 @@ Delete a vehicle from a parking account
 - DeleteVehicleFailed
         {
             "Data": [ ],
-            "FailureReason":"UserNotRegistered",
+            "FailureReason":"MemberAccountNotFound",
             "$type":"DeleteVehicleFailed"
         }
 
 **Validation Errors**
 - VehicleNotFound - Vehicle with vehicle Id not found.
 - JsonReaderException - Provided json is in an invalid format.
-- UserNotRegistered - Member not registered.
+- MemberAccountNotFound - Member account could not be found.
 - VehicleIdInvalidFormat - Vehicle Id must be an integer.
 
 + Response 202 (application/json)
@@ -467,7 +467,7 @@ Delete a vehicle from a parking account
 - AddMemberPreferencesFailed or UpdateMemberPreferencesFailed
 
         {
-            "FailureReason":"UserNotRegistered",
+            "FailureReason":"MemberAccountNotFound",
             "$type":"AddMemberPreferencesFailed"
         }
 
@@ -509,7 +509,7 @@ Delete a vehicle from a parking account
 
         {
             "Data": [ ],
-            "FailureReason":"UserNotRegistered",
+            "FailureReason":"MemberAccountNotFound",
             "$type":"CreateParkingAccountFailed"
         }
 
