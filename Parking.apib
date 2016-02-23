@@ -280,8 +280,8 @@ Get all vehicles from a User's Account.
 - AddVehicleFailed
 
         {
-            "Data": [ {"jurisdiction": "BC"}, {"CountryId": "AU"} ],
-            "FailureReason":"JurisdictionInvalidForCountry",
+            "Data": [ {"jurisdiction": "BC"}, {"CountryCode": "AU"} ],
+            "FailureReason":"JurisdictionInvalidForCountryCode",
             "$type":"AddVehicleFailed"
         }
 
@@ -295,7 +295,7 @@ Get all vehicles from a User's Account.
 - VehicleTypeRequired - Vehicle Type is required.
 - VehicleTypeNotFound - Vehicle Type not found. Valid types are: car, motorcycle, electricMotorcycle, heavyGoodsVehicle
 - JsonReaderException - Provided json is in an invalid format
-- JurisdictionInvalidForCountry - Provided country does not contain provided jurisdiction.
+- JurisdictionInvalidForCountryCode - Provided country does not contain provided jurisdiction.
 
 + Request
 
@@ -338,8 +338,8 @@ Get all vehicles from a User's Account.
 
 - UpdateVehicleFailed
         {
-            "Data": [ {"jurisdiction": "BC"}, {"CountryId": "AU"} ],
-            "FailureReason":"JurisdictionInvalidForCountry",
+            "Data": [ {"jurisdiction": "BC"}, {"CountryCode": "AU"} ],
+            "FailureReason":"JurisdictionInvalidForCountryCode",
             "$type":"AddVehicleFailed"
         }
 
@@ -356,6 +356,7 @@ Get all vehicles from a User's Account.
 - VehicleIdInvalidFormat - Vehicle Id must be an integer.
 - MemberAccountNotFound - Member account could not be found.
 - JsonReaderException - Provided json is in an invalid format.
+- JurisdictionInvalidForCountryCode - Provided country does not contain provided jurisdiction.
 
 + Request
 
