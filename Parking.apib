@@ -546,7 +546,7 @@ Retrieve a parking quote detail
 
 **Response Failure Reasons**
 
-- LocationInvalidFormat - LocationId could not be converted to an integer format.
+- LocationIdInvalidFormat - LocationId could not be converted to an integer format.
 - LocationIdRequired - LocationId is required.
 - LocationNotFound - No location could be found having the provided locationId.
 - DurationTimeUnitRequired - You forgot you provide DurationTimeUnit
@@ -797,7 +797,7 @@ Retrieve a parking extension quote detail
 
 **Response Failure Reasons**
 
--LocationInvalidFormat - LocationId could not be converted to an integer format.
+-LocationIdInvalidFormat - LocationId could not be converted to an integer format.
 
 + Request
     Header: Authorization: Bearer <token>
@@ -969,7 +969,7 @@ This endpoint supports a number of optional parameters, some of which must be pr
         - LicensePlateRequired
     - When getting parking rate options in order to start or extend a parking session, the following failure reasons may be returned
         - LocationRequired
-        - LocationInvalidFormat
+        - LocationIdInvalidFormat
         - ParkingAccountIdRequired
         - ParkingAccountIdInvalidFormat
     - When getting parking rate options in order to extend a parking session, the following failure reasons my be returned
