@@ -825,7 +825,7 @@ Retrieve a parking extension quote detail
       }
     ]
 
-## Parking location search [/parking/locations/?advertisedLocationNumber={advertisedLocationNumber}&countryCode={countryCode}&stall={stall}]
+## Parking location search [/parking/locations/?advertisedLocationNumber={advertisedLocationNumber}&countryCode={countryCode}&stall={stall}&nfcKey={nfcKey}]
 
 ### Find zero or more locations' details [GET]
 
@@ -849,6 +849,7 @@ Retrieve a parking extension quote detail
     + advertisedLocationNumber: `10` (required, string) - Can either be a Lot ID or a Stall, if the location supports reverse lookup.
     + countryCode: `CA` (optional, string) - Country ISO 3166 code of the location.
     + stall: `1` (optional, string) - If the location is stallbased then you can pass the stall number either to verify its existence or to get the location in case the stall belongs to another lot in the same group.
+    + nfcKey: `62LQ` (optional, string) - NFC sticker id for the location
 
 + Response
     + Attributes
