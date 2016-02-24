@@ -5,7 +5,7 @@
 This API documentation relates to Parking API version 2.
 
 All requests made to this version of the Parking API must add the following HTTP Header to the request: `X-Pbp-Version: 2`
- 
+
 ## Get current or historic parking sessions [/parking/accounts/{accountId}/sessions/?periodType=Current]
 
 ## Get a user's current/historic parking sessions [GET]
@@ -45,7 +45,7 @@ All requests made to this version of the Parking API must add the following HTTP
         + `startTime`: `2015-09-01T16:16:00.000Z` (string) - The total duration of the parking session from the start-time
         + `stall`: `82445` (string) - Stall where the vehicle is parked if the parking session took place in a stall, null otherwise.
         + `rateOption`: (required) - The rate option details associated with the parking session
-            + `ratePolicyId`: `5594` (required, string) - The identifier of the rate policy applied to the parking session
+            + `rateOptionId`: `5594` (required, string) - The identifier of the rate option applied to the parking session
             + `type`: `VIS` (required, string) - The eligibility type applied to the parking session
     + Body
         [
@@ -62,7 +62,7 @@ All requests made to this version of the Parking API must add the following HTTP
                 "startTime":"2015-09-01T16:16:00.000Z",
                 "stall":"82445",
                 "rateOption":{
-                    "ratePolicyId":"5594",
+                    "rateOptionId":"5594",
                     "type":"VIS"
                 }
             }
@@ -127,7 +127,7 @@ All requests made to this version of the Parking API must add the following HTTP
             + `quantity`: `1` (required, string) - How many minutes or hours the user wants to park
         + `cvv`:`111` (required, string) - The CV2 code from the user's payment card
         + `startTime`:`2015-07-28T20:40:00-0000` (required, string) - The start time of the transaction to be started. Must be within 3 minutes of the current time.
-        + `ratePolicyId`:`70000` (required, string) - The rate policy Id for a personalized parking session.
+        + `rateOptionId`:`70000` (required, string) - The rate option Id for a personalized parking session.
     + Body
         [
             {
@@ -140,7 +140,7 @@ All requests made to this version of the Parking API must add the following HTTP
                 },
                 "cvv":"111",
                 "startTime": "2015-07-28T20:40:00-0000",
-                "ratePolicyId":"70000"
+                "rateOptionId":"70000"
             }
         ]
 
@@ -533,7 +533,7 @@ Delete a vehicle from a parking account
         }
     ]
 
-## Get a parking quote [/parking/accounts/{parkingAccountGuid}/quote?locationId={locationId}&durationTimeUnit={TimeUnit}&durationQuantity={Quantity}&licensePlate={LicensePlate}&stall={stall}&ratePolicyId={ratePolicyId}]
+## Get a parking quote [/parking/accounts/{parkingAccountGuid}/quote?locationId={locationId}&durationTimeUnit={TimeUnit}&durationQuantity={Quantity}&licensePlate={LicensePlate}&stall={stall}&rateOptionId={rateOptionId}]
 
 ### Retrieve a parking quote detail [GET]
 
@@ -565,7 +565,7 @@ that location.
 - LicensePlateInvalidFormat - LicensePlateInvalidFormat in a unsupported format such as negative number or characters
 - StallInvalidFormat - Stall number is in an unsupported format such as a negative number or alphabetic characters
 - LocationIdMustBeNullWhenParkingSessionIdSpecified - Remove LocationId from the request and keep ParkingSessionId
-- RatePolicyIdMustBeNullWhenParkingSessionIdSpecified - Remove RatePolicyId from the request and keep ParkingSessionId
+- RateOptionIdMustBeNullWhenParkingSessionIdSpecified - Remove RateOptionId from the request and keep ParkingSessionId
 - LicensePlateMustBeNullWhenParkingSessionIdSpecified - Remove LicensePlate from the request and keep ParkingSessionId
 - StallMustBeNullWhenParkingSessionIdSpecified - Remove Stall from the request and keep ParkingSessionId
 
@@ -604,7 +604,7 @@ that location.
     + durationQuantity: `60` (required, int) - Number of time units.
     + licensePlate: `273cvn` (optional, string) - License plate being parked. Used to calculate promotion discounts.
     + stall: `52444` (optional, string) - Stall number of the current parking session. Used for extensions to ensure the app is extending the right session.
-    + ratePolicyId: `75001` (optional, int) - The ID of the rate policy you want to use
+    + rateOptionId: `75001` (optional, int) - The ID of the rate option you want to use
 
 + Response
     + Attributes
@@ -689,7 +689,7 @@ Retrieve a parking extension quote detail
 - Value is not valid for Quantity - Error thrown when the quantity parameter could not be converted to an integer format.
 - QuantityInvalidFormat - Quantity can not be zero.
 - LocationIdMustBeNullWhenParkingSessionIdSpecified - Remove LocationId from the request and keep ParkingSessionId
-- RatePolicyIdMustBeNullWhenParkingSessionIdSpecified - Remove RatePolicyId from the request and keep ParkingSessionId
+- RateOptionIdMustBeNullWhenParkingSessionIdSpecified - Remove RateOptionId from the request and keep ParkingSessionId
 - LicensePlateMustBeNullWhenParkingSessionIdSpecified - Remove LicensePlate from the request and keep ParkingSessionId
 - StallMustBeNullWhenParkingSessionIdSpecified - Remove Stall from the request and keep ParkingSessionId
 
@@ -725,7 +725,7 @@ Retrieve a parking extension quote detail
         + Unknown (string)
 
     + durationQuantity: `60` (required, int) - Number of time units.
-    + parkingSessionId: `b12e8e08-ee59-4774-8062-a40401272436` (optional, Guid) - The parkingSessionId used for extension. Is present, means it's an Extension Quote. Location, Stall, RatePolicyId,
+    + parkingSessionId: `b12e8e08-ee59-4774-8062-a40401272436` (optional, Guid) - The parkingSessionId used for extension. Is present, means it's an Extension Quote. Location, Stall, RateOptionId,
 
 + Response
     + Attributes
@@ -809,7 +809,7 @@ Retrieve a parking extension quote detail
     Content-Type: application/json
     [
       {
-        "ratePolicyId": 75001,
+        "rateOptionId": 75001,
         "name": "Visiteur",
         "eligibilityType": "VIS",
         "isDefault": true,
@@ -824,7 +824,7 @@ Retrieve a parking extension quote detail
       }
     ]
 
-## Parking location search [/parking/locations/?advertisedLocationNumber={advertisedLocationNumber}&countryCode={countryCode}&stall={stall}]
+## Parking location search [/parking/locations/?advertisedLocationNumber={advertisedLocationNumber}&countryCode={countryCode}&stall={stall}&nfcKey={nfcKey}]
 
 ### Find zero or more locations' details [GET]
 
@@ -848,6 +848,7 @@ Retrieve a parking extension quote detail
     + advertisedLocationNumber: `10` (required, string) - Can either be a Lot ID or a Stall, if the location supports reverse lookup.
     + countryCode: `CA` (optional, string) - Country ISO 3166 code of the location.
     + stall: `1` (optional, string) - If the location is stallbased then you can pass the stall number either to verify its existence or to get the location in case the stall belongs to another lot in the same group.
+    + nfcKey: `62LQ` (optional, string) - NFC sticker id for the location
 
 + Response
     + Attributes
@@ -1009,7 +1010,7 @@ This endpoint supports a number of optional parameters, some of which must be pr
     + Attributes
         + name: The name of the eligibility
         + type: The type of the eligibility
-        + ratePolicyId: The ID of the rate policy
+        + rateOptionId: The ID of the rate option
         + maxStayDuration:
             + durationType: The time unit of the duration
             + quantity: The amount of time units of the duration
@@ -1024,7 +1025,7 @@ This endpoint supports a number of optional parameters, some of which must be pr
         {
             "name": "Professionel",
             "type": "PRO",
-            "ratePolicyId": "75001",
+            "rateOptionId": "75001",
             "maxStayDuration": {
               "durationType": "Minute",
               "quantity": 150
@@ -1039,7 +1040,7 @@ This endpoint supports a number of optional parameters, some of which must be pr
       {
             "name": "Visiteur",
             "type": "VIS",
-            "ratePolicyId": "75001",
+            "rateOptionId": "75001",
             "maxStayDuration": {
                 "durationType": "Minute",
                 "quantity": 120
