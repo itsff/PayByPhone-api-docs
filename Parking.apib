@@ -28,7 +28,7 @@ All requests made to this version of the Parking API must add the following HTTP
         + Members
             + `Current`
             + `Historic`
-    + since: `2015-09-01T16:16:00.000Z` (optional, string) - Date and time when to retrieve the parking sessions from.
+    + since: `2015-09-01T16:16:00Z` (optional, string) - Date and time when to retrieve the parking sessions from. If provided, it must be compliant with RFC 3339.
     + offset: '0' (optional, int) - Offset should be more than 0.
     + limit: '10' (optional, int) - Limit should be more than 0 and less than 50.
 
@@ -42,7 +42,7 @@ All requests made to this version of the Parking API must add the following HTTP
             + `jurisdiction`: `BC` (required, string) - Jurisdiciton the parked vehicle is registered in. Valid jurisdictions are Countries and Regions supported by API#Provinces
             + `countryCode`: `CA` (optional, string) - Country ISO 3166 code of the location.
             + `type`: `motorcycle` (required, string) - Vehicle Type. Valid types are: car, motorcycle, electricMotorcycle, heavyGoodsVehicle
-        + `startTime`: `2015-09-01T16:16:00.000Z` (string) - The total duration of the parking session from the start-time
+        + `startTime`: `2015-09-01T16:16:00Z` (string) - The start time of the parking session, in an RFC 3339 compliant format.
         + `stall`: `82445` (string) - Stall where the vehicle is parked if the parking session took place in a stall, null otherwise.
         + `rateOption`: (required) - The rate option details associated with the parking session
             + `rateOptionId`: `5594` (required, string) - The identifier of the rate option applied to the parking session
@@ -59,7 +59,7 @@ All requests made to this version of the Parking API must add the following HTTP
                     "countryCode":"CA",
                     "type":"motorcycle"
                 },
-                "startTime":"2015-09-01T16:16:00.000Z",
+                "startTime":"2015-09-01T16:16:00Z",
                 "stall":"82445",
                 "rateOption":{
                     "rateOptionId":"5594",
@@ -101,8 +101,8 @@ All requests made to this version of the Parking API must add the following HTTP
              "VehiclePlate": "GGG328",
              "Stall": "",
              "vehicleType": "car",
-             "StartTime": "2015-01-28T20:54:00-0000",
-             "ExpireTime": "2015-01-28T21:54:00-0000",
+             "StartTime": "2015-01-28T20:54:00Z",
+             "ExpireTime": "2015-01-28T21:54:00Z",
              "$type": "ParkingSessionCreated"
         }
 
@@ -126,7 +126,7 @@ All requests made to this version of the Parking API must add the following HTTP
             + `timeUnit`: `Minutes` (required, string) - TimeUnit Enumeration name or value. "Minutes", "Hours", "Days", "Weeks", "Months", "HalfHour", "MidnightCurrentDay", "CalendarDays", "TimeBucket", "SingleHour", "WeekdaysStartMonday", "CalendarWeeks", "NotSpecified", "Unknown"
             + `quantity`: `1` (required, string) - How many minutes or hours the user wants to park
         + `cvv`:`111` (required, string) - The CV2 code from the user's payment card
-        + `startTime`:`2015-07-28T20:40:00-0000` (required, string) - The start time of the transaction to be started. Must be within 3 minutes of the current time.
+        + `startTime`:`2015-07-28T20:40:00Z` (required, string) - The start time of the transaction to be started. Must be within 3 minutes of the current time. Must be compliant with RFC 3339.
         + `rateOptionId`:`70000` (required, string) - The rate option Id for a personalized parking session.
     + Body
         [
@@ -139,7 +139,7 @@ All requests made to this version of the Parking API must add the following HTTP
                     "quantity":"1"
                 },
                 "cvv":"111",
-                "startTime": "2015-07-28T20:40:00-0000",
+                "startTime": "2015-07-28T20:40:00Z",
                 "rateOptionId":"70000"
             }
         ]
@@ -179,8 +179,8 @@ All requests made to this version of the Parking API must add the following HTTP
              "VehiclePlate": "GGG328",
              "Stall": "",
              "vehicleType": "car",
-             "OldExpiryTime": "2015-01-28T20:54:00-0000",
-             "NewExpiryTime": "2015-01-28T21:54:00-0000",
+             "OldExpiryTime": "2015-01-28T20:54:00Z",
+             "NewExpiryTime": "2015-01-28T21:54:00Z",
              "$type": "ParkingSessionExtended"
         }
 
@@ -611,13 +611,13 @@ that location.
     + Attributes
         + locationId: `40006` (int) - The Location ID where the user is parked.
         + stall: `123` (string)  - Stall where the vehicle is parked if the parking session took place in a stall, null otherwise.
-        + quoteDate: `2015-06-25T18:00:00-0000` (dateTime)  - Quote Time of the rate calculation, in UTC
+        + quoteDate: `2015-06-25T18:00:00Z` (dateTime)  - Quote Time of the rate calculation, in an RFC 3339 compliant format.
         + totalCost: (money) - Total cost of the parkfig session
             + amount
             + currency
         + parkingAccountId:  `56514ff5-44fc-463b-820f-1d47393e1703` (guid)
-        + parkingStartTime: `2014-12-29T22:00:00-0000` (dateTime)  - Parking Start Time of the rate calculation, in UTC
-        + parkingExpiryTime: `2014-12-29T23:00:00-0000` (dateTime)  - Parking Expiry Time of the rate calculation, in UTC
+        + parkingStartTime: `2014-12-29T22:00:00Z` (dateTime)  - Parking Start Time of the rate calculation, in an RFC 3339 compliant format.
+        + parkingExpiryTime: `2014-12-29T23:00:00Z` (dateTime)  - Parking Expiry Time of the rate calculation, in an RFC 3339 compliant format.
         + parkingDurationAdjustment: `NotAdjusted` (enum)
             + NotAdjusted
             + DurationIncreased
@@ -637,14 +637,14 @@ that location.
     {
         "locationId": "40006",
         "stall": "123",
-        "quoteDate":"2015-06-25T18:00:00-0000",
+        "quoteDate":"2015-06-25T18:00:00Z",
         "totalCost": {
                "amount": 5.00,
                "currency": "CAD"
         },
         "parkingAccountId": "56514ff5-44fc-463b-820f-1d47393e1703",
-        "parkingStartTime": "2014-12-29T22:00:00-0000",
-        "parkingExpiryTime": "2014-12-29T23:00:00-0000",
+        "parkingStartTime": "2014-12-29T22:00:00Z",
+        "parkingExpiryTime": "2014-12-29T23:00:00Z",
         "patrkingDurationAdjustment": "NotAdjusted",
         "licensePlate": "ABC123",
         "quoteItems":[{
@@ -732,13 +732,13 @@ Retrieve a parking extension quote detail
     + Attributes
         + locationId: `40006` (int) - The Location ID where the user is parked.
         + stall: `123` (string)  - Stall where the vehicle is parked if the parking session took place in a stall, null otherwise.
-        + quoteDate: `2015-06-25T18:00:00-0000` (dateTime)  - Quote Time of the rate calculation, in UTC
+        + quoteDate: `2015-06-25T18:00:00Z` (dateTime)  - Quote Time of the rate calculation, in an RFC 3339 compliant format.
         + totalCost: (money) - Total cost of the parkfig session
             + amount
             + currency
         + parkingAccountId:  `56514ff5-44fc-463b-820f-1d47393e1703` (guid)
-        + parkingStartTime: `2014-12-29T22:00:00-0000` (dateTime)  - Parking Start Time of the rate calculation, in UTC
-        + parkingExpiryTime: `2014-12-29T23:00:00-0000` (dateTime)  - Parking Expiry Time of the rate calculation, in UTC
+        + parkingStartTime: `2014-12-29T22:00:00Z` (dateTime)  - Parking Start Time of the rate calculation, in an RFC 3339 compliant format.
+        + parkingExpiryTime: `2014-12-29T23:00:00Z` (dateTime)  - Parking Expiry Time of the rate calculation, in an RFC 3339 compliant format.
         + parkingDurationAdjustment: `NotAdjusted` (enum)
             + NotAdjusted
             + DurationIncreased
@@ -758,14 +758,14 @@ Retrieve a parking extension quote detail
     {
         "locationId": "40006",
         "stall": "123",
-        "quoteDate":"2015-06-25T18:00:00-0000",
+        "quoteDate":"2015-06-25T18:00:00Z",
         "totalCost": {
                "amount": 5.00,
                "currency": "CAD"
         },
         "parkingAccountId": "56514ff5-44fc-463b-820f-1d47393e1703",
-        "parkingStartTime": "2014-12-29T22:00:00-0000",
-        "parkingExpiryTime": "2014-12-29T23:00:00-0000",
+        "parkingStartTime": "2014-12-29T22:00:00Z",
+        "parkingExpiryTime": "2014-12-29T23:00:00Z",
         "patrkingDurationAdjustment": "NotAdjusted",
         "licensePlate": "ABC123",
         "quoteItems":[{
