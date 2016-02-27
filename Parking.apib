@@ -83,9 +83,9 @@ All requests made to this version of the Parking API must add the following HTTP
 
 - ParkingAccountIdInvalidFormat
 - LocationNotFound
-- CvvMustNotBeEmpty
+- CvvRequired
 - CvvInvalidFormat
-- LicensePlateMustNotBeEmpty
+- LicensePlateRequired
 - LicensePlateInvalidFormat
 - DurationInvalidFormat
 - JsonReaderException
@@ -161,9 +161,8 @@ All requests made to this version of the Parking API must add the following HTTP
 **Possible Validation Errors**
 
 - ParkingAccountIdInvalidFormat
-- ActiveParkingSessionIsInvalid
 - LocationNotFound
-- CvvMustNotBeEmpty
+- CvvRequired
 - CvvInvalidFormat
 - DurationInvalidFormat
 - JsonReaderException
@@ -281,22 +280,22 @@ Get all vehicles from a User's Account.
 - AddVehicleFailed
 
         {
-            "Data": [ {"jurisdiction": "BC"}, {"CountryId": "AU"} ],
-            "FailureReason":"jurisdictionDoesNotMatchCountry",
+            "Data": [ {"jurisdiction": "BC"}, {"CountryCode": "AU"} ],
+            "FailureReason":"JurisdictionInvalidForCountryCode",
             "$type":"AddVehicleFailed"
         }
 
 **Possible Validation Errors**
 
 - LicensePlateInvalidFormat - License Plate is not a valid format. Minimum 2 characters, maximum 10 characters. A-Z and 0-9 characters only.
-- LicensePlateMustNotBeEmpty - License Plate must not be empty.
-- jurisdictionDoesNotExist - Jurisdiction does not exist. Valid jurisdictions are Countries and Regions supported by API#Provinces
-- CountryCodeMustNotBeEmpty - Country Code must not be empty.
-- CountryCodeDoesNotExist - Country Code does not exist. Valid country ids are: CA, US, GB, AU, FR, CH. See Countries and Regions supported by API#Countries
-- VehicleTypeMustNotBeEmpty - VehicleType Vehicle Type must not be empty.
-- VehicleTypeDoesNotExist - Vehicle Type does not exist. Valid types are: car, motorcycle, electricMotorcycle, heavyGoodsVehicle
+- LicensePlateRequired - License plate is required.
+- JurisdictionNotFound - Jurisdiction not found. Valid jurisdictions are Countries and Regions supported by API#Provinces
+- CountryCodeRequired - Country Code required.
+- CountryCodeNotFound - Country Code not found. Valid country ids are: CA, US, GB, AU, FR, CH. See Countries and Regions supported by API#Countries
+- VehicleTypeRequired - Vehicle Type is required.
+- VehicleTypeNotFound - Vehicle Type not found. Valid types are: car, motorcycle, electricMotorcycle, heavyGoodsVehicle
 - JsonReaderException - Provided json is in an invalid format
-- JurisdictionDoesNotMatchCountry - Provided country does not contain provided jurisdiction.
+- JurisdictionInvalidForCountryCode - Provided country does not contain provided jurisdiction.
 
 + Request
 
@@ -339,8 +338,8 @@ Get all vehicles from a User's Account.
 
 - UpdateVehicleFailed
         {
-            "Data": [ {"jurisdiction": "BC"}, {"CountryId": "AU"} ],
-            "FailureReason":"JurisdictionDoesNotMatchCountry",
+            "Data": [ {"jurisdiction": "BC"}, {"CountryCode": "AU"} ],
+            "FailureReason":"JurisdictionInvalidForCountryCode",
             "$type":"AddVehicleFailed"
         }
 
@@ -348,15 +347,16 @@ Get all vehicles from a User's Account.
 
 - VehicleNotFound - Vehicle with vehicle Id not found.
 - LicensePlateInvalidFormat - License Plate is not a valid format. Minimum 2 characters, maximum 10 characters. A-Z and 0-9 characters only.
-- LicensePlateMustNotBeEmpty - License Plate must not be empty.
-- JurisdictionDoesNotExist - Jurisdiction does not exist. Valid jurisdictions are Countries and Regions supported by API#Provinces
-- CountryCodeMustNotBeEmpty - Country Code must not be empty.
-- CountryCodeDoesNotExist - Country Code does not exist. Valid country ids are: CA, US, GB, AU, FR, CH. See Countries and Regions supported by API#Countries
-- VehicleTypeMustNotBeEmpty - Vehicle Type must not be empty.
-- VehicleTypeDoesNotExist - Vehicle Type does not exist. Valid types are: car, motorcycle, electricMotorcycle, heavyGoodsVehicle
+- LicensePlateRequired - License plate is required.
+- JurisdictionNotFound - Jurisdiction not found. Valid jurisdictions are Countries and Regions supported by API#Provinces
+- CountryCodeRequired - Country Code required.
+- CountryCodeNotFound - Country Code not found. Valid country ids are: CA, US, GB, AU, FR, CH. See Countries and Regions supported by API#Countries
+- VehicleTypeRequired - Vehicle Type is required.
+- VehicleTypeNotFound - Vehicle Type not found. Valid types are: car, motorcycle, electricMotorcycle, heavyGoodsVehicle
 - VehicleIdInvalidFormat - Vehicle Id must be an integer.
-- UserNotRegistered - Member not registered.
+- MemberAccountNotFound - Member account could not be found.
 - JsonReaderException - Provided json is in an invalid format.
+- JurisdictionInvalidForCountryCode - Provided country does not contain provided jurisdiction.
 
 + Request
 
@@ -395,14 +395,14 @@ Delete a vehicle from a parking account
 - DeleteVehicleFailed
         {
             "Data": [ ],
-            "FailureReason":"UserNotRegistered",
+            "FailureReason":"MemberAccountNotFound",
             "$type":"DeleteVehicleFailed"
         }
 
 **Validation Errors**
 - VehicleNotFound - Vehicle with vehicle Id not found.
 - JsonReaderException - Provided json is in an invalid format.
-- UserNotRegistered - Member not registered.
+- MemberAccountNotFound - Member account could not be found.
 - VehicleIdInvalidFormat - Vehicle Id must be an integer.
 
 + Response 202 (application/json)
@@ -468,7 +468,7 @@ Delete a vehicle from a parking account
 - AddMemberPreferencesFailed or UpdateMemberPreferencesFailed
 
         {
-            "FailureReason":"UserNotRegistered",
+            "FailureReason":"MemberAccountNotFound",
             "$type":"AddMemberPreferencesFailed"
         }
 
@@ -510,7 +510,7 @@ Delete a vehicle from a parking account
 
         {
             "Data": [ ],
-            "FailureReason":"UserNotRegistered",
+            "FailureReason":"MemberAccountNotFound",
             "$type":"CreateParkingAccountFailed"
         }
 
@@ -547,24 +547,23 @@ Retrieve a parking quote detail
 
 **Response Failure Reasons**
 
-- LocationInvalidFormat - LocationId could not be converted to an integer format.
-- LocationIdRequiredWhenCreatingAParkingSession - LocationId missing
+- LocationIdInvalidFormat - LocationId could not be converted to an integer format.
+- LocationIdRequired - LocationId is required.
 - LocationNotFound - No location could be found having the provided locationId.
 - DurationTimeUnitRequired - You forgot you provide DurationTimeUnit
 - DurationTimeUnitInvalidFormat - Time unit is not in the accepted time units enumeration.
 - Value is not valid for Quantity - Error thrown when the quantity parameter could not be converted to an integer format.
 - QuantityInvalidFormat - Quantity can not be zero.
-- LicensePlateMustNotBeEmpty - When getting a quote in a location that has a wait-time-after-max-stay restriction, you need to provide the license plate. This is to enforce the wait-time-after-max-stay restriction.
+- LicensePlateRequired - When getting a quote in a location that has a wait-time-after-max-stay restriction, you need to provide the license plate. This is to enforce the wait-time-after-max-stay restriction.
 - CannotExtendBecauseOfNoReturnRule - When getting a quote in a location that has a wait-time-after-max-stay restriction, if you parked for the maximum stay you will need to wait until you can start parking again in
 that location.
-- RateOptionIdInvalidFormat - LocationId could not be converted to an integer format.
-- RateOptionNotFound - Rate Policy Id specified is not associated with the location or the license plate.
+- RateOptionNotFound - Rate Option Id specified is not associated with the location or the license plate.
 - VehicleNotFound - Vehicle with vehicle Id not found.
-- RateOptionRequired - Missing RateOptionId on the request for Start Parking
+- RateOptionIdRequired - Missing RateOptionId on the request for Start Parking
 - RateOptionIdInvalidFormat - RateOptionId in a unsupported format such as negative number or characters
-- LicensePlateRequiredWhenCreatingAParkingSession - Missing LicensePlate on the reqesut for Start Parking
+- LicensePlateRequired - License plate is required.
 - LicensePlateInvalidFormat - LicensePlateInvalidFormat in a unsupported format such as negative number or characters
-- InvalidStallNumber - LicensePlateInvalidFormat in a unsupported format such as negative number or characters
+- StallInvalidFormat - Stall number is in an unsupported format such as a negative number or alphabetic characters
 - LocationIdMustBeNullWhenParkingSessionIdSpecified - Remove LocationId from the request and keep ParkingSessionId
 - RateOptionIdMustBeNullWhenParkingSessionIdSpecified - Remove RateOptionId from the request and keep ParkingSessionId
 - LicensePlateMustBeNullWhenParkingSessionIdSpecified - Remove LicensePlate from the request and keep ParkingSessionId
@@ -798,7 +797,7 @@ Retrieve a parking extension quote detail
 
 **Response Failure Reasons**
 
--LocationInvalidFormat - LocationId could not be converted to an integer format.
+-LocationIdInvalidFormat - LocationId could not be converted to an integer format.
 
 + Request
     Header: Authorization: Bearer <token>
@@ -968,18 +967,17 @@ This endpoint supports a number of optional parameters, some of which must be pr
 - 200 - OK
 - 400 - Bad Request
     - When getting parking rate options in order to start a parking session, the following failure reasons may be returned
-        - LicensePlateMustNotBeEmpty
-        - ParkingAccountIdDoesNotContainTheGivenLicensePlate
+        - LicensePlateRequired
     - When getting parking rate options in order to start or extend a parking session, the following failure reasons may be returned
-        - LocationEmpty
-        - LocationInvalidFormat
-        - ParkingAccountIdCannotBeEmpty
+        - LocationIdRequired
+        - LocationIdInvalidFormat
+        - ParkingAccountIdRequired
         - ParkingAccountIdInvalidFormat
     - When getting parking rate options in order to extend a parking session, the following failure reasons my be returned
-        - LicensePlateMustBeEmpty
-        - StartTimeMustBeEmpty
+        - LicensePlateMustBeNullWhenParkingSessionIdSpecified
+        - StartTimeMustBeNullWhenParkingSessionIdSpecified
         - ActiveParkingSessionNotFound
-        - ActiveParkingSessionForLocationNotFound
+        - ActiveParkingSessionForLocationIdNotFound
 - 401 - Unauthorized
 - 403 - Forbidden
 - 404 - Not Found
