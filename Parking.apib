@@ -831,7 +831,6 @@ Retrieve a parking extension quote detail
 **Response codes**
 - 200 - OK
 - 400 - Bad Request
-- 404 - Not Found
 - 500 - Internal Server Error
 
 **Max Stays Remarks and Examples**
@@ -858,8 +857,7 @@ Retrieve a parking extension quote detail
             + lotYetToBeActivated
         + lotMessages: (string) - A collection if key/value pairs that contain messages and the culture they belong to.
 
-+ Response 200
-    Content-Type: application/json
++ Response 200 (application/json)
         [{
             "locationId": "12345",
             "name": "344th Street",
@@ -883,6 +881,9 @@ Retrieve a parking extension quote detail
                 "PaypointCash"
             ]
         }]
+
++ Response 200 (application/json)
+      []
 
 ## Parking location details [/parking/locations/{locationId}]
 
