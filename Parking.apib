@@ -103,7 +103,7 @@ All requests made to this version of the Parking API must add the following HTTP
              "vehicleType": "car",
              "StartTime": "2015-01-28T20:54:00Z",
              "ExpireTime": "2015-01-28T21:54:00Z",
-             "$type": "ParkingSessionCreated"
+             "$type": "ParkingSessionCreated",
         }
 
 - StartParkingFailed
@@ -128,6 +128,15 @@ All requests made to this version of the Parking API must add the following HTTP
         + `cvv`:`111` (required, string) - The CV2 code from the user's payment card
         + `startTime`:`2015-07-28T20:40:00Z` (required, string) - The start time of the transaction to be started. Must be within 3 minutes of the current time. Must be compliant with RFC 3339.
         + `rateOptionId`:`70000` (required, string) - The rate option Id for a personalized parking session.
+        + `paymentMethod`: (required, paymentmethod) -  The paymentMethod used of the parking session.
+            + `paymentMethodType` : (required, string) - PaymentMethod type used for the parking session.
+            + `payload` : (required, payload) -- Additional information for the selected payment.
+                + `token` : (optional, string) - Android Pay token.
+                + `publicKey` : (optional, string) - Publickey that Android Pay used to encrypt the token.
+                + `paymentInstruments` : (optional, paymentinstruments) -- Information of the Credit Card used in the payment.
+                    + `ccType` : (optional, string) - The type of the Credit Card used by Android Pay.
+                    + `ccMaskedValue` : (optional, string) - The masked number of the Credit Card used by Android Pay.
+
     + Body
         [
             {
@@ -140,7 +149,18 @@ All requests made to this version of the Parking API must add the following HTTP
                 },
                 "cvv":"111",
                 "startTime": "2015-07-28T20:40:00Z",
-                "rateOptionId":"70000"
+                "rateOptionId":"70000",
+				paymentMethod:{
+                    "paymentMethodType" : "AndroidPayToken",
+                    "payload":{
+                        "token":"wjwqjf;wqfsdfoweutrm,ebdzaiiotrl/. zm,hxfpweti45ym56uj5e",
+                        "publicKey":"sdkfj;;wlegfqw0-9 wqrcip43;i5r",
+                        "paymentInstruments":{
+                            "ccType":"VISA",
+                            "ccMaskedValue": "1111"
+                        }
+                    }
+                }
             }
         ]
 
@@ -201,6 +221,14 @@ All requests made to this version of the Parking API must add the following HTTP
             + `timeUnit`: `Minutes` (required, string) - TimeUnit Enumeration name or value. "Minutes", "Hours", "Days", "Weeks", "Months", "HalfHour", "MidnightCurrentDay", "CalendarDays", "TimeBucket", "SingleHour", "WeekdaysStartMonday", "CalendarWeeks", "NotSpecified", "Unknown"
             + `quantity`: `1` (required, string) - How many minutes or hours the user wants to park
         + `cvv`:`111` (required, string) - The CV2 code from the user's payment card
+        + `paymentMethod`: (required, paymentmethod) -  The paymentMethod used of the parking session.
+            + `paymentMethodType` : (required, string) - PaymentMethod type used for the parking session.
+            + `payload` : (required, payload) -- Additional information for the selected payment.
+                + `token` : (optional, string) - Android Pay token.
+                + `publicKey` : (optional, string) - Publickey that Android Pay used to encrypt the token.
+                + `paymentInstruments` : (optional, paymentinstruments) -- Information of the Credit Card used in the payment.
+                    + `ccType` : (optional, string) - The type of the Credit Card used by Android Pay.
+                    + `ccMaskedValue` : (optional, string) - The masked number of the Credit Card used by Android Pay.
     + Headers
         Authorization: Bearer <token>
     + Body
@@ -211,7 +239,18 @@ All requests made to this version of the Parking API must add the following HTTP
                     "timeUnit":Hours",
                     "quantity":"1"
                 },
-                "cvv":"111"
+                "cvv":"111",
+				paymentMethod:{
+                    "paymentMethodType" : "AndroidPayToken",
+                    "payload":{
+                        "token":"wjwqjf;wqfsdfoweutrm,ebdzaiiotrl/. zm,hxfpweti45ym56uj5e",
+                        "publicKey":"sdkfj;;wlegfqw0-9 wqrcip43;i5r",
+                        "paymentInstruments":{
+                            "ccType":"VISA",
+                            "ccMaskedValue": "1111"
+                        }
+                    }
+                }
             }
         ]
 
