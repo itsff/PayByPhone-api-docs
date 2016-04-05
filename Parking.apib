@@ -72,6 +72,35 @@ All requests made to this version of the Parking API must add the following HTTP
 
 ### Start a new parking session[POST]
 
+**Possible Payment Method types**
+It's possible to pay for parking session using following Payment Methods:
+- Payment Account (using associated credit or debit card) 
+- Android Pay token
+
+Example of Payment Method request parameter type for Payment Acccount
+
+        {
+            "paymentMethodType": ""PaymentAccount",
+            "payload":{
+                    "PaymentAccountId":"23fccd39-70c2-446f-915c-6d2362b64e58"
+            }
+        }
+
+Example of Payment Method request parameter type for Android Pay
+
+        {
+            "paymentMethodType" : "AndroidPayToken",
+            "payload":{
+                "token":"wjwqjf;wqfsdfoweutrm,ebdzaiiotrl/. zm,hxfpweti45ym56uj5e",
+                "publicKey":"sdkfj;;wlegfqw0-9 wqrcip43;i5r",
+                "paymentInstruments":{
+                    "ccType":"VISA",
+                    "ccMaskedValue": "1111"
+                }
+            }
+        }
+
+
 **Possible Response Codes**
 
 - 202 - Accepted
@@ -131,11 +160,7 @@ All requests made to this version of the Parking API must add the following HTTP
         + `paymentMethod`: (required, paymentmethod) -  The paymentMethod used of the parking session.
             + `paymentMethodType` : (required, string) - PaymentMethod type used for the parking session.
             + `payload` : (required, payload) -- Additional information for the selected payment.
-                + `token` : (optional, string) - Android Pay token.
-                + `publicKey` : (optional, string) - Publickey that Android Pay used to encrypt the token.
-                + `paymentInstruments` : (optional, paymentinstruments) -- Information of the Credit Card used in the payment.
-                    + `ccType` : (optional, string) - The type of the Credit Card used by Android Pay.
-                    + `ccMaskedValue` : (optional, string) - The masked number of the Credit Card used by Android Pay.
+                + `paymentAccountId` : (required, string) - Payment Account Id.
 
     + Body
         [
@@ -150,15 +175,10 @@ All requests made to this version of the Parking API must add the following HTTP
                 "cvv":"111",
                 "startTime": "2015-07-28T20:40:00Z",
                 "rateOptionId":"70000",
-				paymentMethod:{
-                    "paymentMethodType" : "AndroidPayToken",
+				"paymentMethod":{
+                    "paymentMethodType": "PaymentAccount",
                     "payload":{
-                        "token":"wjwqjf;wqfsdfoweutrm,ebdzaiiotrl/. zm,hxfpweti45ym56uj5e",
-                        "publicKey":"sdkfj;;wlegfqw0-9 wqrcip43;i5r",
-                        "paymentInstruments":{
-                            "ccType":"VISA",
-                            "ccMaskedValue": "1111"
-                        }
+                            "paymentAccountId":"23fccd39-70c2-446f-915c-6d2362b64e58"
                     }
                 }
             }
@@ -171,6 +191,34 @@ All requests made to this version of the Parking API must add the following HTTP
 
 
 ### Extend an existing parking session [PUT /parking/accounts/{accountId}/sessions/{activeParkingSessionId}]
+
+**Possible Payment Method types**
+It's possible to pay for parking session using following Payment Methods:
+- Payment Account (using associated credit or debit card) 
+- Android Pay token
+
+Example of Payment Method request parameter type for Payment Acccount
+
+        {
+            "paymentMethodType": ""PaymentAccount",
+            "payload":{
+                    "PaymentAccountId":"23fccd39-70c2-446f-915c-6d2362b64e58"
+            }
+        }
+
+Example of Payment Method request parameter type for Android Pay
+
+        {
+            "paymentMethodType" : "AndroidPayToken",
+            "payload":{
+                "token":"wjwqjf;wqfsdfoweutrm,ebdzaiiotrl/. zm,hxfpweti45ym56uj5e",
+                "publicKey":"sdkfj;;wlegfqw0-9 wqrcip43;i5r",
+                "paymentInstruments":{
+                    "ccType":"VISA",
+                    "ccMaskedValue": "1111"
+                }
+            }
+        }
 
 **Possible Response Codes**
 
@@ -224,11 +272,7 @@ All requests made to this version of the Parking API must add the following HTTP
         + `paymentMethod`: (required, paymentmethod) -  The paymentMethod used of the parking session.
             + `paymentMethodType` : (required, string) - PaymentMethod type used for the parking session.
             + `payload` : (required, payload) -- Additional information for the selected payment.
-                + `token` : (optional, string) - Android Pay token.
-                + `publicKey` : (optional, string) - Publickey that Android Pay used to encrypt the token.
-                + `paymentInstruments` : (optional, paymentinstruments) -- Information of the Credit Card used in the payment.
-                    + `ccType` : (optional, string) - The type of the Credit Card used by Android Pay.
-                    + `ccMaskedValue` : (optional, string) - The masked number of the Credit Card used by Android Pay.
+                + `paymentAccountId` : (required, string) - Payment Account Id.
     + Headers
         Authorization: Bearer <token>
     + Body
@@ -240,15 +284,10 @@ All requests made to this version of the Parking API must add the following HTTP
                     "quantity":"1"
                 },
                 "cvv":"111",
-				paymentMethod:{
-                    "paymentMethodType" : "AndroidPayToken",
+                "paymentMethod":{
+                    "paymentMethodType": "PaymentAccount",
                     "payload":{
-                        "token":"wjwqjf;wqfsdfoweutrm,ebdzaiiotrl/. zm,hxfpweti45ym56uj5e",
-                        "publicKey":"sdkfj;;wlegfqw0-9 wqrcip43;i5r",
-                        "paymentInstruments":{
-                            "ccType":"VISA",
-                            "ccMaskedValue": "1111"
-                        }
+                            "paymentAccountId":"23fccd39-70c2-446f-915c-6d2362b64e58"
                     }
                 }
             }
