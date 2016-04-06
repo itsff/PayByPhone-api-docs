@@ -157,10 +157,10 @@ Example of Payment Method request parameter type for Android Pay
         + `cvv`:`111` (required, string) - The CV2 code from the user's payment card
         + `startTime`:`2015-07-28T20:40:00Z` (required, string) - The start time of the transaction to be started. Must be within 3 minutes of the current time. Must be compliant with RFC 3339.
         + `rateOptionId`:`70000` (required, string) - The rate option Id for a personalized parking session.
-        + `paymentMethod`: (required, paymentmethod) -  The paymentMethod used of the parking session.
-            + `paymentMethodType` : (required, string) - PaymentMethod type used for the parking session.
-            + `payload` : (required, payload) -- Additional information for the selected payment.
-                + `paymentAccountId` : (required, string) - Payment Account Id.
+        + `paymentMethod`:(required, paymentmethod) -  The paymentMethod used of the parking session.
+            + `paymentMethodType`:`PaymentAccount` (required, string) - PaymentMethod type used for the parking session.
+            + `payload`:(required, payload) -- Additional information for the selected payment.
+                + `paymentAccountId`:`23fccd39-70c2-446f-915c-6d2362b64e58` (required, string) - Payment Account Id.
 
     + Body
         [
@@ -269,10 +269,10 @@ Example of Payment Method request parameter type for Android Pay
             + `timeUnit`: `Minutes` (required, string) - TimeUnit Enumeration name or value. "Minutes", "Hours", "Days", "Weeks", "Months", "HalfHour", "MidnightCurrentDay", "CalendarDays", "TimeBucket", "SingleHour", "WeekdaysStartMonday", "CalendarWeeks", "NotSpecified", "Unknown"
             + `quantity`: `1` (required, string) - How many minutes or hours the user wants to park
         + `cvv`:`111` (required, string) - The CV2 code from the user's payment card
-        + `paymentMethod`: (required, paymentmethod) -  The paymentMethod used of the parking session.
-            + `paymentMethodType` : (required, string) - PaymentMethod type used for the parking session.
-            + `payload` : (required, payload) -- Additional information for the selected payment.
-                + `paymentAccountId` : (required, string) - Payment Account Id.
+        + `paymentMethod`:(required, paymentmethod) -  The paymentMethod used of the parking session.
+            + `paymentMethodType`:`PaymentAccount` (required, string) - PaymentMethod type used for the parking session.
+            + `payload`:(required, payload) -- Additional information for the selected payment.
+                + `paymentAccountId`:`23fccd39-70c2-446f-915c-6d2362b64e58` (required, string) - Payment Account Id.
     + Headers
         Authorization: Bearer <token>
     + Body
