@@ -50,20 +50,20 @@ All requests made to this version of the Parking API must add the following HTTP
     + Body
         [
             {
-                "parkingSessionId":"de9bd239-44f3-483e-9fd4-7c98567da200",
-                "locationId":"5594",
-                "vehicle":{
+                "parkingSessionId": "de9bd239-44f3-483e-9fd4-7c98567da200",
+                "locationId": "5594",
+                "vehicle": {
                     "id":1234,
-                    "licensePlate":"ABC123",
-                    "jurisdiction":"BC",
-                    "countryCode":"CA",
-                    "type":"motorcycle"
+                    "licensePlate": "ABC123",
+                    "jurisdiction": "BC",
+                    "countryCode": "CA",
+                    "type": "motorcycle"
                 },
-                "startTime":"2015-09-01T16:16:00Z",
-                "stall":"82445",
-                "rateOption":{
-                    "rateOptionId":"5594",
-                    "type":"VIS"
+                "startTime": "2015-09-01T16:16:00Z",
+                "stall": "82445",
+                "rateOption": {
+                    "rateOptionId": "5594",
+                    "type": "VIS"
                 }
             }
         ]
@@ -80,21 +80,21 @@ It's possible to pay for parking session using following Payment Methods:
 Example of Payment Method request parameter type for Payment Acccount
 
         {
-            "paymentMethodType":"PaymentAccount",
-            "payload":{
-                    "PaymentAccountId":"23fccd39-70c2-446f-915c-6d2362b64e58"
+            "paymentMethodType": "PaymentAccount",
+            "payload": {
+                    "PaymentAccountId": "23fccd39-70c2-446f-915c-6d2362b64e58"
             }
         }
 
 Example of Payment Method request parameter type for Android Pay
 
         {
-            "paymentMethodType" : "AndroidPayToken",
-            "payload":{
-                "token":"wjwqjf;wqfsdfoweutrm,ebdzaiiotrl/. zm,hxfpweti45ym56uj5e",
-                "publicKey":"sdkfj;;wlegfqw0-9 wqrcip43;i5r",
-                "paymentInstruments":{
-                    "ccType":"VISA",
+            "paymentMethodType": "AndroidPayToken",
+            "payload": {
+                "token": "wjwqjf;wqfsdfoweutrm,ebdzaiiotrl/. zm,hxfpweti45ym56uj5e",
+                "publicKey": "sdkfj;;wlegfqw0-9 wqrcip43;i5r",
+                "paymentInstruments": {
+                    "ccType": "VISA",
                     "ccMaskedValue": "1111"
                 }
             }
@@ -139,8 +139,8 @@ Example of Payment Method request parameter type for Android Pay
 
         {
             "Data": [ ],
-            "FailureReason":"VehicleAlreadyParked",
-            "$type":"StartParkingFailed"
+            "FailureReason": "VehicleAlreadyParked",
+            "$type": "StartParkingFailed"
         }
 
 + Parameters
@@ -165,20 +165,20 @@ Example of Payment Method request parameter type for Android Pay
     + Body
         [
             {
-                "locationId":"70000",
-                "stall":"1",
-                "licensePlate":"ABC123",
-                "duration":{
-                    "timeUnit":"Hours",
-                    "quantity":"1"
+                "locationId": "70000",
+                "stall": "1",
+                "licensePlate": "ABC123",
+                "duration": {
+                    "timeUnit": "Hours",
+                    "quantity": "1"
                 },
-                "cvv":"111",
+                "cvv": "111",
                 "startTime": "2015-07-28T20:40:00Z",
-                "rateOptionId":"70000",
-                "paymentMethod":{
+                "rateOptionId": "70000",
+                "paymentMethod": {
                     "paymentMethodType": "PaymentAccount",
-                    "payload":{
-                        "paymentAccountId":"23fccd39-70c2-446f-915c-6d2362b64e58"
+                    "payload": {
+                        "paymentAccountId": "23fccd39-70c2-446f-915c-6d2362b64e58"
                     }
                 }
             }
@@ -200,21 +200,21 @@ It's possible to pay for parking session using following Payment Methods:
 Example of Payment Method request parameter type for Payment Acccount
 
         {
-            "paymentMethodType":"PaymentAccount",
-            "payload":{
-                    "PaymentAccountId":"23fccd39-70c2-446f-915c-6d2362b64e58"
+            "paymentMethodType": "PaymentAccount",
+            "payload": {
+                    "PaymentAccountId": "23fccd39-70c2-446f-915c-6d2362b64e58"
             }
         }
 
 Example of Payment Method request parameter type for Android Pay
 
         {
-            "paymentMethodType" : "AndroidPayToken",
-            "payload":{
-                "token":"wjwqjf;wqfsdfoweutrm,ebdzaiiotrl/. zm,hxfpweti45ym56uj5e",
-                "publicKey":"sdkfj;;wlegfqw0-9 wqrcip43;i5r",
-                "paymentInstruments":{
-                    "ccType":"VISA",
+            "paymentMethodType": "AndroidPayToken",
+            "payload": {
+                "token": "wjwqjf;wqfsdfoweutrm,ebdzaiiotrl/. zm,hxfpweti45ym56uj5e",
+                "publicKey": "sdkfj;;wlegfqw0-9 wqrcip43;i5r",
+                "paymentInstruments": {
+                    "ccType": "VISA",
                     "ccMaskedValue": "1111"
                 }
             }
@@ -255,8 +255,8 @@ Example of Payment Method request parameter type for Android Pay
 
         {
             "Data": [ ],
-            "FailureReason":"PaymentDeclinedByGateway",
-            "$type":"ExtendParkingFailed"
+            "FailureReason": "PaymentDeclinedByGateway",
+            "$type": "ExtendParkingFailed"
         }
 
 + Parameters
@@ -278,16 +278,16 @@ Example of Payment Method request parameter type for Android Pay
     + Body
         [
             {
-                "parkingSessionId":"2bf49b64-28cd-4fc7-96e4-a44b010bf6ea",
-                "duration":{
+                "parkingSessionId": "2bf49b64-28cd-4fc7-96e4-a44b010bf6ea",
+                "duration": {
                     "timeUnit":Hours",
-                    "quantity":"1"
+                    "quantity": "1"
                 },
-                "cvv":"111",
-                "paymentMethod":{
+                "cvv": "111",
+                "paymentMethod": {
                     "paymentMethodType": "PaymentAccount",
-                    "payload":{
-                        "paymentAccountId":"23fccd39-70c2-446f-915c-6d2362b64e58"
+                    "payload": {
+                        "paymentAccountId": "23fccd39-70c2-446f-915c-6d2362b64e58"
                     }
                 }
             }
@@ -359,8 +359,8 @@ Get all vehicles from a User's Account.
 
         {
             "Data": [ {"jurisdiction": "BC"}, {"CountryCode": "AU"} ],
-            "FailureReason":"JurisdictionInvalidForCountryCode",
-            "$type":"AddVehicleFailed"
+            "FailureReason": "JurisdictionInvalidForCountryCode",
+            "$type": "AddVehicleFailed"
         }
 
 **Possible Validation Errors**
@@ -378,10 +378,10 @@ Get all vehicles from a User's Account.
 + Request
 
     {
-        "licensePlate":"TEST9233",
-        "jurisdiction":"BC",
-        "countryCode":"CA",
-        "vehicleType":"car"
+        "licensePlate": "TEST9233",
+        "jurisdiction": "BC",
+        "countryCode": "CA",
+        "vehicleType": "car"
     }
 
 + Response 202 (application/json)
@@ -417,8 +417,8 @@ Get all vehicles from a User's Account.
 - UpdateVehicleFailed
         {
             "Data": [ {"jurisdiction": "BC"}, {"CountryCode": "AU"} ],
-            "FailureReason":"JurisdictionInvalidForCountryCode",
-            "$type":"AddVehicleFailed"
+            "FailureReason": "JurisdictionInvalidForCountryCode",
+            "$type": "AddVehicleFailed"
         }
 
 **Validation Errors**
@@ -440,10 +440,10 @@ Get all vehicles from a User's Account.
 
     Body:
         {
-            "licensePlate":"TEST9233",
-            "jurisdiction":"BC",
-            "countryCode":"CA",
-            "vehicleType":"car"
+            "licensePlate": "TEST9233",
+            "jurisdiction": "BC",
+            "countryCode": "CA",
+            "vehicleType": "car"
         }
 
 + Response 202 (application/json)
@@ -473,8 +473,8 @@ Delete a vehicle from a parking account
 - DeleteVehicleFailed
         {
             "Data": [ ],
-            "FailureReason":"MemberAccountNotFound",
-            "$type":"DeleteVehicleFailed"
+            "FailureReason": "MemberAccountNotFound",
+            "$type": "DeleteVehicleFailed"
         }
 
 **Validation Errors**
@@ -514,7 +514,7 @@ Delete a vehicle from a parking account
         + `email`:`null` (string) - Email account for account holder
     + Body
         {
-            "parkingAccountId":"00000000-0000-0000-0000-000000000000",
+            "parkingAccountId": "00000000-0000-0000-0000-000000000000",
             "sendEmailReceipts":false,
             "sendTextReminders":false,
             "sendTextReceipts":false,
@@ -546,15 +546,15 @@ Delete a vehicle from a parking account
 - AddMemberPreferencesFailed or UpdateMemberPreferencesFailed
 
         {
-            "FailureReason":"MemberAccountNotFound",
-            "$type":"AddMemberPreferencesFailed"
+            "FailureReason": "MemberAccountNotFound",
+            "$type": "AddMemberPreferencesFailed"
         }
 
 + Request (application/json)
     + Body
 
             {
-                "email":"email@-domain.com",
+                "email": "email@-domain.com",
                 "sendEmailReceipts":true,
                 "sendTextReceipts":true,
                 "sendTextReminders":true
@@ -579,17 +579,17 @@ Delete a vehicle from a parking account
 - ParkingAccountCreated
 
         {
-            "ParkingAccountId":"23fccd39-70c2-446f-915c-6d2362b64e28",
-            "MemberId":"23fccd39-70c2-446f-915c-6d2362b64e58",
-            "$type":"ParkingAccountCreated"
+            "ParkingAccountId": "23fccd39-70c2-446f-915c-6d2362b64e28",
+            "MemberId": "23fccd39-70c2-446f-915c-6d2362b64e58",
+            "$type": "ParkingAccountCreated"
         }
 
 - CreateParkingAccountFailed
 
         {
             "Data": [ ],
-            "FailureReason":"MemberAccountNotFound",
-            "$type":"CreateParkingAccountFailed"
+            "FailureReason": "MemberAccountNotFound",
+            "$type": "CreateParkingAccountFailed"
         }
 
 + Response 202 (application/json)
@@ -714,7 +714,7 @@ that location.
     {
         "locationId": "40006",
         "stall": "123",
-        "quoteDate":"2015-06-25T18:00:00Z",
+        "quoteDate": "2015-06-25T18:00:00Z",
         "totalCost": {
                "amount": 5.00,
                "currency": "CAD"
@@ -725,21 +725,21 @@ that location.
         "patrkingDurationAdjustment": "NotAdjusted",
         "licensePlate": "ABC123",
         "quoteItems":[{
-            "quoteItemType":"parking",
+            "quoteItemType": "parking",
             "name": "Parking",
-            "costAmout":{
+            "costAmout": {
                 "amount":9.00,
-                "currency":"CAD"
+                "currency": "CAD"
             }
         },{
-            "quoteItemType":"convenienceFee",
+            "quoteItemType": "convenienceFee",
             "name": "Convenience Fee",
             "costAmount": {
                 "amount": 1.00,
                 "currency": "CAD"
             }
         },{
-            "quoteItemType":"promotion",
+            "quoteItemType": "promotion",
             "name": "COV electric vehicle discount.",
             "costAmount": {
                 "amount": -5.00,
@@ -835,7 +835,7 @@ Retrieve a parking extension quote detail
     {
         "locationId": "40006",
         "stall": "123",
-        "quoteDate":"2015-06-25T18:00:00Z",
+        "quoteDate": "2015-06-25T18:00:00Z",
         "totalCost": {
                "amount": 5.00,
                "currency": "CAD"
@@ -846,21 +846,21 @@ Retrieve a parking extension quote detail
         "patrkingDurationAdjustment": "NotAdjusted",
         "licensePlate": "ABC123",
         "quoteItems":[{
-            "quoteItemType":"parking",
+            "quoteItemType": "parking",
             "name": "Parking",
-            "costAmout":{
+            "costAmout": {
                 "amount":9.00,
-                "currency":"CAD"
+                "currency": "CAD"
             }
         },{
-            "quoteItemType":"convenienceFee",
+            "quoteItemType": "convenienceFee",
             "name": "Convenience Fee",
             "costAmount": {
                 "amount": 1.00,
                 "currency": "CAD"
             }
         },{
-            "quoteItemType":"promotion",
+            "quoteItemType": "promotion",
             "name": "COV electric vehicle discount.",
             "costAmount": {
                 "amount": -5.00,
