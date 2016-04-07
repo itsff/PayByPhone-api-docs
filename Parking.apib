@@ -159,7 +159,7 @@ Example of Payment Method request parameter type for Android Pay
         + `rateOptionId`:`70000` (required, string) - The rate option Id for a personalized parking session.
         + `paymentMethod`:(required, paymentmethod) -  The paymentMethod used of the parking session.
             + `paymentMethodType`:`PaymentAccount` (required, string) - PaymentMethod type used for the parking session.
-            + `payload`:(required, payload) -- Additional information for the selected payment.
+            + `payload`:(required, payload) - Additional information for the selected payment.
                 + `paymentAccountId`:`23fccd39-70c2-446f-915c-6d2362b64e58` (required, string) - Payment Account Id.
 
     + Body
@@ -271,7 +271,7 @@ Example of Payment Method request parameter type for Android Pay
         + `cvv`:`111` (required, string) - The CV2 code from the user's payment card
         + `paymentMethod`:(required, paymentmethod) -  The paymentMethod used of the parking session.
             + `paymentMethodType`:`PaymentAccount` (required, string) - PaymentMethod type used for the parking session.
-            + `payload`:(required, payload) -- Additional information for the selected payment.
+            + `payload`:(required, payload) - Additional information for the selected payment.
                 + `paymentAccountId`:`23fccd39-70c2-446f-915c-6d2362b64e58` (required, string) - Payment Account Id.
     + Headers
         Authorization: Bearer <token>
